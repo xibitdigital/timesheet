@@ -1,4 +1,4 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './actionTypes'
+import { Actions} from './actionTypes'
 import { CounterActionTypes } from './types'
 
 const initialState = {
@@ -7,9 +7,9 @@ const initialState = {
 
 export default (state = initialState, action: CounterActionTypes) => {
   switch (action.type) {
-    case INCREMENT_COUNTER:
+    case Actions.INCREMENT_COUNTER:
       return { ...state, value: state.value + 1 }
-    case DECREMENT_COUNTER:
+    case Actions.DECREMENT_COUNTER:
       return { ...state, value: state.value - 1 }
     default:
       return state

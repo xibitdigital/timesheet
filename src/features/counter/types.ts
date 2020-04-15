@@ -1,10 +1,10 @@
-import { INCREMENT_COUNTER, DECREMENT_COUNTER } from './actionTypes'
+import { Actions } from './actionTypes'
 
 interface IncrementCounterAction {
-  type: typeof INCREMENT_COUNTER
+  type: Actions.INCREMENT_COUNTER
 }
 interface DecrementCounterAction {
-  type: typeof DECREMENT_COUNTER
+  type: Actions.DECREMENT_COUNTER
 }
 export type CounterActionTypes = IncrementCounterAction | DecrementCounterAction
 

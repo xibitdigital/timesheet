@@ -1,6 +1,6 @@
-import * as actionTypes from './actionTypes'
+import {Actions as actions} from './actionTypes'
 import * as selectors from './selectors'
 
 export { default as CounterReducer } from './counterReducer'
-export { actionTypes }
+export { actions }
 export { selectors }

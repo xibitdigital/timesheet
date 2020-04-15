@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { actionTypes, selectors } from '../../features/counter'
+import { actions, selectors } from '../../features/counter'
 
 const Counter: React.FC = () => {
   const count = useSelector(selectors.getCountValue)
@@ -28,7 +28,7 @@ const Counter: React.FC = () => {
                   type="button"
                   data-qa="decrement-counter"
                   onClick={() =>
-                    dispatch({ type: actionTypes.DECREMENT_COUNTER })
+                    dispatch({ type: actions.DECREMENT_COUNTER })
                   }
                 >
                   decrement
@@ -38,7 +38,7 @@ const Counter: React.FC = () => {
                   type="button"
                   data-qa="increment-counter"
                   onClick={() =>
-                    dispatch({ type: actionTypes.INCREMENT_COUNTER })
+                    dispatch({ type: actions.INCREMENT_COUNTER })
                   }
                 >
                   increment
