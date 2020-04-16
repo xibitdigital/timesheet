@@ -3,13 +3,14 @@
  */
 
 import * as dotenv from "dotenv";
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/notFound.middleware';
 import { testRouter } from './test/test.router';
 import { authRouter } from './auth/auth.router';
+import path from 'path';
 
 dotenv.config();
 
@@ -24,6 +25,9 @@ if (!process.env.PORT) {
 const PORT: number = parseInt(process.env.PORT as string, 10);
 
 const app = express();
+const appDir = path.join(process.cwd(), './../', 'cli/build');
+const indexFile = path.join(appDir, 'index.html');
+console.log('App Files', appDir, indexFile);
 
 /**
 *  App Configuration
@@ -32,11 +36,16 @@ const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public'))
+app.use(express.static(appDir));
 
 /**
  * Routers
  */
+
+app.get('/', (req: Request, res: Response) => {
+    res.sendFile(indexFile);
+});
+
 
 app.use("/authorize", authRouter);
 app.use("/test", testRouter);
