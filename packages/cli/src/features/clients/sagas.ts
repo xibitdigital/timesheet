@@ -3,7 +3,7 @@ import { Actions } from './types'
 import { fetchListError, fetchListSuccess } from './actions'
 import { getList } from './api'
 
-function* handleAuditFetchList(action: any) {
+function* handleClientsFetchList(action: any) {
   try {
     const res = yield call(getList, action)
     const payload = res ? res.data : {}
@@ -19,7 +19,7 @@ function* handleAuditFetchList(action: any) {
 }
 
 function* watchFetchListRequest() {
-  yield takeEvery(Actions.FETCH_LIST_REQUEST, handleAuditFetchList)
+  yield takeEvery(Actions.FETCH_LIST_REQUEST, handleClientsFetchList)
 }
 
 function* auditsSaga() {
