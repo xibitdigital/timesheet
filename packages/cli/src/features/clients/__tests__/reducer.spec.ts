@@ -19,7 +19,7 @@ describe('AuditDetails Stories', () => {
       expect(initialState.data.length).toEqual(0)
       expect(initialState.errors).toEqual(undefined)
       expect(initialState.loading).toEqual(false)
-      expect(initialState.errors).toEqual(false)
+      expect(initialState.updating).toEqual(false)
     })
   })
 
