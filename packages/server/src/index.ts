@@ -9,8 +9,9 @@ import helmet from "helmet";
 import { errorHandler } from './middleware/error.middleware';
 import { notFoundHandler } from './middleware/notFound.middleware';
 import { testRouter } from './test/test.router';
-import { authRouter } from './auth/auth.router';
 import path from 'path';
+
+const API_ROOT = '/api'
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ if (!process.env.PORT) {
 const PORT: number = parseInt(process.env.PORT as string, 10);
 
 const app = express();
+const router= express.Router();
 const appDir = path.join(process.cwd(), './../', 'cli/build');
 const indexFile = path.join(appDir, 'index.html');
 console.log('App Files', appDir, indexFile);
@@ -41,14 +43,12 @@ app.use(express.static(appDir));
 /**
  * Routers
  */
+router.use(`/test`, testRouter);
 
+app.use('/api', router);
 app.get('/', (req: Request, res: Response) => {
     res.sendFile(indexFile);
 });
-
-
-app.use("/authorize", authRouter);
-app.use("/test", testRouter);
 
 
 /**
