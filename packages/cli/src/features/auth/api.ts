@@ -2,6 +2,7 @@ import { auth0Client } from './config'
 
 export const handleAuthentication = () =>
   new Promise((resolve, reject) => {
+    // eslint-disable-next-line consistent-return
     auth0Client.parseHash((err: any, authResult: any) => {
       if (err) return reject(err)
       if (!authResult || !authResult.idToken) {
