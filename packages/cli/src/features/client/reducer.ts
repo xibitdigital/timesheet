@@ -1,5 +1,5 @@
 import { ClientState } from './types'
-import { ActionsTypes, ClientsActionTypes } from './actionTypes'
+import { ActionsTypes, ClientActionTypes } from './actionTypes'
 
 const initialState: ClientState = {
   data: [],
@@ -8,7 +8,7 @@ const initialState: ClientState = {
   updating: false,
 }
 
-export default (state = initialState, action: ClientsActionTypes) => {
+export default (state = initialState, action: ClientActionTypes) => {
   switch (action.type) {
     case ActionsTypes.FETCH_LIST_REQUEST:
       return { ...state, loading: true }

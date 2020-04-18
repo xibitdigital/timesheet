@@ -20,7 +20,7 @@ type FetchClientsErrorAction = {
   payload: string
 }
 
-export type ClientsActionTypes =
+export type ClientActionTypes =
   | FetchClientsRequestAction
   | FetchClientsSuccessAction
   | FetchClientsErrorAction
