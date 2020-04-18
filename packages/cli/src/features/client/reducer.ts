@@ -1,7 +1,7 @@
-import { ClientsState } from './types'
+import { ClientState } from './types'
 import { ActionsTypes, ClientsActionTypes } from './actionTypes'
 
-const initialState: ClientsState = {
+const initialState: ClientState = {
   data: [],
   errors: undefined,
   loading: false,

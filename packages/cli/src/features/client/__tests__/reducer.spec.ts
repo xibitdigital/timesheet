@@ -1,11 +1,11 @@
 import clientReducer from '../reducer'
-import { ClientsState } from '../types'
+import { ClientState } from '../types'
 
 /**
  * FIXTURES
  */
-const getInitialState = (initial?: Partial<ClientsState>) =>
-  clientReducer(initial as ClientsState, {} as any)
+const getInitialState = (initial?: Partial<ClientState>) =>
+  clientReducer(initial as ClientState, {} as any)
 
 /**
  * STORIES

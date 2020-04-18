@@ -1,4 +1,3 @@
-// ... other imports ...
 import { ActionsTypes, AuthActionTypes } from './actionTypes'
 import { AuthState } from './types'
 
