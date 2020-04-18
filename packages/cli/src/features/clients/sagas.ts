@@ -1,5 +1,5 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
-import { Actions } from './types'
+import { ActionsTypes } from './actionTypes'
 import { fetchListError, fetchListSuccess } from './actions'
 import { getList } from './api'
 
@@ -19,11 +19,11 @@ function* handleClientsFetchList(action: any) {
 }
 
 function* watchFetchListRequest() {
-  yield takeEvery(Actions.FETCH_LIST_REQUEST, handleClientsFetchList)
+  yield takeEvery(ActionsTypes.FETCH_LIST_REQUEST, handleClientsFetchList)
 }
 
-function* auditsSaga() {
+function* clientsSaga() {
   yield all([fork(watchFetchListRequest)])
 }
 
-export default auditsSaga
+export default clientsSaga

@@ -1,4 +1,5 @@
-import { ClientsActionTypes, ClientsState, Actions } from './types'
+import { ClientsState } from './types'
+import { ActionsTypes, ClientsActionTypes } from './actionTypes'
 
 const initialState: ClientsState = {
   data: [],
@@ -9,17 +10,17 @@ const initialState: ClientsState = {
 
 export default (state = initialState, action: ClientsActionTypes) => {
   switch (action.type) {
-    case Actions.FETCH_LIST_REQUEST:
+    case ActionsTypes.FETCH_LIST_REQUEST:
       return { ...state, loading: true }
 
-    case Actions.FETCH_LIST_SUCCESS: {
+    case ActionsTypes.FETCH_LIST_SUCCESS: {
       return {
         ...state,
         loading: false,
         data: { ...state.data, ...action.payload },
       }
     }
-    case Actions.FETCH_LIST_ERROR: {
+    case ActionsTypes.FETCH_LIST_ERROR: {
       return { ...state, loading: false, errors: action.payload }
     }
     default:

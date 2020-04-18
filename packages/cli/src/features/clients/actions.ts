@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions'
-
-import { Actions, Client } from './types'
+import { Client } from './types'
+import { Actions } from './actionTypes'
 
 export const fetchListRequest = () => action(Actions.FETCH_LIST_REQUEST)
 export const fetchListSuccess = (data: Client[]) =>
