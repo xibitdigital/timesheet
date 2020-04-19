@@ -1,5 +1,6 @@
-import api from '../../core/api'
-import { objectToQuerystring } from '../../core/utils'
+import axios from 'axios'
+
+import { objectToQuerystring } from '../../shared/utils'
 
 export const getList = (args: any) =>
-  api.get(`/clients?${objectToQuerystring(args)}`)
+  axios.get(`/clients?${objectToQuerystring(args)}`)

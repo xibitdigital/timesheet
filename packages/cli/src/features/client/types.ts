@@ -6,8 +6,6 @@ export type Client = {
   vat: string
 }
 
-// ACTION TYPES
-
 // STATE
 export type ClientState = {
   readonly data: Client[]
