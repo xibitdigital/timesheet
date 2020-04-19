@@ -20,11 +20,15 @@ export const Navbar: React.FC = () => {
           </li>
           <li>
             {!isAuthenticated && (
-              <button onClick={() => loginWithRedirect({})}>Log in</button>
+              <button type="button" onClick={() => loginWithRedirect({})}>
+                Log in
+              </button>
             )}
 
             {isAuthenticated && (
-              <button onClick={() => logout()}>Log out</button>
+              <button type="button" onClick={() => logout()}>
+                Log out
+              </button>
             )}
           </li>
         </ul>
