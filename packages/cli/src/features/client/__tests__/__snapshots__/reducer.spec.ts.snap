@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AuditDetails Stories initial state should match a snapshot 1`] = `
+exports[`Clients Stories initial state should match a snapshot 1`] = `
 Object {
   "data": Array [],
   "errors": undefined,
