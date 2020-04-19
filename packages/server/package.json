@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/index",
     "build": "tsc",
-    "start:dev": "tsc && node build/index"
+    "start:dev": "tsc-watch --onSuccess \"node build/index\""
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "@types/helmet": "^0.0.45",
     "@types/node": "^13.11.1",
     "ts-loader": "^7.0.0",
+    "tsc-watch": "^4.2.3",
     "typescript": "^3.8.3"
   },
   "dependencies": {
