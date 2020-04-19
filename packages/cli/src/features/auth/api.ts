@@ -1,4 +1,4 @@
-import { auth0Client } from './config'
+import { auth0Client, auth0Env } from './config'
 
 export const handleAuthentication = () =>
   new Promise((resolve, reject) => {
@@ -26,5 +26,5 @@ export const signIn = () => auth0Client.authorize()
 export const signOut = () =>
   auth0Client.logout({
     returnTo: 'http://localhost:3000',
-    clientID: '<YOUR_AUTH0_CLIENT_ID>',
+    clientID: auth0Env.clientID,
   })

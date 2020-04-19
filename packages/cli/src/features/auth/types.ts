@@ -8,8 +8,7 @@ export type Profile = {
 
 // STATE
 export type AuthState = {
-  readonly data: Profile[]
+  readonly data: Profile
   readonly loading: boolean
-  readonly updating: boolean
   readonly errors?: string
 }

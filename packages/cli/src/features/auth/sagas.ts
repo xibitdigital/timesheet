@@ -4,7 +4,7 @@ import { handleAuthentication } from './api'
 
 export function* parseHash() {
   const user = yield call(handleAuthentication)
-  yield put({ type: ActionsTypes.USER_PROFILE_LOADED, payload: user })
+  yield put({ type: ActionsTypes.USER_LOGIN_SUCCESS, payload: user })
 }
 
 export function* handleAuthenticationCallback() {
