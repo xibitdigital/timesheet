@@ -10,7 +10,7 @@ const getInitialState = (initial?: Partial<ClientState>) =>
 /**
  * STORIES
  */
-describe('AuditDetails Stories', () => {
+describe('Clients Stories', () => {
   const initialState = getInitialState()
 
   describe('initial state', () => {
