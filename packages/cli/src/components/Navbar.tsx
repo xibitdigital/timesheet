@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuth0 } from '../shared/auth-spa'
+import { Button } from 'grommet'
 
 export const Navbar: React.FC = () => {
   const { isAuthenticated, loginWithRedirect, logout } = useAuth0()
@@ -20,15 +21,15 @@ export const Navbar: React.FC = () => {
           </li>
           <li>
             {!isAuthenticated && (
-              <button type="button" onClick={() => loginWithRedirect({})}>
+              <Button type="button" onClick={() => loginWithRedirect({})}>
                 Log in
-              </button>
+              </Button>
             )}
 
             {isAuthenticated && (
-              <button type="button" onClick={() => logout()}>
+              <Button type="button" onClick={() => logout()}>
                 Log out
-              </button>
+              </Button>
             )}
           </li>
         </ul>

@@ -21,7 +21,7 @@ export const About: React.FC = () => {
       }
       getTestAPI()
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated, getIdTokenClaims])
 
   return (
     <Fragment>
