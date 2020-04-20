@@ -1,15 +1,17 @@
-import { combineReducers, createStore } from 'redux'
-import { devToolsEnhancer } from 'redux-devtools-extension'
-import { CounterReducer } from './features/counter'
+import { createStore, applyMiddleware, compose } from 'redux'
+import createSagaMiddleware from 'redux-saga'
 
-/* Create root reducer, containing all features of the application */
-const rootReducer = combineReducers({
-  count: CounterReducer,
-})
+import { rootSaga } from './features/saga'
+import { rootReducer } from './features/reducer'
+
+const sagaMiddleware = createSagaMiddleware()
+const composeEnhancers =
+  (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 const store = createStore(
   rootReducer,
-  /* preloadedState, */ devToolsEnhancer({})
+  composeEnhancers(applyMiddleware(sagaMiddleware))
 )
+sagaMiddleware.run(rootSaga)
 
 export default store

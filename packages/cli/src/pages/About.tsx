@@ -1,7 +1,7 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useAuth0 } from '../shared/auth-spa'
-import { useEffect, useState } from 'react'
+
 import { JwtGet } from '../shared/axios.utils'
 
 export const About: React.FC = () => {
@@ -13,10 +13,13 @@ export const About: React.FC = () => {
     if (isAuthenticated) {
       const getTestAPI = async () => {
         const token = await getIdTokenClaims()
-        const test = await JwtGet<{status: string}>('/api/test/protected', token)
+        const test = await JwtGet<{ status: string }>(
+          '/api/test/protected',
+          token
+        )
         setTest(test.data.status)
       }
-      getTestAPI();
+      getTestAPI()
     }
   }, [isAuthenticated])
 
