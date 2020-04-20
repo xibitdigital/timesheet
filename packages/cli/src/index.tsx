@@ -1,17 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
+import { RedirectLoginResult } from '@auth0/auth0-spa-js'
 import store from './store'
 import './index.css'
 import App from './App'
-import { Auth0Provider } from './shared/auth-spa';
-import {  RedirectLoginResult} from '@auth0/auth0-spa-js/dist/typings';
-import history from './shared/history';
+import { Auth0Provider } from './shared/auth-spa'
+import history from './shared/history'
 
 // A function that routes the user to the right place
 // after login
 const onRedirectCallback = (results: RedirectLoginResult) => {
-  const {appState} = results;
+  const { appState } = results
   history.push(
     appState && appState.targetUrl
       ? appState.targetUrl
@@ -26,9 +26,9 @@ ReactDOM.render(
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
   >
-  <Provider store={store}>
-    <App />
-  </Provider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </Auth0Provider>,
   document.getElementById('root')
 )
