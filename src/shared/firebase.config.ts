@@ -10,8 +10,6 @@ const {
     REACT_APP_APP_ID: appId
 } = process.env;
 
-debugger;
-
 const firebaseConfig = {
     apiKey,
     authDomain,
@@ -28,4 +26,6 @@ export const FIRESTORE = FIREBASE.firestore();
 // https://firebase.google.com/docs/auth/web/google-signin
 export const DEFAULT_PROVIDER = new firebase.auth.GoogleAuthProvider();
 
-export const ITEM_COLLECTION = FIRESTORE.collection('items');
+export enum COLLECTIONS {
+    ITEMS = 'items'
+}

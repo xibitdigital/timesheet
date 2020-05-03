@@ -1,6 +1,8 @@
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { DEFAULT_PROVIDER, FIREBASE } from '../shared/firebase.config';
+import { Button } from 'grommet';
+import { Link } from 'react-router-dom';
 
 export const Navbar = () => {
   const [user, initialising, error] = useAuthState(FIREBASE.auth());
@@ -29,9 +31,11 @@ export const Navbar = () => {
     return (
       <div>
         <p>Current User: {user.email}</p>
-        <button onClick={logout}>Log out</button>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
+        <Button onClick={logout} label="Log out"/>
       </div>
     );
   }
-  return <button onClick={login}>Log in</button>;
+  return <Button onClick={login} label="Log In"/>;
 };
