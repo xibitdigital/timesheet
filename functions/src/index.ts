@@ -50,6 +50,23 @@ export const getClients = functions.https.onRequest((request, response) => {
     .catch((err: Error) => response.json(err))
 })
 
+export const getClient = functions.https.onRequest((request, response) => {
+  const [id] = request.body
+
+  clientsRef
+    .doc(id)
+    .get()
+    .then((doc) => {
+      if (!doc.exists) {
+        console.log('No such document!')
+      } else {
+        console.log('Document data:', doc.data())
+      }
+      response.json(doc.data())
+    })
+    .catch((err: Error) => response.json(err))
+})
+
 export const deleteClient = functions.https.onRequest((request, response) => {
   const [id] = request.body
 
