@@ -21,6 +21,8 @@ export type Client = {
   createdAt: string
 }
 
+const clientsRef = firebase.firestore().collection('clients')
+
 export const postOneClient = functions.https.onRequest((request, response) => {
   const [name] = request.body
 
@@ -29,10 +31,33 @@ export const postOneClient = functions.https.onRequest((request, response) => {
     createdAt: new Date().toISOString(),
   }
 
-  firebase
-    .firestore()
-    .collection('clients')
+  clientsRef
     .add(newClient)
     .then((data) => response.json({ ...newClient, id: data.id }))
+    .catch((err: Error) => response.json(err))
+})
+
+export const getClients = functions.https.onRequest((request, response) => {
+  clientsRef
+    .get()
+    .then((snapshot) => {
+      if (snapshot.empty) {
+        console.log('No matching documents.')
+        return
+      }
+      response.json(snapshot)
+    })
+    .catch((err: Error) => response.json(err))
+})
+
+export const deleteClient = functions.https.onRequest((request, response) => {
+  const [id] = request.body
+
+  clientsRef
+    .doc(id)
+    .delete()
+    .then((doc) => {
+      response.json(doc)
+    })
     .catch((err: Error) => response.json(err))
 })
