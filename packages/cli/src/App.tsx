@@ -2,10 +2,9 @@ import React from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import { Grommet,grommet } from "grommet";
 import { deepMerge } from "grommet/utils";
-import { Navbar } from './components/Navbar'
 import { About } from './pages/About'
 import { Home } from './pages/Home'
-import { useAuth0 } from './shared/auth-spa';
+import { Navbar } from './pages/Navbar';
 
 
 const customTheme = deepMerge(grommet, {
@@ -19,13 +18,7 @@ const customTheme = deepMerge(grommet, {
 });
 
 
-const App: React.FC = () => {
-  const { loading } = useAuth0();
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-  
+const App: React.FC = () => {  
   return (
     <Grommet full theme={customTheme}>
     <BrowserRouter>
