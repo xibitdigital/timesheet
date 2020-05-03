@@ -1,24 +1,38 @@
-import React, { Fragment } from 'react';
-import { useCollection } from 'react-firebase-hooks/firestore';
-import { useHistory } from 'react-router-dom';
-import { COLLECTIONS, FIRESTORE } from '../shared/firebase.config';
+import { Button } from 'grommet'
+import React, { Fragment } from 'react'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useHistory } from 'react-router-dom'
+import { Item } from '../shared/collections'
+import { COLLECTIONS, FIRESTORE } from '../shared/firebase.config'
 
 export const About: React.FC = () => {
   const history = useHistory()
 
-  const [value, loading, error] = useCollection(
+  const [value, loading, error] = useCollectionData<Item>(
     FIRESTORE.collection(COLLECTIONS.ITEMS),
     {
+      idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
     }
-  );
+  )
+
+  const addItem = () => {
+    const newItem: Partial<Item> = { name: 'x', surname: 'y' }
+    FIRESTORE.collection(COLLECTIONS.ITEMS).add(newItem)
+  }
 
   return (
     <Fragment>
-      <h1>About</h1>
+      <h1>About {error ? 'Error': ''}</h1>
       <div>{loading ? 'loading' : 'ok!'}</div>
       <ul>
-      {!loading && value && value.docs.map(doc => <li key={doc.id}>{doc.id}</li>)}
+        {!loading &&
+          value &&
+          value.map((doc) => (
+            <li key={doc.id}>
+              {doc.id} - {doc.name}
+            </li>
+          ))}
       </ul>
       <button
         type="button"
@@ -28,6 +42,7 @@ export const About: React.FC = () => {
       >
         Go back
       </button>
+      <Button onClick={addItem} label="Add"/>
     </Fragment>
   )
 }
