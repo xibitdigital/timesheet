@@ -1,4 +1,4 @@
-import { Anchor, Box, Button, Header, Text } from 'grommet'
+import { Box, Button, Header, Text } from 'grommet'
 import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link, useHistory } from 'react-router-dom'
@@ -35,8 +35,8 @@ export const Navbar = () => {
         {user ? <Text>Current User: {user.email}</Text> : null}
       </Box>
       <Box direction="row"  gap="medium" align="center" pad="medium">
-        <Anchor><Link to="/">Home</Link></Anchor>
-        <Anchor><Link to="/about">About</Link></Anchor>
+        <Link to="/">Home</Link>
+        <Link to="/about">About</Link>
         {user ? (
           <Button onClick={logout} label="Log out" />
         ) : (
