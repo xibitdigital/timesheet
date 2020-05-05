@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar'
 import { About } from './pages/About'
 import { ClientPage } from './pages/client/ClientPage'
 import { Home } from './pages/Home'
+import { TimesheetPage } from './pages/timesheet/TimesheetPage'
 
 const customTheme = deepMerge(grommet, {
   global: {
@@ -27,6 +28,7 @@ const App: React.FC = () => {
             <Route path="/" component={Home} exact />
             <Route path="/about" component={About} />
             <Route path="/client" component={ClientPage} />
+            <Route path="/timesheet" component={TimesheetPage} />
           </Switch>
         </Main>
       </BrowserRouter>

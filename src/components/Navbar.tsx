@@ -38,6 +38,7 @@ export const Navbar: React.FC = () => {
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/client">Client</Link>
+        <Link to="/timesheet">Timesheet</Link>
         {user ? (
           <Button onClick={logout} label="Log out" />
         ) : (
