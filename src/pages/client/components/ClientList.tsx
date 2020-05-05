@@ -1,5 +1,6 @@
 import React from 'react'
 import { Client } from '../../../shared/collections'
+import { Table, TableHeader, TableRow, TableBody, TableCell } from 'grommet'
 
 interface ClientListProps {
   loading: boolean
@@ -11,14 +12,29 @@ export const ClientList: React.FC<ClientListProps> = ({
   items,
 }: ClientListProps) => {
   return (
-    <ul>
-      {!loading &&
-        items &&
-        items.map((doc) => (
-          <li key={doc.id}>
-            {doc.id} - {doc.name}
-          </li>
-        ))}
-    </ul>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableCell scope="col" border="bottom">
+            Name
+          </TableCell>
+          <TableCell scope="col" border="bottom">
+            Address
+          </TableCell>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {!loading &&
+          items &&
+          items.map((doc: Client) => (
+            <TableRow>
+              <TableCell scope="row">
+                <strong>{doc.name}</strong>
+              </TableCell>
+              <TableCell>{doc.fullAddress}</TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+    </Table>
   )
 }
