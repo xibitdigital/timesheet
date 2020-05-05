@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link, useHistory } from 'react-router-dom'
 import { DEFAULT_PROVIDER, FIREBASE } from '../shared/firebase.config'
 
-export const Navbar = () => {
+export const Navbar: React.FC = () => {
   const history = useHistory()
   const [user, initialising, error] = useAuthState(FIREBASE.auth())
   const login = () => {
