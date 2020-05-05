@@ -24,7 +24,9 @@ export const ClientPage: React.FC = () => {
     <Box direction="column">
       <Heading>Client {error ? 'Error' : ''} </Heading>
       <div>{loading ? 'loading' : 'ok!'}</div>
-      <ClientForm addClient={addClient} />
+      <Box direction="column">
+        <ClientForm addClient={addClient} />
+      </Box>
       <ClientList loading={loading} items={items} />
       <BackButton />
     </Box>
