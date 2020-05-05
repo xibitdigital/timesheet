@@ -27,7 +27,7 @@ export const ClientList: React.FC<ClientListProps> = ({
         {!loading &&
           items &&
           items.map((doc: Client) => (
-            <TableRow>
+            <TableRow key={doc.id}>
               <TableCell scope="row">
                 <strong>{doc.name}</strong>
               </TableCell>

@@ -28,7 +28,7 @@ export const DEFAULT_PROVIDER = new firebase.auth.GoogleAuthProvider()
 
 export enum COLLECTIONS {
   ITEMS = 'items',
-  CLIENT = 'client',
+  CLIENT = 'clients',
   PROJECT = 'project',
   TIMESHEET = 'timesheet',
 }

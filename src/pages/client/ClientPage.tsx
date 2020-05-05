@@ -23,7 +23,9 @@ export const ClientPage: React.FC = () => {
   return (
     <Box direction="column">
       <Heading>Client {error ? 'Error' : ''} </Heading>
-      <div>{loading ? 'loading' : 'ok!'}</div>
+      <div>
+        {loading ? 'loading' : 'ok!'} {items?.length}
+      </div>
       <Box direction="column">
         <ClientForm addClient={addClient} />
       </Box>
