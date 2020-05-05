@@ -1,10 +1,7 @@
-import { Button, Form, FormField, Box, TextInput } from 'grommet'
+import { Box, Button, Form, FormField, TextInput } from 'grommet'
 import React from 'react'
-import { Client } from '../../shared/collections'
-// import { useCollectionData } from 'react-firebase-hooks/firestore'
-// import { Client } from '../../shared/collections'
-// import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
-// import { BackButton } from '../../components/BackButton'
+import { Client } from '../../../shared/collections'
+
 
 const defaultFormValues: Client = {
   name: '',

@@ -1,9 +1,9 @@
 import { Button } from 'grommet'
 import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { BackButton } from '../components/BackButton'
 import { Item } from '../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../shared/firebase.config'
-import { BackButton } from '../components/BackButton'
 
 export const About: React.FC = () => {
   const [value, loading, error] = useCollectionData<Item>(

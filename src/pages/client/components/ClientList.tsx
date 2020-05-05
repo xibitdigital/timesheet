@@ -1,5 +1,5 @@
 import React from 'react'
-import { Client } from '../../shared/collections'
+import { Client } from '../../../shared/collections'
 
 interface ClientListProps {
   loading: boolean

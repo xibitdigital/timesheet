@@ -2,17 +2,17 @@ import { Grommet, grommet, Main } from 'grommet'
 import { deepMerge } from 'grommet/utils'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
-import { About } from './pages/About'
-import { Home } from './pages/Home'
 import { Navbar } from './components/Navbar'
+import { About } from './pages/About'
 import { ClientPage } from './pages/client/ClientPage'
+import { Home } from './pages/Home'
 
 const customTheme = deepMerge(grommet, {
   global: {
     font: {
       family: 'Roboto',
-      size: '14px',
-      height: '20px',
+      size: '12px',
+      // height: '20px',
     },
   },
 })
@@ -22,7 +22,7 @@ const App: React.FC = () => {
     <Grommet full theme={customTheme}>
       <BrowserRouter>
         <Navbar />
-        <Main pad="large">
+        <Main pad="small">
           <Switch>
             <Route path="/" component={Home} exact />
             <Route path="/about" component={About} />
