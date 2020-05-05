@@ -11,7 +11,7 @@ const customTheme = deepMerge(grommet, {
   global: {
     font: {
       family: 'Roboto',
-      size: '12px',
+      size: '14px',
       // height: '20px',
     },
   },
