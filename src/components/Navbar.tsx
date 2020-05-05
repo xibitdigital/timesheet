@@ -8,7 +8,7 @@ export const Navbar = () => {
   const history = useHistory()
   const [user, initialising, error] = useAuthState(FIREBASE.auth())
   const login = () => {
-    history.push('/');
+    history.push('/')
     FIREBASE.auth().signInWithPopup(DEFAULT_PROVIDER)
   }
   const logout = () => {
@@ -34,13 +34,14 @@ export const Navbar = () => {
       <Box direction="row" align="center" gap="small">
         {user ? <Text>Current User: {user.email}</Text> : null}
       </Box>
-      <Box direction="row"  gap="medium" align="center" pad="medium">
+      <Box direction="row" gap="medium" align="center" pad="medium">
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
+        <Link to="/client">Client</Link>
         {user ? (
           <Button onClick={logout} label="Log out" />
         ) : (
-          <Button onClick={login} label="Log In" primary/>
+          <Button onClick={login} label="Log In" primary />
         )}
       </Box>
     </Header>

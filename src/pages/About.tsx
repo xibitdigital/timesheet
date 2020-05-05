@@ -1,13 +1,11 @@
 import { Button } from 'grommet'
 import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useHistory } from 'react-router-dom'
 import { Item } from '../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../shared/firebase.config'
+import { BackButton } from '../components/BackButton'
 
 export const About: React.FC = () => {
-  const history = useHistory()
-
   const [value, loading, error] = useCollectionData<Item>(
     FIRESTORE.collection(COLLECTIONS.ITEMS),
     {
@@ -23,7 +21,7 @@ export const About: React.FC = () => {
 
   return (
     <Fragment>
-      <h1>About {error ? 'Error': ''}</h1>
+      <h1>About {error ? 'Error' : ''}</h1>
       <div>{loading ? 'loading' : 'ok!'}</div>
       <ul>
         {!loading &&
@@ -34,15 +32,8 @@ export const About: React.FC = () => {
             </li>
           ))}
       </ul>
-      <button
-        type="button"
-        className="btn"
-        cy-data="go-back-button"
-        onClick={() => history.push('/')}
-      >
-        Go back
-      </button>
-      <Button onClick={addItem} label="Add"/>
+      <BackButton />
+      <Button onClick={addItem} label="Add" />
     </Fragment>
   )
 }
