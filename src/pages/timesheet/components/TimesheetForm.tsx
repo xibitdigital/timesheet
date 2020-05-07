@@ -1,13 +1,15 @@
-import { Box, Button, Form, FormField, TextInput } from 'grommet'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import React from 'react'
 import { TimeSheet } from '../../../shared/collections'
+import { ClientSelect } from '../../client/components/ClientSelect'
 
 const defaultFormValues: TimeSheet = {
   clientId: '',
   projectId: '',
   month: '',
   year: '',
-  workedDays: []
+  workedDays: [],
 }
 
 interface TimesheetFormProps {
@@ -19,41 +21,38 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
 }: TimesheetFormProps) => {
   const [formValues, setFormValues] = React.useState({})
 
-  function handleFormChange(nextValue: React.FormEvent<Element>) {
-    console.log('Change', nextValue)
-    setFormValues(nextValue)
+  function handleFormChange(evt: React.FormEvent<HTMLFormElement>) {
+    const { name, value } = evt.target as any
+    setFormValues({ ...formValues, [name]: value })
   }
 
-  function handleFormSubmit(evt: React.FormEvent<Element>) {
+  function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>) {
     console.log('Submit')
     AddTimesheet(formValues)
     evt.preventDefault()
   }
 
-  function handleFormReset(nextValue: React.FormEvent<Element>) {
+  function handleFormReset(nextValue: React.FormEvent<HTMLFormElement>) {
     console.log('Reset', nextValue)
     setFormValues(defaultFormValues)
   }
+
+  function handleSelectChange(value: string) {
+    setFormValues({ ...formValues, clientId: value })
+  }
+
   return (
-    <Form
-      value={formValues}
+    <form
       onChange={handleFormChange}
       onReset={handleFormReset}
       onSubmit={handleFormSubmit}
     >
-      <FormField name="name" label="Name">
-        <TextInput name="name" />
-      </FormField>
-      <FormField name="fullAddress" label="Full Address">
-        <TextInput name="fullAddress" />
-      </FormField>
-      <FormField name="postcode" label="Postcode">
-        <TextInput name="postcode" />
-      </FormField>
-      <Box direction="row" gap="medium">
-        <Button type="submit" primary label="Submit" />
-        <Button type="reset" label="Reset" />
+      <ClientSelect onChange={handleSelectChange} />
+
+      <Box>
+        <Button type="submit">Submit</Button>
+        <Button type="reset">Reset</Button>
       </Box>
-    </Form>
+    </form>
   )
 }

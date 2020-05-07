@@ -1,6 +1,21 @@
-import { Box, Button, Form, FormField, TextInput } from 'grommet'
+import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import Input from '@material-ui/core/Input'
+import InputLabel from '@material-ui/core/InputLabel'
 import React from 'react'
 import { Client } from '../../../shared/collections'
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
+}));
 
 const defaultFormValues: Client = {
   name: '',
@@ -15,43 +30,52 @@ interface ClientFormProps {
 export const ClientForm: React.FC<ClientFormProps> = ({
   addClient,
 }: ClientFormProps) => {
-  const [formValues, setFormValues] = React.useState({})
+  const classes = useStyles();
+  const [formValues, setFormValues] = React.useState(defaultFormValues)
 
-  function handleFormChange(nextValue: React.FormEvent<Element>) {
-    console.log('Change', nextValue)
-    setFormValues(nextValue)
+  function handleFormChange(evt: React.FormEvent<HTMLFormElement>) {
+    const {name, value} = evt.target as any;
+    setFormValues({...formValues, [name]: value});
   }
 
-  function handleFormSubmit(evt: React.FormEvent<Element>) {
+  function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>) {
     console.log('Submit')
     addClient(formValues)
     evt.preventDefault()
   }
 
-  function handleFormReset(nextValue: React.FormEvent<Element>) {
+  function handleFormReset(nextValue: React.FormEvent<HTMLFormElement>) {
     console.log('Reset', nextValue)
     setFormValues(defaultFormValues)
   }
   return (
-    <Form
-      value={formValues}
+    <form
+      noValidate
+      autoComplete="off"
       onChange={handleFormChange}
       onReset={handleFormReset}
       onSubmit={handleFormSubmit}
     >
-      <FormField name="name" label="Name">
-        <TextInput name="name" />
-      </FormField>
-      <FormField name="fullAddress" label="Full Address">
-        <TextInput name="fullAddress" />
-      </FormField>
-      <FormField name="postcode" label="Postcode">
-        <TextInput name="postcode" />
-      </FormField>
-      <Box direction="row" gap="medium">
-        <Button type="submit" primary label="Submit" />
-        <Button type="reset" label="Reset" />
+      <FormControl className={classes.formControl}>
+        <InputLabel>Name</InputLabel>
+        <Input name="name" defaultValue={formValues.name} />
+      </FormControl>
+
+      <FormControl className={classes.formControl}>
+        <InputLabel>Full Address</InputLabel>
+        <Input name="fullAddress" defaultValue={formValues.fullAddress} />
+      </FormControl>
+
+      <FormControl className={classes.formControl}>
+        <InputLabel>Postcode</InputLabel>
+        <Input name="postcode" defaultValue={formValues.postcode} />
+      </FormControl>
+      <Box>
+        <Button type="submit" color="primary">
+          Submit
+        </Button>
+        <Button type="reset">Reset</Button>
       </Box>
-    </Form>
+    </form>
   )
 }

@@ -1,5 +1,11 @@
-import { Button, Table, TableBody, TableCell, TableHeader, TableRow } from 'grommet'
-import { Edit } from 'grommet-icons'
+import IconButton from '@material-ui/core/IconButton'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import { TimeSheet } from '../../../shared/collections'
 
@@ -17,20 +23,21 @@ export const TimeSheetList: React.FC<TimesheetProps> = ({
   items,
 }: TimesheetProps) => {
   return (
+    <TableContainer>
     <Table>
-      <TableHeader>
+      <TableHead>
         <TableRow>
-          <TableCell scope="col" border="bottom">
+          <TableCell scope="col">
             Month
           </TableCell>
-          <TableCell scope="col" border="bottom">
+          <TableCell scope="col">
             Year
           </TableCell>
-          <TableCell scope="col" border="bottom">
+          <TableCell scope="col">
             Actions
           </TableCell>
         </TableRow>
-      </TableHeader>
+      </TableHead>
       <TableBody>
         {!loading &&
           items &&
@@ -40,10 +47,11 @@ export const TimeSheetList: React.FC<TimesheetProps> = ({
                 <strong>{doc.month}</strong>
               </TableCell>
               <TableCell>{doc.year}</TableCell>
-              <TableCell><Button icon={<Edit />} onClick={handleEdit(doc.id)} primary /></TableCell>
+              <TableCell><IconButton onClick={handleEdit(doc.id)}><EditIcon/></IconButton> /></TableCell>
             </TableRow>
           ))}
       </TableBody>
     </Table>
+    </TableContainer>
   )
 }

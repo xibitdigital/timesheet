@@ -1,12 +1,12 @@
-import { Box, Heading } from 'grommet'
+import Box from '@material-ui/core/Box'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { TimeSheet } from '../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
+import { ClientSelect } from '../client/components/ClientSelect'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
-import { ClientSelect } from '../client/components/ClientSelect'
 
 export const TimesheetPage: React.FC = () => {
   const [items, loading, error] = useCollectionData<TimeSheet>(
@@ -22,12 +22,12 @@ export const TimesheetPage: React.FC = () => {
   }
 
   return (
-    <Box direction="column">
-      <Heading>Client {error ? 'Error' : ''} </Heading>
+    <Box>
+      <h1>Client {error ? 'Error' : ''} </h1>
       <div>
         {loading ? 'loading' : 'ok!'} {items?.length}
       </div>
-      <Box direction="column">
+      <Box>
         <TimesheetForm AddTimesheet={addTimesheet} />
       </Box>
       <TimeSheetList loading={loading} items={items} />

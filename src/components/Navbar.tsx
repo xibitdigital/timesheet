@@ -1,8 +1,9 @@
-import { Box, Button, Header, Text } from 'grommet'
 import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { Link, useHistory } from 'react-router-dom'
 import { DEFAULT_PROVIDER, FIREBASE } from '../shared/firebase.config'
+import { Box } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 
 export const Navbar: React.FC = () => {
   const history = useHistory()
@@ -30,21 +31,21 @@ export const Navbar: React.FC = () => {
     )
   }
   return (
-    <Header background="dark-1">
-      <Box direction="row" align="center" gap="small">
-        {user ? <Text>Current User: {user.email}</Text> : null}
+    <div >
+      <Box>
+        {user ? <span>Current User: {user.email}</span> : null}
       </Box>
-      <Box direction="row" gap="medium" align="center" pad="medium">
+      <Box>
         <Link to="/">Home</Link>
         <Link to="/about">About</Link>
         <Link to="/client">Client</Link>
         <Link to="/timesheet">Timesheet</Link>
         {user ? (
-          <Button onClick={logout} label="Log out" />
+          <Button onClick={logout}>Log out</Button>
         ) : (
-          <Button onClick={login} label="Log In" primary />
+          <Button onClick={login}>Log in</Button>
         )}
       </Box>
-    </Header>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, Heading } from 'grommet'
+import Box from '@material-ui/core/Box'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
@@ -21,12 +21,12 @@ export const ClientPage: React.FC = () => {
   }
 
   return (
-    <Box direction="column">
-      <Heading>Client {error ? 'Error' : ''} </Heading>
+    <Box>
+      <h1>Client {error ? 'Error' : ''} </h1>
       <div>
         {loading ? 'loading' : 'ok!'} {items?.length}
       </div>
-      <Box direction="column">
+      <Box>
         <ClientForm addClient={addClient} />
       </Box>
       <ClientList loading={loading} items={items} />

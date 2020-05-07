@@ -1,11 +1,14 @@
-import { Select } from 'grommet'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { Client } from '../../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../../shared/firebase.config'
 
 interface ClientSelectProps {
-  onChange: (selected: Client) => void
+  onChange: (selected: string) => void
 }
 
 export const ClientSelect: React.FC<ClientSelectProps> = ({onChange}) => {
@@ -19,16 +22,20 @@ export const ClientSelect: React.FC<ClientSelectProps> = ({onChange}) => {
 
   const selectOptions = loading || !items || error ? [] : Array.from(items)
 
-  const handleChange = (event: any) => { // TODO fix type here
-    onChange(event.option);
+  const handleChange = (event: React.ChangeEvent<{ value: unknown; }>) => {    
+    onChange(event.target.value as string);
   }
 
   return (
-    <Select
-      options={selectOptions}
-      labelKey="name"
-      valueKey="id"
-      onChange={handleChange}
-    />
+    <FormControl>
+      <InputLabel>Client</InputLabel>
+      <Select onChange={handleChange}>
+        {selectOptions.map((option) => (
+          <MenuItem value={option.id} key={option.id}>
+            {option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   )
 }

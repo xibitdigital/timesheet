@@ -1,14 +1,17 @@
-import { Select } from 'grommet'
+import FormControl from '@material-ui/core/FormControl'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { Client, Project } from '../../../shared/collections'
+import { Project } from '../../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../../shared/firebase.config'
 
 interface ProjectSelectProps {
-  onChange: (selected: Client) => void
+  onChange: (selected: string) => void
 }
 
-export const ProjectSelect: React.FC<ProjectSelectProps> = ({onChange}) => {
+export const ProjectSelect: React.FC<ProjectSelectProps> = ({ onChange }) => {
   const [items, loading, error] = useCollectionData<Project>(
     FIRESTORE.collection(COLLECTIONS.PROJECT),
     {
@@ -19,16 +22,21 @@ export const ProjectSelect: React.FC<ProjectSelectProps> = ({onChange}) => {
 
   const selectOptions = loading || !items || error ? [] : Array.from(items)
 
-  const handleChange = (event: any) => { // TODO fix type here
-    onChange(event.option);
+  const handleChange = (event: React.ChangeEvent<{ value: unknown; }>) => {    
+    // TODO fix type here
+    onChange(event.target.value as string)
   }
 
   return (
-    <Select
-      options={selectOptions}
-      labelKey="name"
-      valueKey="id"
-      onChange={handleChange}
-    />
+    <FormControl>
+      <InputLabel>Project</InputLabel>
+      <Select value={null} onChange={handleChange}>
+        {selectOptions.map((option) => (
+          <MenuItem value={option.id} key={option.id}>
+            {option.name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   )
 }
