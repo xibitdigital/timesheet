@@ -29,7 +29,9 @@ export const ClientPage: React.FC = () => {
       <Box>
         <ClientForm addClient={addClient} />
       </Box>
-      <ClientList loading={loading} items={items} />
+      <Box>
+        <ClientList loading={loading} items={items} />
+      </Box>
       <BackButton />
     </Fragment>
   )

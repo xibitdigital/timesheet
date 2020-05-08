@@ -18,7 +18,7 @@ interface TimesheetFormProps {
 
 export const TimesheetForm: React.FC<TimesheetFormProps> = ({
   AddTimesheet,
-}: TimesheetFormProps) => {
+}: TimesheetFormProps): JSX.Element => {
   const [formValues, setFormValues] = React.useState({})
 
   function handleFormChange(evt: React.FormEvent<HTMLFormElement>) {
@@ -48,7 +48,6 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
       onSubmit={handleFormSubmit}
     >
       <ClientSelect onChange={handleSelectChange} />
-
       <Box>
         <Button type="submit">Submit</Button>
         <Button type="reset">Reset</Button>

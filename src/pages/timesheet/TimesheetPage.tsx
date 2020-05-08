@@ -1,5 +1,5 @@
 import Box from '@material-ui/core/Box'
-import React from 'react'
+import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { TimeSheet } from '../../shared/collections'
@@ -22,7 +22,7 @@ export const TimesheetPage: React.FC = () => {
   }
 
   return (
-    <Box>
+    <Fragment>
       <h1>Client {error ? 'Error' : ''} </h1>
       <div>
         {loading ? 'loading' : 'ok!'} {items?.length}
@@ -30,9 +30,14 @@ export const TimesheetPage: React.FC = () => {
       <Box>
         <TimesheetForm AddTimesheet={addTimesheet} />
       </Box>
-      <TimeSheetList loading={loading} items={items} />
+      <Box>
+        {' '}
+        <TimeSheetList loading={loading} items={items} />
+      </Box>
+      <Box>
+        <ClientSelect onChange={(id) => console.log(id)} />
+      </Box>
       <BackButton />
-      <ClientSelect onChange={(id)=> console.log(id)}/>
-    </Box>
+    </Fragment>
   )
 }

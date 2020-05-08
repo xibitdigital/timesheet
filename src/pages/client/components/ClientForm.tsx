@@ -1,17 +1,14 @@
 import React from 'react'
 import { Box, InputLabel, Button, FormControl, Input } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/styles'
 import { Client } from '../../../shared/collections'
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
+const StyledFormControl = withStyles({
+  root: {
+    margin: 1,
     minWidth: 120,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}))
+})(FormControl)
 
 const defaultFormValues: Client = {
   name: '',
@@ -26,7 +23,6 @@ interface ClientFormProps {
 export const ClientForm: React.FC<ClientFormProps> = ({
   addClient,
 }: ClientFormProps): JSX.Element => {
-  const classes = useStyles()
   const [formValues, setFormValues] = React.useState(defaultFormValues)
 
   function handleFormChange(evt: React.FormEvent<HTMLFormElement>): void {
@@ -51,7 +47,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({
       onReset={handleFormReset}
       onSubmit={handleFormSubmit}
     >
-      <FormControl className={classes.formControl}>
+      <StyledFormControl>
         <InputLabel htmlFor="name">Name</InputLabel>
         <Input
           id="name"
@@ -59,8 +55,8 @@ export const ClientForm: React.FC<ClientFormProps> = ({
           aria-describedby="Insert client name"
           defaultValue={formValues.name}
         />
-      </FormControl>
-      <FormControl className={classes.formControl}>
+      </StyledFormControl>
+      <StyledFormControl>
         <InputLabel htmlFor="fullAddress">Full Address</InputLabel>
         <Input
           id="fullAddress"
@@ -68,8 +64,8 @@ export const ClientForm: React.FC<ClientFormProps> = ({
           aria-describedby="Insert client full address"
           defaultValue={formValues.fullAddress}
         />
-      </FormControl>
-      <FormControl className={classes.formControl}>
+      </StyledFormControl>
+      <StyledFormControl>
         <InputLabel htmlFor="postcode">Postcode</InputLabel>
         <Input
           id="postcode"
@@ -77,7 +73,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({
           aria-describedby="Insert client postcode"
           defaultValue={formValues.postcode}
         />
-      </FormControl>
+      </StyledFormControl>
       <Box>
         <Button type="submit" color="primary">
           Submit

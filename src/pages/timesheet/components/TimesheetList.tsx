@@ -21,37 +21,35 @@ const handleEdit = (id: string | undefined) => () => {
 export const TimeSheetList: React.FC<TimesheetProps> = ({
   loading,
   items,
-}: TimesheetProps) => {
+}: TimesheetProps): JSX.Element => {
   return (
     <TableContainer>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell scope="col">
-            Month
-          </TableCell>
-          <TableCell scope="col">
-            Year
-          </TableCell>
-          <TableCell scope="col">
-            Actions
-          </TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {!loading &&
-          items &&
-          items.map((doc: TimeSheet) => (
-            <TableRow key={doc.id}>
-              <TableCell scope="row">
-                <strong>{doc.month}</strong>
-              </TableCell>
-              <TableCell>{doc.year}</TableCell>
-              <TableCell><IconButton onClick={handleEdit(doc.id)}><EditIcon/></IconButton> /></TableCell>
-            </TableRow>
-          ))}
-      </TableBody>
-    </Table>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell scope="col">Month</TableCell>
+            <TableCell scope="col">Year</TableCell>
+            <TableCell scope="col">Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {!loading &&
+            items &&
+            items.map((doc: TimeSheet) => (
+              <TableRow key={doc.id}>
+                <TableCell scope="row">
+                  <strong>{doc.month}</strong>
+                </TableCell>
+                <TableCell>{doc.year}</TableCell>
+                <TableCell>
+                  <IconButton onClick={handleEdit(doc.id)}>
+                    <EditIcon />
+                  </IconButton>{' '}
+                </TableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
     </TableContainer>
   )
 }
