@@ -5,7 +5,7 @@ export interface Item {
 }
 
 export interface Client {
-  id?: string
+  id: string
   name: string
   fullAddress: string
   postcode: string

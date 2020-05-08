@@ -6,6 +6,7 @@ import { Client } from '../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
 import { ClientForm } from './components/ClientForm'
 import { ClientList } from './components/ClientList'
+import { SubmitProcess } from '../../components/form/FormTypes'
 
 export const ClientPage: React.FC = () => {
   const [items, loading, error] = useCollectionData<Client>(
@@ -16,8 +17,8 @@ export const ClientPage: React.FC = () => {
     }
   )
 
-  const addClient = (newClient: Partial<Client>): void => {
-    FIRESTORE.collection(COLLECTIONS.CLIENT).add(newClient)
+  const addClient: SubmitProcess = (newClient: Partial<Client>) => {
+    return FIRESTORE.collection(COLLECTIONS.CLIENT).add(newClient);
   }
 
   return (

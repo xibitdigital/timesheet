@@ -1,6 +1,4 @@
-import { ReplaySubject } from 'rxjs';
-
-export type ValidatorFn = (field: Field, fields: Field[]) => Promise<string>;
+export type ValidatorFn = (field: FieldContext, fields: FieldContext[]) => Promise<string>;
 
 export enum FieldValidationStatus {
     VALID = 'VALID',
@@ -8,30 +6,50 @@ export enum FieldValidationStatus {
     INVALID = 'INVALID'
 }
 
-export type FieldValue = string | boolean;
-
-export interface Field {
-    id: string;
-    label: string;
-    value: FieldValue;
-    type: FieldType;
-    validators: Array<ValidatorFn>;
-    validationStatus: FieldValidationStatus;
-    errorMessage?: string;
-    disabled?: boolean;
-    defaultValue: FieldValue;
-    placeholder: string;
-}
+export type FieldValue = string | boolean | undefined;
 
 export enum FieldType {
     TEXT = 'TEXT',
     DATE = 'DATE',
     CHECKBOX = 'CHECKBOX',
+    SELECT = 'SELECT',
     NONE = 'NONE'
 }
 
-export type FormChannel = ReplaySubject<FormMachineEvents>;
+export interface FieldBase {
+    id: string;
+    label: string;
+    type: FieldType;
+    validators: Array<ValidatorFn>;
+    disabled?: boolean;
+    defaultValue?: FieldValue;
+    placeholder?: string;
+}
 
+export interface FieldContext {
+    id: string;
+    value: FieldValue;
+    valid: boolean;
+    errorMessage: string;
+    disable: boolean;
+}
+
+export interface TextField extends FieldBase {
+    type: FieldType.TEXT;
+}
+
+export interface CheckboxField extends FieldBase {
+    type: FieldType.CHECKBOX;
+}
+
+export interface SelectField extends FieldBase {
+    type: FieldType.TEXT;
+    collection: string;
+}
+
+// all fields
+export type Field = TextField | SelectField |  CheckboxField;
+export type FormConfig<T> = Record<keyof T, Field>;
 export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>;
 export type Subtract<T, K> = Omit<T, keyof K>;
 
@@ -82,7 +100,7 @@ export type FormMachineEvents =
     ;
 
 export interface FormContext {
-    fields: Record<string, Field>;
+    fields: Record<string, FieldContext>;
     validity: boolean;
     saved: boolean;
 }
@@ -96,3 +114,6 @@ export const FormInitialContext: FormContext = {
 export enum FormService {
     SUBMIT_SERVICE = 'SUBMIT_SERVICE'
 }
+
+export type UpdateField = (id: string, value: FieldValue) => void;
+export type SubmitProcess = (data: Record<string, FieldValue>) => Promise<any>;

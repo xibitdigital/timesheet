@@ -1,85 +1,82 @@
+import { Box, Button } from '@material-ui/core'
 import React from 'react'
-import { Box, InputLabel, Button, FormControl, Input } from '@material-ui/core'
-import { withStyles } from '@material-ui/styles'
+import { FieldFactory } from '../../../components/form/FieldFactory'
+import { UseForm } from '../../../components/form/FormHook'
+import { FieldType, FormConfig, SubmitProcess } from '../../../components/form/FormTypes'
 import { Client } from '../../../shared/collections'
 
-const StyledFormControl = withStyles({
-  root: {
-    margin: 1,
-    minWidth: 120,
-  },
-})(FormControl)
-
 const defaultFormValues: Client = {
+  id: '',
   name: '',
   fullAddress: '',
   postcode: '',
 }
 
 interface ClientFormProps {
-  addClient: (newClient: Partial<Client>) => void
+  addClient: SubmitProcess;
 }
+
+const ClientFormConfig: FormConfig<Client> = {
+  id: { // this should be removed
+    type: FieldType.TEXT,
+    label: '',
+    id: 'id',
+    validators: [],
+  },
+  name: {
+    type: FieldType.TEXT,
+    label: 'Name',
+    id: 'name',
+    validators: [],
+  },
+  fullAddress: {
+    type: FieldType.TEXT,
+    label: 'Address',
+    id: 'fullAddress',
+    validators: [],
+  },
+  postcode: {
+    type: FieldType.TEXT,
+    label: 'Post Code',
+    id: 'postcode',
+    validators: [],
+  },
+}
+
 
 export const ClientForm: React.FC<ClientFormProps> = ({
   addClient,
 }: ClientFormProps): JSX.Element => {
-  const [formValues, setFormValues] = React.useState(defaultFormValues)
-
-  function handleFormChange(evt: React.FormEvent<HTMLFormElement>): void {
-    const { name, value } = evt.target as any
-    setFormValues({ ...formValues, [name]: value })
-  }
-
-  function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>): void {
-    addClient(formValues)
-    evt.preventDefault()
-  }
-
-  function handleFormReset(): void {
-    setFormValues(defaultFormValues)
-  }
+  const { state, submit, reset, updateField } = UseForm<Client>(addClient, defaultFormValues)
 
   return (
-    <form
-      noValidate
-      autoComplete="off"
-      onChange={handleFormChange}
-      onReset={handleFormReset}
-      onSubmit={handleFormSubmit}
-    >
-      <StyledFormControl>
-        <InputLabel htmlFor="name">Name</InputLabel>
-        <Input
-          id="name"
-          name="name"
-          aria-describedby="Insert client name"
-          defaultValue={formValues.name}
+    <React.Fragment>
+      <pre>{JSON.stringify(state.context.fields)}</pre>
+      <div>
+        <FieldFactory
+          context={state.context}
+          config={ClientFormConfig.name}
+          onChange={updateField}
         />
-      </StyledFormControl>
-      <StyledFormControl>
-        <InputLabel htmlFor="fullAddress">Full Address</InputLabel>
-        <Input
-          id="fullAddress"
-          name="fullAddress"
-          aria-describedby="Insert client full address"
-          defaultValue={formValues.fullAddress}
+        <FieldFactory
+          context={state.context}
+          config={ClientFormConfig.fullAddress}
+          onChange={updateField}
         />
-      </StyledFormControl>
-      <StyledFormControl>
-        <InputLabel htmlFor="postcode">Postcode</InputLabel>
-        <Input
-          id="postcode"
-          name="postcode"
-          aria-describedby="Insert client postcode"
-          defaultValue={formValues.postcode}
+        <FieldFactory
+          context={state.context}
+          config={ClientFormConfig.postcode}
+          onChange={updateField}
         />
-      </StyledFormControl>
-      <Box>
-        <Button type="submit" color="primary">
-          Submit
-        </Button>
-        <Button type="reset">Reset</Button>
-      </Box>
-    </form>
+        <Box>
+          <Button type="submit" color="primary" onClick={submit}>
+            Submit
+          </Button>
+          <Button type="reset" onClick={reset}>
+            Reset
+          </Button>
+        </Box>
+      </div>
+    </React.Fragment>
   )
 }

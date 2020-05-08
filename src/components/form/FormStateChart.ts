@@ -1,5 +1,5 @@
 import { assign, Machine, MachineConfig } from 'xstate';
-import { FormActions, FormContext, FormMachineEvents, FormMachineEventUpdate, FormService, FormStates } from './FormTypes';
+import { FormActions, FormContext, FormMachineEvents, FormService, FormStates } from './FormTypes';
 import { updateField } from './FormHelpers';
 
 export interface FormStateSchema {
@@ -25,8 +25,8 @@ export const FormStateChart: MachineConfig<FormContext, FormStateSchema, FormMac
         },
         [FormStates.SUBMITTING]: {
             invoke: {
-                src : FormService.SUBMIT_SERVICE,
-                onDone : {
+                src: FormService.SUBMIT_SERVICE,
+                onDone: {
                     target: FormStates.INIT
                 },
                 onError: {

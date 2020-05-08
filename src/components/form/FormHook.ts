@@ -1,32 +1,50 @@
 import { useMachine } from '@xstate/react';
-import { State } from 'xstate';
-import { transferData } from './FormHelpers';
-import { FormStateMachine, FormStateSchema } from './FormStateChart';
-import { FieldValue, FormActions, FormContext, FormMachineEvents, FormService } from './FormTypes';
+import { useRef } from 'react';
+import { Machine, State } from 'xstate';
+import { initialFieldsContext, transferData } from './FormHelpers';
+import { FormStateChart, FormStateSchema } from './FormStateChart';
+import { FieldValue, FormActions, FormContext, FormInitialContext, FormMachineEvents, FormService, SubmitProcess, UpdateField } from './FormTypes';
 
 
-export interface UseMQTTReturnType {
+export interface UseFormApi {
     state: State<FormContext, FormMachineEvents, FormStateSchema>;
     submit: () => void;
     reset: () => void;
+    updateField: UpdateField;
 }
 
-export function UseForm(submitService: (data: Record<string, FieldValue>)=> Promise<void>): UseMQTTReturnType {
+export function UseForm<T>(submitProcess: SubmitProcess, initialValue: Record<keyof T, FieldValue>): UseFormApi {
 
-    const [state, send] = useMachine<FormContext, FormMachineEvents>(FormStateMachine,
-        {
-            services: {
-                [FormService.SUBMIT_SERVICE]: (ctx) => submitService(transferData(ctx))
-            }
-        });
+    const ref = useRef<any>(); // execute only once, please assign type !!!!!
+    if (!ref.current) {
+        // Do something that you only want to do once...
+        const machine = Machine<FormContext, FormMachineEvents>(FormStateChart,
+            {
+                services: {
+                    [FormService.SUBMIT_SERVICE]: (ctx) => submitProcess(transferData(ctx))
+                }
+            },
+            {
+                ...FormInitialContext,
+                fields: initialFieldsContext(initialValue)
+            });
+        ref.current = machine;
+    }
+
+    const [state, send] = useMachine<FormContext, FormMachineEvents>(ref.current);
+
 
     const submit = () => {
-        send({type: FormActions.SUBMIT});
+        send({ type: FormActions.SUBMIT });
     }
 
     const reset = () => {
-        send({type: FormActions.RESET});
+        send({ type: FormActions.RESET });
     }
 
-    return {state, submit, reset};
+    const updateField = (id: string, value: FieldValue) => {
+        send({ type: FormActions.UPDATE_FIELD, id, value });
+    }
+
+    return { state, submit, reset, updateField };
 }

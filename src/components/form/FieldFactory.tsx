@@ -3,7 +3,7 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import withStyles from '@material-ui/styles/withStyles'
 import React from 'react'
-import { Field, FieldType } from './FormTypes'
+import { Field, FieldType, FormContext, UpdateField } from './FormTypes'
 
 const StyledFormControl = withStyles({
   root: {
@@ -13,44 +13,66 @@ const StyledFormControl = withStyles({
 })(FormControl)
 
 export interface FieldFactoryProps {
-  field: Field
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  config: Field
+  context: FormContext
+  onChange: UpdateField
 }
 
 export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
-  const { field, onChange } = props
-  const { id, label, defaultValue } = field // add validationStatus
+  const { context, onChange, config } = props;
 
-  let component = null
-  switch (field.type) {
-    case FieldType.CHECKBOX:
-      component = (
-        <Input
-          id={id}
-          name={name}
-          aria-describedby={label}
-          defaultValue={defaultValue}
-          onChange={onChange}
-        />
-      )
-      break
-    case FieldType.TEXT:
-      component = (
-        <Input
-          id={id}
-          name={name}
-          aria-describedby={label}
-          defaultValue={defaultValue}
-          onChange={onChange}
-        />
-      )
-      break
+  if (!context) {
+      return null;
   }
 
-  return (
+  const { id, label, defaultValue,type } = config;
+  const fieldContext = context.fields[id];
+
+  if (!fieldContext) {
+    debugger;
+      return null;
+  }
+  
+  const { value, valid, errorMessage } = fieldContext;
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    onChange(id, value)
+  }
+  
+  const getField = (type: FieldType) => {
+    switch (type) {
+        case FieldType.CHECKBOX: // refactor this one
+          return (
+            <Input
+              id={id}
+              name={id}
+              aria-describedby={label}
+              defaultValue={defaultValue}
+              onChange={handleChange}
+              value={value}
+            />
+          )
+        case FieldType.TEXT:
+            return  (
+            <Input
+              id={id}
+              name={id}
+              value={value}
+              aria-describedby={label}
+              onChange={handleChange}
+            />
+          )
+        default:
+            return null;
+      }
+  }
+  
+
+  return context && (
     <StyledFormControl>
-      <InputLabel htmlFor={id}>{label}</InputLabel>
-      {component}
+      <InputLabel htmlFor={id}>{label} error: {errorMessage} {valid}</InputLabel>
+      {getField(type)}
     </StyledFormControl>
   )
 }
