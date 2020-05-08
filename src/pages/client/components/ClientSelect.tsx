@@ -1,9 +1,6 @@
-import FormControl from '@material-ui/core/FormControl'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Select from '@material-ui/core/Select'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { FormGroup, InputLabel, MenuItem, Select } from '@material-ui/core'
 import { Client } from '../../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../../shared/firebase.config'
 
@@ -11,7 +8,9 @@ interface ClientSelectProps {
   onChange: (selected: string) => void
 }
 
-export const ClientSelect: React.FC<ClientSelectProps> = ({onChange}) => {
+export const ClientSelect: React.FC<ClientSelectProps> = ({
+  onChange,
+}: ClientSelectProps): JSX.Element => {
   const [items, loading, error] = useCollectionData<Client>(
     FIRESTORE.collection(COLLECTIONS.CLIENT),
     {
@@ -22,20 +21,24 @@ export const ClientSelect: React.FC<ClientSelectProps> = ({onChange}) => {
 
   const selectOptions = loading || !items || error ? [] : Array.from(items)
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown; }>) => {    
-    onChange(event.target.value as string);
+  const handleChange = (event: React.ChangeEvent<{ value: unknown }>): void => {
+    onChange(event.target.value as string)
   }
 
   return (
-    <FormControl>
-      <InputLabel>Client</InputLabel>
-      <Select onChange={handleChange}>
+    <FormGroup>
+      <InputLabel htmlFor="clientSelect">Client</InputLabel>
+      <Select
+        id="clientSelect"
+        aria-describedby="Select client"
+        onChange={handleChange}
+      >
         {selectOptions.map((option) => (
           <MenuItem value={option.id} key={option.id}>
             {option.name}
           </MenuItem>
         ))}
       </Select>
-    </FormControl>
+    </FormGroup>
   )
 }

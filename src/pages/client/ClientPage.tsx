@@ -1,5 +1,5 @@
-import Box from '@material-ui/core/Box'
-import React from 'react'
+import React, { Fragment } from 'react'
+import { Box } from '@material-ui/core'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { Client } from '../../shared/collections'
@@ -16,21 +16,21 @@ export const ClientPage: React.FC = () => {
     }
   )
 
-  const addClient = (newClient: Partial<Client>) => {
+  const addClient = (newClient: Partial<Client>): void => {
     FIRESTORE.collection(COLLECTIONS.CLIENT).add(newClient)
   }
 
   return (
-    <Box>
+    <Fragment>
       <h1>Client {error ? 'Error' : ''} </h1>
-      <div>
+      <Box>
         {loading ? 'loading' : 'ok!'} {items?.length}
-      </div>
+      </Box>
       <Box>
         <ClientForm addClient={addClient} />
       </Box>
       <ClientList loading={loading} items={items} />
       <BackButton />
-    </Box>
+    </Fragment>
   )
 }
