@@ -24,7 +24,7 @@ export const ClientPage: React.FC = () => {
   }
 
   const loadData: FetchProcess = () => {
-    return Promise.resolve({})
+    return Promise.reject()
   }
 
   const handleSelect = (id: string) => {
