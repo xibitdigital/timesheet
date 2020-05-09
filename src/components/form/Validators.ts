@@ -1,27 +1,40 @@
-import { FieldContext, ValidatorFn, ValidatorReturn, FieldContextObject } from './FormTypes';
+import {
+  FieldContext,
+  ValidatorFn,
+  ValidatorReturn,
+  FieldContextObject,
+} from './FormTypes'
 
-export type CompareValidator = (compareTo: string) => ValidatorFn;
-
+export type CompareValidator = (compareTo: string) => ValidatorFn
 
 enum ValidationMessage {
-    'REQUIRED' = 'Required'
+  'REQUIRED' = 'Required',
 }
 
 function returnSuccess(): ValidatorReturn {
-    return { errorMessage: '', valid: true };
+  return { errorMessage: '', valid: true }
 }
 
 function returnError(errorMessage: ValidationMessage): ValidatorReturn {
-    return { errorMessage, valid: false }
+  return { errorMessage, valid: false }
 }
 
-
-export const requiredValidator: ValidatorFn = (field: FieldContext, fields: FieldContextObject) => {
-    return field && field.value && field.value.toString().length > 0 ? returnSuccess() : returnError(ValidationMessage.REQUIRED);
+export const requiredValidator: ValidatorFn = (
+  field: FieldContext,
+  fields: FieldContextObject
+) => {
+  return field && field.value && field.value.toString().length > 0
+    ? returnSuccess()
+    : returnError(ValidationMessage.REQUIRED)
 }
 
-export const numberValidator = (field: FieldContext, fields: FieldContextObject) => {
-    return field && field.value && parseInt(field.value.toString(), 10) > 0 ? returnSuccess() : returnError(ValidationMessage.REQUIRED);
+export const numberValidator = (
+  field: FieldContext,
+  fields: FieldContextObject
+) => {
+  return field && field.value && parseInt(field.value.toString(), 10) > 0
+    ? returnSuccess()
+    : returnError(ValidationMessage.REQUIRED)
 }
 
 // export const minMaxValidator: CompareValidator = (compareWith: string): ValidatorFn =>
@@ -29,4 +42,3 @@ export const numberValidator = (field: FieldContext, fields: FieldContextObject)
 //        // code here
 //     }
 // }
-
