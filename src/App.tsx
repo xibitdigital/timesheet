@@ -6,18 +6,17 @@ import { ClientPage } from './pages/client/ClientPage'
 import { Home } from './pages/Home'
 import { TimesheetPage } from './pages/timesheet/TimesheetPage'
 
-
 const App: React.FC = () => {
   return (
-      <BrowserRouter>yarn add @material-ui/styles
-        <Navbar />
-          <Switch>
-            <Route path="/" component={Home} exact />
-            <Route path="/about" component={About} />
-            <Route path="/client" component={ClientPage} />
-            <Route path="/timesheet" component={TimesheetPage} />
-          </Switch>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Navbar />
+      <Switch>
+        <Route path="/" component={Home} exact />
+        <Route path="/about" component={About} />
+        <Route path="/client" component={ClientPage} />
+        <Route path="/timesheet" component={TimesheetPage} />
+      </Switch>
+    </BrowserRouter>
   )
 }
 
