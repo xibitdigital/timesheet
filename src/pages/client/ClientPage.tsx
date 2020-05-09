@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { Box, Typography, Container } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { Client } from '../../shared/collections'
@@ -22,16 +22,14 @@ export const ClientPage: React.FC = () => {
 
   return (
     <Fragment>
-      <Container maxWidth="xl">
-        <Typography variant="h2">Client</Typography>
-        <Box>
-          <ClientForm addClient={addClient} />
-        </Box>
-        <Box>
-          <ClientList loading={loading} items={items} />
-        </Box>
-        <BackButton />
-      </Container>
+      <Typography variant="h2">Client</Typography>
+      <Box>
+        <ClientForm addClient={addClient} />
+      </Box>
+      <Box>
+        <ClientList loading={loading} items={items} />
+      </Box>
+      <BackButton />
     </Fragment>
   )
 }
