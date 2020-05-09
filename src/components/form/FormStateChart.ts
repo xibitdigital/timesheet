@@ -1,4 +1,5 @@
-import { assign, Machine, MachineConfig } from 'xstate'
+import { assign, MachineConfig } from 'xstate'
+import { updateField, validateFields } from './FormHelpers'
 import {
   FormActions,
   FormContext,
@@ -6,7 +7,6 @@ import {
   FormService,
   FormStates,
 } from './FormTypes'
-import { updateField, validateFields } from './FormHelpers'
 
 export interface FormStateSchema {
   states: {
