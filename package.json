@@ -8,19 +8,9 @@
     "@material-ui/styles": "^4.9.13",
     "@xstate/react": "^0.8.1",
     "axios": "^0.19.2",
-    "enzyme": "3.11.0",
-    "enzyme-adapter-react-16": "1.15.2",
-    "eslint": "6.8.0",
-    "eslint-config-airbnb-typescript": "6.3.1",
-    "eslint-config-prettier": "6.10.0",
-    "eslint-plugin-import": "2.20.1",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-prettier": "3.1.2",
-    "eslint-plugin-react": "7.18.2",
-    "eslint-plugin-react-hooks": "2.3.0",
     "firebase": "^7.14.2",
     "firebase-admin": "^8.11.0",
-    "prettier": "2.0.0",
+    "prettier": "^2.0.5",
     "ramda": "^0.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -29,7 +19,6 @@
     "react-scripts": "3.4.1",
     "styled-components": "^5.1.0",
     "typesafe-actions": "^5.1.0",
-    "typescript": "~3.8.0",
     "xstate": "^4.9.1"
   },
   "scripts": {
@@ -56,6 +45,16 @@
     ]
   },
   "devDependencies": {
+    "enzyme": "3.11.0",
+    "enzyme-adapter-react-16": "1.15.2",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-typescript": "6.3.1",
+    "eslint-config-prettier": "6.10.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-prettier": "3.1.2",
+    "eslint-plugin-react": "7.18.2",
+    "eslint-plugin-react-hooks": "2.3.0",
     "@types/axios": "^0.14.0",
     "@types/enzyme": "3.10.4",
     "@types/enzyme-adapter-react-16": "1.0.5",
@@ -66,9 +65,17 @@
     "@types/react-dom": "16.9.5",
     "@types/react-router-dom": "5.1.3",
     "@typescript-eslint/eslint-plugin": "2.18.0",
-    "@typescript-eslint/parser": "2.18.0"
+    "@typescript-eslint/parser": "2.18.0",
+    "husky": "^4.2.5",
+    "pretty-quick": "^2.0.1",
+    "typescript": "~3.8.0"
   },
   "wallaby": {
     "autoDetect": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

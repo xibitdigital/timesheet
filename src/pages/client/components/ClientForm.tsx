@@ -2,7 +2,11 @@ import { Box, Button } from '@material-ui/core'
 import React from 'react'
 import { FieldFactory } from '../../../components/form/FieldFactory'
 import { UseForm } from '../../../components/form/FormHook'
-import { FieldType, FormConfig, SubmitProcess } from '../../../components/form/FormTypes'
+import {
+  FieldType,
+  FormConfig,
+  SubmitProcess,
+} from '../../../components/form/FormTypes'
 import { Client } from '../../../shared/collections'
 import { requiredValidator } from '../../../components/form/Validators'
 
@@ -14,11 +18,12 @@ const defaultFormValues: Client = {
 }
 
 interface ClientFormProps {
-  addClient: SubmitProcess;
+  addClient: SubmitProcess
 }
 
 const ClientFormConfig: FormConfig<Client> = {
-  id: { // this should be removed
+  id: {
+    // this should be removed
     type: FieldType.TEXT,
     label: '',
     id: 'id',
@@ -44,15 +49,17 @@ const ClientFormConfig: FormConfig<Client> = {
   },
 }
 
-
 export const ClientForm: React.FC<ClientFormProps> = ({
   addClient,
 }: ClientFormProps): JSX.Element => {
-  const { state, submit, reset, updateField } = UseForm<Client>(addClient, defaultFormValues, ClientFormConfig)
+  const { state, submit, reset, updateField } = UseForm<Client>(
+    addClient,
+    defaultFormValues,
+    ClientFormConfig
+  )
 
   return (
     <React.Fragment>
-      <pre>{JSON.stringify(state.context.fields)}</pre>
       <div>
         <FieldFactory
           context={state.context}

@@ -1,17 +1,22 @@
 import FormControl from '@material-ui/core/FormControl'
+import FormHelperText from '@material-ui/core/FormHelperText'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
-import withStyles from '@material-ui/styles/withStyles'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import React from 'react'
 import { Field, FieldType, FormContext, UpdateField } from './FormTypes'
-import FormHelperText from '@material-ui/core/FormHelperText'
 
-const StyledFormControl = withStyles({
-  root: {
-    margin: 1,
-    minWidth: 120,
-  },
-})(FormControl)
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  })
+)
 
 export interface FieldFactoryProps {
   config: Field
@@ -21,6 +26,7 @@ export interface FieldFactoryProps {
 
 export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
   const { context, onChange, config } = props
+  const classes = useStyles()
 
   if (!context) {
     return null
@@ -70,13 +76,11 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
 
   return (
     context && (
-      <StyledFormControl error={!valid}>
-        <InputLabel htmlFor={id}>
-          {label}
-        </InputLabel>
+      <FormControl error={!valid} className={classes.formControl}>
+        <InputLabel htmlFor={id}>{label}</InputLabel>
         {getField(type)}
         <FormHelperText>{errorMessage}</FormHelperText>
-      </StyledFormControl>
+      </FormControl>
     )
   )
 }
