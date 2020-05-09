@@ -27,12 +27,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     FIREBASE.auth().signOut()
   }
 
-  const goToHome = () => history.push('/')
+  const goToHomePage = () => history.push('/')
   const goToClientPage = () => history.push('/client')
   const goToTimesheetPage = () => history.push('/timesheet')
 
   const navigationMenu = [
-    { title: 'Home', action: goToHome },
+    { title: 'Home', action: goToHomePage },
     { title: 'Clients', action: goToClientPage },
     { title: 'Timesheets', action: goToTimesheetPage },
   ]

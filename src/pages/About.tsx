@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import Button from '@material-ui/core/Button'
 import { BackButton } from '../components/BackButton'
 import { Item } from '../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../shared/firebase.config'
-import Button from '@material-ui/core/Button'
 
 export const About: React.FC = () => {
   const [value, loading, error] = useCollectionData<Item>(
