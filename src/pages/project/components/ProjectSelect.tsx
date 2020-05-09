@@ -1,6 +1,5 @@
 import React from 'react'
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
-
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { Project } from '../../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../../shared/firebase.config'
