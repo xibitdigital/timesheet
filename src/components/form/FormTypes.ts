@@ -1,4 +1,8 @@
-export type ValidatorFn = (field: FieldContext, fields: FieldContext[]) => Promise<string>;
+export interface ValidatorReturn {
+    valid: boolean;
+    errorMessage: string;
+}
+export type ValidatorFn = (field: FieldContext, fields: FieldContextObject) => ValidatorReturn;
 
 export enum FieldValidationStatus {
     VALID = 'VALID',
@@ -81,12 +85,10 @@ export enum FormActions {
     VALIDATE = 'VALIDATE',
     HYDRATE = 'HYDRATE',
     INJECT_FIELD = 'INJECT_FIELD',
-    UPDATE_FIELD = 'UPDATE_FIELD',
-    FORCE_UPDATE = 'FORCE_UPDATE'
+    UPDATE_FIELD = 'UPDATE_FIELD'
 }
 
 export type FormMachineEventUpdate = { type: FormActions.UPDATE_FIELD; id: string; value: FieldValue };
-export type FormMachineEventForceUpdate = { type: FormActions.FORCE_UPDATE; id: string; value: FieldValue };
 
 export type FormMachineEvents =
     | { type: FormActions.HYDRATE, fields: Field[] }
@@ -96,17 +98,18 @@ export type FormMachineEvents =
     | { type: FormActions.RESET }
     | { type: FormActions.INJECT_FIELD; id: string; field: Field }
     | FormMachineEventUpdate
-    | FormMachineEventForceUpdate
     ;
 
 export interface FormContext {
-    fields: Record<string, FieldContext>;
+    fields: FieldContextObject;
+    fieldConfigs: FieldConfigObject;
     validity: boolean;
     saved: boolean;
 }
 
 export const FormInitialContext: FormContext = {
     fields: {},
+    fieldConfigs: {},
     validity: true,
     saved: false
 }
@@ -115,5 +118,11 @@ export enum FormService {
     SUBMIT_SERVICE = 'SUBMIT_SERVICE'
 }
 
+// util types
+export type FieldContextObject = Record<string, FieldContext>;
+export type FieldConfigObject = Record<string, Field>;
+export type FieldValueObject = Record<string, FieldValue>;
+
 export type UpdateField = (id: string, value: FieldValue) => void;
-export type SubmitProcess = (data: Record<string, FieldValue>) => Promise<any>;
+export type SubmitProcess = (data: FieldValueObject) => Promise<any>;
+

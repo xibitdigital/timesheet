@@ -4,6 +4,7 @@ import { FieldFactory } from '../../../components/form/FieldFactory'
 import { UseForm } from '../../../components/form/FormHook'
 import { FieldType, FormConfig, SubmitProcess } from '../../../components/form/FormTypes'
 import { Client } from '../../../shared/collections'
+import { requiredValidator } from '../../../components/form/Validators'
 
 const defaultFormValues: Client = {
   id: '',
@@ -27,19 +28,19 @@ const ClientFormConfig: FormConfig<Client> = {
     type: FieldType.TEXT,
     label: 'Name',
     id: 'name',
-    validators: [],
+    validators: [requiredValidator],
   },
   fullAddress: {
     type: FieldType.TEXT,
     label: 'Address',
     id: 'fullAddress',
-    validators: [],
+    validators: [requiredValidator],
   },
   postcode: {
     type: FieldType.TEXT,
     label: 'Post Code',
     id: 'postcode',
-    validators: [],
+    validators: [requiredValidator],
   },
 }
 
@@ -47,7 +48,7 @@ const ClientFormConfig: FormConfig<Client> = {
 export const ClientForm: React.FC<ClientFormProps> = ({
   addClient,
 }: ClientFormProps): JSX.Element => {
-  const { state, submit, reset, updateField } = UseForm<Client>(addClient, defaultFormValues)
+  const { state, submit, reset, updateField } = UseForm<Client>(addClient, defaultFormValues, ClientFormConfig)
 
   return (
     <React.Fragment>

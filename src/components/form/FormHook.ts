@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { Machine, State } from 'xstate';
 import { initialFieldsContext, transferData } from './FormHelpers';
 import { FormStateChart, FormStateSchema } from './FormStateChart';
-import { FieldValue, FormActions, FormContext, FormInitialContext, FormMachineEvents, FormService, SubmitProcess, UpdateField } from './FormTypes';
+import { FieldConfigObject, FieldValue, FormActions, FormContext, FormInitialContext, FormMachineEvents, FormService, SubmitProcess, UpdateField } from './FormTypes';
 
 
 export interface UseFormApi {
@@ -13,7 +13,7 @@ export interface UseFormApi {
     updateField: UpdateField;
 }
 
-export function UseForm<T>(submitProcess: SubmitProcess, initialValue: Record<keyof T, FieldValue>): UseFormApi {
+export function UseForm<T>(submitProcess: SubmitProcess, initialValue: Record<keyof T, FieldValue>, fieldConfigs: FieldConfigObject): UseFormApi {
 
     const ref = useRef<any>(); // execute only once, please assign type !!!!!
     if (!ref.current) {
@@ -26,7 +26,8 @@ export function UseForm<T>(submitProcess: SubmitProcess, initialValue: Record<ke
             },
             {
                 ...FormInitialContext,
-                fields: initialFieldsContext(initialValue)
+                fields: initialFieldsContext(initialValue),
+                fieldConfigs
             });
         ref.current = machine;
     }

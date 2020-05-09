@@ -1,10 +1,11 @@
 import { assign, Machine, MachineConfig } from 'xstate';
 import { FormActions, FormContext, FormMachineEvents, FormService, FormStates } from './FormTypes';
-import { updateField } from './FormHelpers';
+import { updateField, validateFields } from './FormHelpers';
 
 export interface FormStateSchema {
     states: {
         [FormStates.INIT]: {};
+        [FormStates.VALIDATING_SUBMIT]: {};
         [FormStates.SUBMITTING]: {};
         [FormStates.DISABLED]: {};
     }
@@ -20,7 +21,19 @@ export const FormStateChart: MachineConfig<FormContext, FormStateSchema, FormMac
                 },
                 [FormActions.UPDATE_FIELD]: {
                     actions: assign((ctx, event) => updateField(ctx, event))
+                },
+                [FormActions.SUBMIT]: {
+                    target: FormStates.VALIDATING_SUBMIT
                 }
+            }
+        },
+        [FormStates.VALIDATING_SUBMIT]: {
+            entry: assign((ctx: FormContext) => validateFields(ctx)),
+            on: {
+                '': [
+                    { target: FormStates.SUBMITTING, cond: (ctx: FormContext) => ctx.validity },
+                    { target: FormStates.INIT, cond: (ctx: FormContext) => !ctx.validity }
+                ]
             }
         },
         [FormStates.SUBMITTING]: {
