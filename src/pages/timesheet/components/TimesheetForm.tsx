@@ -1,8 +1,14 @@
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import React from 'react'
+import {
+  FieldType,
+  FormConfig,
+  SubmitProcess,
+} from '../../../components/form/FormTypes'
+import { requiredValidator } from '../../../components/form/Validators'
 import { TimeSheet } from '../../../shared/collections'
-import { ClientSelect } from '../../client/components/ClientSelect'
+import { COLLECTIONS, FIRESTORE } from '../../../shared/firebase.config'
 
 const defaultFormValues: TimeSheet = {
   clientId: '',
@@ -10,6 +16,47 @@ const defaultFormValues: TimeSheet = {
   month: '',
   year: '',
   workedDays: [],
+}
+interface ClientFormProps {
+  addClient: SubmitProcess
+}
+
+const ClientFormConfig: FormConfig<Omit<TimeSheet, 'workedDays'>> = {
+  id: {
+    // this should be removed
+    fieldType: FieldType.NONE,
+    label: '',
+    id: 'id',
+    validators: [],
+  },
+  clientId: {
+    fieldType: FieldType.SELECT,
+    label: 'clientId',
+    id: 'clientId',
+    firestore: FIRESTORE,
+    collection: COLLECTIONS.CLIENT,
+    validators: [requiredValidator],
+  },
+  projectId: {
+    fieldType: FieldType.SELECT,
+    label: 'projectId',
+    id: 'projectId',
+    firestore: FIRESTORE,
+    collection: COLLECTIONS.PROJECT,
+    validators: [requiredValidator],
+  },
+  month: {
+    fieldType: FieldType.TEXT,
+    label: 'Month',
+    id: 'month',
+    validators: [requiredValidator],
+  },
+  year: {
+    fieldType: FieldType.TEXT,
+    label: 'Post Code',
+    id: 'postcode',
+    validators: [requiredValidator],
+  },
 }
 
 interface TimesheetFormProps {
@@ -21,33 +68,8 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
 }: TimesheetFormProps): JSX.Element => {
   const [formValues, setFormValues] = React.useState({})
 
-  function handleFormChange(evt: React.FormEvent<HTMLFormElement>) {
-    const { name, value } = evt.target as any
-    setFormValues({ ...formValues, [name]: value })
-  }
-
-  function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>) {
-    console.log('Submit')
-    AddTimesheet(formValues)
-    evt.preventDefault()
-  }
-
-  function handleFormReset(nextValue: React.FormEvent<HTMLFormElement>) {
-    console.log('Reset', nextValue)
-    setFormValues(defaultFormValues)
-  }
-
-  function handleSelectChange(value: string) {
-    setFormValues({ ...formValues, clientId: value })
-  }
-
   return (
-    <form
-      onChange={handleFormChange}
-      onReset={handleFormReset}
-      onSubmit={handleFormSubmit}
-    >
-      <ClientSelect onChange={handleSelectChange} />
+    <form>
       <Box>
         <Button type="submit">Submit</Button>
         <Button type="reset">Reset</Button>

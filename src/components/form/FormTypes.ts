@@ -45,6 +45,10 @@ export interface TextField extends FieldBase {
   fieldType: FieldType.TEXT
 }
 
+export interface HiddenField extends FieldBase {
+  fieldType: FieldType.NONE
+}
+
 export interface CheckboxField extends FieldBase {
   fieldType: FieldType.CHECKBOX
 }
@@ -56,19 +60,17 @@ export interface SelectField extends FieldBase {
 }
 
 // all fields
-export type Field = TextField | SelectField | CheckboxField
+export type Field = TextField | SelectField | CheckboxField | HiddenField
 export type FormConfig<T> = Record<keyof T, Field>
-export type Omit<T, K> = Pick<T, Exclude<keyof T, K>>
-export type Subtract<T, K> = Omit<T, keyof K>
 
 export enum FormStates {
-  INIT = 'INIT',
+  ACTIVE = 'ACTIVE',
   VALID = 'VALID',
   INVALID = 'INVALID',
   VALIDATING = 'VALIDATING',
   VALIDATING_SUBMIT = 'VALIDATING_SUBMIT',
   SUBMITTING = 'SUBMITTING',
-  HYDRATING = 'HYDRATING',
+  FETCHING = 'FETCHING',
   DISABLED = 'DISABLED',
 }
 
@@ -123,6 +125,7 @@ export const FormInitialContext: FormContext = {
 
 export enum FormService {
   SUBMIT_SERVICE = 'SUBMIT_SERVICE',
+  FETCHING_SERVICE = 'FETCHING_SERVICE',
 }
 
 // util types
@@ -131,3 +134,4 @@ export type FieldConfigObject = Record<string, Field>
 export type FieldValueObject = Record<string, FieldValue>
 export type UpdateField = (id: string, value: FieldValue) => void
 export type SubmitProcess = (data: FieldValueObject) => Promise<any>
+export type FetchProcess = () => Promise<Partial<FieldValueObject>>

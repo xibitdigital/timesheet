@@ -1,5 +1,9 @@
 import { assign, MachineConfig } from 'xstate'
-import { updateField, validateFields } from './FormHelpers'
+import {
+  updateField,
+  validateFields,
+  initialFieldsContext,
+} from './FormHelpers'
 import {
   FormActions,
   FormContext,
@@ -10,7 +14,8 @@ import {
 
 export interface FormStateSchema {
   states: {
-    [FormStates.INIT]: {}
+    [FormStates.ACTIVE]: {}
+    [FormStates.FETCHING]: {}
     [FormStates.VALIDATING_SUBMIT]: {}
     [FormStates.SUBMITTING]: {}
     [FormStates.DISABLED]: {}
@@ -22,10 +27,9 @@ export const FormStateChart: MachineConfig<
   FormStateSchema,
   FormMachineEvents
 > = {
-  initial: FormStates.INIT,
+  initial: FormStates.FETCHING,
   states: {
-    [FormStates.INIT]: {
-      // change this for initial phase
+    [FormStates.ACTIVE]: {
       on: {
         [FormActions.INJECT_FIELD]: {},
         [FormActions.UPDATE_FIELD]: {
@@ -33,6 +37,18 @@ export const FormStateChart: MachineConfig<
         },
         [FormActions.SUBMIT]: {
           target: FormStates.VALIDATING_SUBMIT,
+        },
+      },
+    },
+    [FormStates.FETCHING]: {
+      invoke: {
+        src: FormService.FETCHING_SERVICE,
+        onDone: {
+          actions: assign((ctx, event) => initialFieldsContext(event.data)),
+          target: FormStates.ACTIVE,
+        },
+        onError: {
+          target: FormStates.ACTIVE,
         },
       },
     },
@@ -45,7 +61,7 @@ export const FormStateChart: MachineConfig<
             cond: (ctx: FormContext) => ctx.validity,
           },
           {
-            target: FormStates.INIT,
+            target: FormStates.ACTIVE,
             cond: (ctx: FormContext) => !ctx.validity,
           },
         ],
@@ -55,10 +71,10 @@ export const FormStateChart: MachineConfig<
       invoke: {
         src: FormService.SUBMIT_SERVICE,
         onDone: {
-          target: FormStates.INIT,
+          target: FormStates.ACTIVE,
         },
         onError: {
-          target: FormStates.INIT, // handle error
+          target: FormStates.ACTIVE, // handle error
         },
       },
     },

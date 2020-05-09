@@ -5,6 +5,7 @@ import { About } from './pages/About'
 import { ClientPage } from './pages/client/ClientPage'
 import { Home } from './pages/Home'
 import { TimesheetPage } from './pages/timesheet/TimesheetPage'
+import { ClientDetailPage } from './pages/client/ClientDetailPage'
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
       <Switch>
         <Route path="/" component={Home} exact />
         <Route path="/about" component={About} />
+        <Route path="/client/:id" component={ClientDetailPage} />
         <Route path="/client" component={ClientPage} />
         <Route path="/timesheet" component={TimesheetPage} />
       </Switch>

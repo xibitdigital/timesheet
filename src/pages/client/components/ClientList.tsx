@@ -7,17 +7,20 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  Button,
 } from '@material-ui/core'
 import { Client } from '../../../shared/collections'
 
 interface ClientListProps {
   loading: boolean
   items: Client[] | undefined
+  onSelect: (id: string) => void
 }
 
 export const ClientList: React.FC<ClientListProps> = ({
   loading,
   items,
+  onSelect,
 }: ClientListProps): JSX.Element => {
   return (
     <TableContainer component={Paper}>
@@ -26,6 +29,7 @@ export const ClientList: React.FC<ClientListProps> = ({
           <TableRow>
             <TableCell scope="col">Name</TableCell>
             <TableCell scope="col">Address</TableCell>
+            <TableCell scope="col">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -37,6 +41,9 @@ export const ClientList: React.FC<ClientListProps> = ({
                   <strong>{doc.name}</strong>
                 </TableCell>
                 <TableCell>{doc.fullAddress}</TableCell>
+                <TableCell>
+                  <Button onClick={() => onSelect(doc.id)}>S</Button>
+                </TableCell>
               </TableRow>
             ))}
         </TableBody>

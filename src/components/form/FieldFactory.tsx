@@ -12,6 +12,7 @@ import {
   FieldValue,
 } from './FormTypes'
 import { CollectionSelect } from './fields/CollectionSelect'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -84,6 +85,16 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
             label={label}
             firestore={firestore}
             collection={collection}
+            onChange={handleSelectChange}
+          />
+        )
+      case FieldType.CHECKBOX:
+        return (
+          <Checkbox
+            id={id}
+            name={id}
+            value={value}
+            aria-describedby={label}
             onChange={handleSelectChange}
           />
         )

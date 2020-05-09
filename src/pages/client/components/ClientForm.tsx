@@ -2,60 +2,24 @@ import { Box, Button } from '@material-ui/core'
 import React from 'react'
 import { FieldFactory } from '../../../components/form/FieldFactory'
 import { UseForm } from '../../../components/form/FormHook'
-import {
-  FieldType,
-  FormConfig,
-  SubmitProcess,
-} from '../../../components/form/FormTypes'
+import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
 import { Client } from '../../../shared/collections'
-import { requiredValidator } from '../../../components/form/Validators'
-
-const defaultFormValues: Client = {
-  id: '',
-  name: '',
-  fullAddress: '',
-  postcode: '',
-}
+import { ClientFormConfig, DefaultFormValues } from './Client.config'
 
 interface ClientFormProps {
-  addClient: SubmitProcess
-}
-
-const ClientFormConfig: FormConfig<Client> = {
-  id: {
-    // this should be removed
-    fieldType: FieldType.TEXT,
-    label: '',
-    id: 'id',
-    validators: [],
-  },
-  name: {
-    fieldType: FieldType.TEXT,
-    label: 'Name',
-    id: 'name',
-    validators: [requiredValidator],
-  },
-  fullAddress: {
-    fieldType: FieldType.TEXT,
-    label: 'Address',
-    id: 'fullAddress',
-    validators: [requiredValidator],
-  },
-  postcode: {
-    fieldType: FieldType.TEXT,
-    label: 'Post Code',
-    id: 'postcode',
-    validators: [requiredValidator],
-  },
+  saveData: SubmitProcess
+  loadData: FetchProcess
 }
 
 export const ClientForm: React.FC<ClientFormProps> = ({
-  addClient,
+  saveData,
+  loadData,
 }: ClientFormProps): JSX.Element => {
   const { state, submit, reset, updateField } = UseForm<Client>(
-    addClient,
-    defaultFormValues,
-    ClientFormConfig
+    ClientFormConfig,
+    DefaultFormValues,
+    saveData,
+    loadData
   )
 
   return (

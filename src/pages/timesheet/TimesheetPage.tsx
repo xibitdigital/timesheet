@@ -4,7 +4,6 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { TimeSheet } from '../../shared/collections'
 import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
-import { ClientSelect } from '../client/components/ClientSelect'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
 
@@ -33,9 +32,6 @@ export const TimesheetPage: React.FC = () => {
       <Box>
         {' '}
         <TimeSheetList loading={loading} items={items} />
-      </Box>
-      <Box>
-        <ClientSelect onChange={(id) => console.log(id)} />
       </Box>
       <BackButton />
     </Fragment>

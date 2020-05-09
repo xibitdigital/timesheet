@@ -75,7 +75,8 @@ export function validateField(
 
 export function initialFieldsContext(
   values: FieldValueObject
-): FieldContextObject {
+): Partial<FormContext> {
+  debugger
   let fields: FieldContextObject = {}
   Object.keys(values).forEach((id) => {
     const value = values[id]
@@ -88,5 +89,5 @@ export function initialFieldsContext(
     }
     fields = { ...fields, [id]: context }
   })
-  return fields
+  return { fields }
 }

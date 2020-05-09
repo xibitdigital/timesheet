@@ -13,6 +13,7 @@ import {
   FormService,
   SubmitProcess,
   UpdateField,
+  FetchProcess,
 } from './FormTypes'
 
 export interface UseFormApi {
@@ -23,9 +24,10 @@ export interface UseFormApi {
 }
 
 export function UseForm<T>(
-  submitProcess: SubmitProcess,
+  fieldConfigs: FieldConfigObject,
   initialValue: Record<keyof T, FieldValue>,
-  fieldConfigs: FieldConfigObject
+  submitProcess: SubmitProcess,
+  fetchProcess: FetchProcess = () => Promise.resolve({})
 ): UseFormApi {
   const ref = useRef<any>() // execute only once, please assign type !!!!!
   if (!ref.current) {
@@ -36,11 +38,12 @@ export function UseForm<T>(
         services: {
           [FormService.SUBMIT_SERVICE]: (ctx) =>
             submitProcess(transferData(ctx)),
+          [FormService.FETCHING_SERVICE]: (ctx) => fetchProcess(),
         },
       },
       {
         ...FormInitialContext,
-        fields: initialFieldsContext(initialValue),
+        ...initialFieldsContext(initialValue),
         fieldConfigs,
       }
     )
