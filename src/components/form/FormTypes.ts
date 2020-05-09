@@ -26,7 +26,7 @@ export enum FieldType {
 export interface FieldBase {
   id: string
   label: string
-  type: FieldType
+  fieldType: FieldType
   validators: Array<ValidatorFn>
   disabled?: boolean
   defaultValue?: FieldValue
@@ -42,16 +42,17 @@ export interface FieldContext {
 }
 
 export interface TextField extends FieldBase {
-  type: FieldType.TEXT
+  fieldType: FieldType.TEXT
 }
 
 export interface CheckboxField extends FieldBase {
-  type: FieldType.CHECKBOX
+  fieldType: FieldType.CHECKBOX
 }
 
 export interface SelectField extends FieldBase {
-  type: FieldType.TEXT
+  fieldType: FieldType.SELECT
   collection: string
+  firestore: firebase.firestore.Firestore
 }
 
 // all fields

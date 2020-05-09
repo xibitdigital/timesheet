@@ -4,7 +4,14 @@ import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import React from 'react'
-import { Field, FieldType, FormContext, UpdateField } from './FormTypes'
+import {
+  Field,
+  FieldType,
+  FormContext,
+  UpdateField,
+  FieldValue,
+} from './FormTypes'
+import { CollectionSelect } from './fields/CollectionSelect'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,8 +39,9 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
     return null
   }
 
-  const { id, label, defaultValue, type } = config
-  const fieldContext = context.fields[id]
+  const { id, label } = config
+  const { fields } = context
+  const fieldContext = fields[id]
 
   if (!fieldContext) {
     console.error('Invalid Id', id)
@@ -46,19 +54,16 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
     onChange(id, value)
   }
 
-  const getField = (type: FieldType) => {
-    switch (type) {
-      case FieldType.CHECKBOX: // refactor this one
-        return (
-          <Input
-            id={id}
-            name={id}
-            aria-describedby={label}
-            defaultValue={defaultValue}
-            onChange={handleChange}
-            value={value}
-          />
-        )
+  const handleSelectChange = (
+    event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
+  ) => {
+    const value = event.target.value as any
+    debugger
+    onChange(id, value as FieldValue)
+  }
+
+  const getField = (config: Field) => {
+    switch (config.fieldType) {
       case FieldType.TEXT:
         return (
           <Input
@@ -67,6 +72,19 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
             value={value}
             aria-describedby={label}
             onChange={handleChange}
+          />
+        )
+      case FieldType.SELECT:
+        const { firestore, collection } = config
+        return (
+          <CollectionSelect
+            id={id}
+            name={id}
+            value={value}
+            label={label}
+            firestore={firestore}
+            collection={collection}
+            onChange={handleSelectChange}
           />
         )
       default:
@@ -78,7 +96,7 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
     context && (
       <FormControl error={!valid} className={classes.formControl}>
         <InputLabel htmlFor={id}>{label}</InputLabel>
-        {getField(type)}
+        {getField(config)}
         <FormHelperText>{errorMessage}</FormHelperText>
       </FormControl>
     )

@@ -24,25 +24,25 @@ interface ClientFormProps {
 const ClientFormConfig: FormConfig<Client> = {
   id: {
     // this should be removed
-    type: FieldType.TEXT,
+    fieldType: FieldType.TEXT,
     label: '',
     id: 'id',
     validators: [],
   },
   name: {
-    type: FieldType.TEXT,
+    fieldType: FieldType.TEXT,
     label: 'Name',
     id: 'name',
     validators: [requiredValidator],
   },
   fullAddress: {
-    type: FieldType.TEXT,
+    fieldType: FieldType.TEXT,
     label: 'Address',
     id: 'fullAddress',
     validators: [requiredValidator],
   },
   postcode: {
-    type: FieldType.TEXT,
+    fieldType: FieldType.TEXT,
     label: 'Post Code',
     id: 'postcode',
     validators: [requiredValidator],
