@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core'
 import React, { Fragment } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { Client } from '../../shared/collections'
@@ -9,9 +9,16 @@ import { ClientForm } from './components/ClientForm'
 
 export const ClientDetailPage: React.FC = () => {
   const { id } = useParams()
+  const history = useHistory()
 
   const saveData: SubmitProcess = (newClient: Partial<Client>) => {
-    return FIRESTORE.collection(COLLECTIONS.CLIENT).doc(id).update(newClient)
+    return FIRESTORE.collection(COLLECTIONS.CLIENT)
+      .doc(id)
+      .update(newClient)
+      .then((res) => {
+        history.push('/client')
+        return res
+      })
   }
 
   const loadData: FetchProcess = () => {
