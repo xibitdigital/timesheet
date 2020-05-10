@@ -1,79 +1,65 @@
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import React from 'react'
-import {
-  FieldConfigObject,
-  FieldType,
-  SubmitProcess,
-} from '../../../components/form/FormTypes'
-import { requiredValidator } from '../../../components/form/Validators'
+import { FieldFactory } from '../../../components/form/FieldFactory'
+import { UseForm } from '../../../components/form/FormHook'
+import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
 import { TimeSheet } from '../../../shared/collections'
-import { COLLECTIONS, FIRESTORE } from '../../../shared/firebase.config'
-
-const defaultFormValues: TimeSheet = {
-  clientId: '',
-  projectId: '',
-  month: '',
-  year: '',
-  workedDays: [],
-}
-interface ClientFormProps {
-  addClient: SubmitProcess
-}
-
-const ClientFormConfig: FieldConfigObject<Omit<TimeSheet, 'workedDays'>> = {
-  id: {
-    // this should be removed
-    fieldType: FieldType.NONE,
-    label: '',
-    id: 'id',
-    validators: [],
-  },
-  clientId: {
-    fieldType: FieldType.SELECT,
-    label: 'clientId',
-    id: 'clientId',
-    firestore: FIRESTORE,
-    collection: COLLECTIONS.CLIENT,
-    validators: [requiredValidator],
-  },
-  projectId: {
-    fieldType: FieldType.SELECT,
-    label: 'projectId',
-    id: 'projectId',
-    firestore: FIRESTORE,
-    collection: COLLECTIONS.PROJECT,
-    validators: [requiredValidator],
-  },
-  month: {
-    fieldType: FieldType.TEXT,
-    label: 'Month',
-    id: 'month',
-    validators: [requiredValidator],
-  },
-  year: {
-    fieldType: FieldType.TEXT,
-    label: 'Post Code',
-    id: 'year',
-    validators: [requiredValidator],
-  },
-}
-
+import { DefaultFormValues, TimesheetFormConfig } from './TimesheetForm.config'
 interface TimesheetFormProps {
-  AddTimesheet: (newTimesheet: Partial<TimeSheet>) => void
+  loadData: FetchProcess
+  saveData: SubmitProcess
 }
 
 export const TimesheetForm: React.FC<TimesheetFormProps> = ({
-  AddTimesheet,
+  loadData,
+  saveData,
 }: TimesheetFormProps): JSX.Element => {
-  const [formValues, setFormValues] = React.useState({})
+  const { state, submit, reset, updateField } = UseForm<TimeSheet>(
+    TimesheetFormConfig,
+    DefaultFormValues,
+    saveData,
+    loadData
+  )
+
+  const {
+    context: { fields },
+  } = state
 
   return (
-    <form>
+    <React.Fragment>
+      <FieldFactory
+        id="clientId"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="projectId"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="month"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="year"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
       <Box>
-        <Button type="submit">Submit</Button>
-        <Button type="reset">Reset</Button>
+        <Button type="submit" color="primary" onClick={submit}>
+          Submit
+        </Button>
+        <Button type="reset" onClick={reset}>
+          Reset
+        </Button>
       </Box>
-    </form>
+    </React.Fragment>
   )
 }

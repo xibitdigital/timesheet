@@ -3,8 +3,8 @@ import React, { Fragment } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
-import { Client } from '../../shared/collections'
-import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
+import { Client, COLLECTIONS } from '../../shared/collections'
+import { FIRESTORE } from '../../shared/firebase.config'
 import { ClientForm } from './components/ClientForm'
 
 export const ClientDetailPage: React.FC = () => {

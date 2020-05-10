@@ -2,12 +2,15 @@ import Box from '@material-ui/core/Box'
 import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
-import { TimeSheet } from '../../shared/collections'
-import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
+import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { TimeSheet, COLLECTIONS } from '../../shared/collections'
+import { FIRESTORE } from '../../shared/firebase.config'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
+import Typography from '@material-ui/core/Typography'
 
 export const TimesheetPage: React.FC = () => {
+  // const history = useHistory()
   const [items, loading, error] = useCollectionData<TimeSheet>(
     FIRESTORE.collection(COLLECTIONS.TIMESHEET),
     {
@@ -16,21 +19,25 @@ export const TimesheetPage: React.FC = () => {
     }
   )
 
-  const addTimesheet = (newClient: Partial<TimeSheet>) => {
-    FIRESTORE.collection(COLLECTIONS.CLIENT).add(newClient)
+  const saveData: SubmitProcess = (timesheet: Partial<TimeSheet>) => {
+    return FIRESTORE.collection(COLLECTIONS.TIMESHEET).add(timesheet)
   }
+
+  const loadData: FetchProcess = () => {
+    return Promise.reject()
+  }
+
+  // const handleSelect = (id: string) => {
+  //   history.push(`/client/${id}`)
+  // }
 
   return (
     <Fragment>
-      <h1>Client {error ? 'Error' : ''} </h1>
-      <div>
-        {loading ? 'loading' : 'ok!'} {items?.length}
-      </div>
+      <Typography variant="h2">Timesheets</Typography>
       <Box>
-        <TimesheetForm AddTimesheet={addTimesheet} />
+        <TimesheetForm saveData={saveData} loadData={loadData} />
       </Box>
       <Box>
-        {' '}
         <TimeSheetList loading={loading} items={items} />
       </Box>
       <BackButton />

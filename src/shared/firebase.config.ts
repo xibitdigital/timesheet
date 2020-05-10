@@ -1,6 +1,6 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
 
 const {
   REACT_APP_API_KEY: apiKey,
@@ -27,10 +27,3 @@ export const FIRESTORE = FIREBASE.firestore()
 
 // https://firebase.google.com/docs/auth/web/google-signin
 export const DEFAULT_PROVIDER = new firebase.auth.GoogleAuthProvider()
-
-export enum COLLECTIONS {
-  ITEMS = 'items',
-  CLIENT = 'clients',
-  PROJECT = 'project',
-  TIMESHEET = 'timesheet',
-}

@@ -28,34 +28,32 @@ export const ClientForm: React.FC<ClientFormProps> = ({
 
   return (
     <React.Fragment>
-      <div>
-        <FieldFactory
-          id="name"
-          fields={fields}
-          config={ClientFormConfig}
-          onChange={updateField}
-        />
-        <FieldFactory
-          id="fullAddress"
-          fields={fields}
-          config={ClientFormConfig}
-          onChange={updateField}
-        />
-        <FieldFactory
-          id="postcode"
-          fields={fields}
-          config={ClientFormConfig}
-          onChange={updateField}
-        />
-        <Box>
-          <Button type="submit" color="primary" onClick={submit}>
-            Submit
-          </Button>
-          <Button type="reset" onClick={reset}>
-            Reset
-          </Button>
-        </Box>
-      </div>
+      <FieldFactory
+        id="name"
+        fields={fields}
+        config={ClientFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="fullAddress"
+        fields={fields}
+        config={ClientFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="postcode"
+        fields={fields}
+        config={ClientFormConfig}
+        onChange={updateField}
+      />
+      <Box>
+        <Button type="submit" color="primary" onClick={submit}>
+          Submit
+        </Button>
+        <Button type="reset" onClick={reset}>
+          Reset
+        </Button>
+      </Box>
     </React.Fragment>
   )
 }

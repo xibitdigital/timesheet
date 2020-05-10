@@ -12,20 +12,28 @@ export interface Client {
 }
 
 export interface Project {
-  id?: string
+  id: string
   name: string
   clientId: string
 }
 export interface WorkedDay {
+  id: string
   day: string
   time: number
+  timesheetId: string
 }
 
 export interface TimeSheet {
-  id?: string
+  id: string
   clientId: string
   projectId: string
   month: string
   year: string
-  workedDays: WorkedDay[]
+}
+
+export enum COLLECTIONS {
+  ITEMS = 'items',
+  CLIENT = 'clients',
+  PROJECT = 'projects',
+  TIMESHEET = 'timesheets',
 }
