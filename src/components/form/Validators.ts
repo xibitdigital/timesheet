@@ -5,7 +5,7 @@ import {
   FieldContextObject,
 } from './FormTypes'
 
-export type CompareValidator = (compareTo: string) => ValidatorFn
+export type CompareValidator<T> = (compareTo: string) => ValidatorFn<T>
 
 enum ValidationMessage {
   'REQUIRED' = 'Required',
@@ -19,26 +19,26 @@ function returnError(errorMessage: ValidationMessage): ValidatorReturn {
   return { errorMessage, valid: false }
 }
 
-export const requiredValidator: ValidatorFn = (
+export function requiredValidator<T>(
   field: FieldContext,
-  fields: FieldContextObject
-) => {
+  fields: FieldContextObject<T>
+): ValidatorReturn {
   return field && field.value && field.value.toString().length > 0
     ? returnSuccess()
     : returnError(ValidationMessage.REQUIRED)
 }
 
-export const numberValidator = (
+export function numberValidator<T>(
   field: FieldContext,
-  fields: FieldContextObject
-) => {
+  fields: FieldContextObject<T>
+): ValidatorReturn {
   return field && field.value && parseInt(field.value.toString(), 10) > 0
     ? returnSuccess()
     : returnError(ValidationMessage.REQUIRED)
 }
 
 // export const minMaxValidator: CompareValidator = (compareWith: string): ValidatorFn =>
-//     (field: FieldContext, fields: fields: FieldContextObject) => {
+//     (field: FieldContext, fields: fields: FieldContextObject<T>) => {
 //        // code here
 //     }
 // }

@@ -22,22 +22,29 @@ export const ClientForm: React.FC<ClientFormProps> = ({
     loadData
   )
 
+  const {
+    context: { fields },
+  } = state
+
   return (
     <React.Fragment>
       <div>
         <FieldFactory
-          context={state.context}
-          config={ClientFormConfig.name}
+          id="name"
+          fields={fields}
+          config={ClientFormConfig}
           onChange={updateField}
         />
         <FieldFactory
-          context={state.context}
-          config={ClientFormConfig.fullAddress}
+          id="fullAddress"
+          fields={fields}
+          config={ClientFormConfig}
           onChange={updateField}
         />
         <FieldFactory
-          context={state.context}
-          config={ClientFormConfig.postcode}
+          id="postcode"
+          fields={fields}
+          config={ClientFormConfig}
           onChange={updateField}
         />
         <Box>

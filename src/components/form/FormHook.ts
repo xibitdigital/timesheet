@@ -2,8 +2,9 @@ import { useMachine } from '@xstate/react'
 import { useRef } from 'react'
 import { Machine, State } from 'xstate'
 import { initialFieldsContext, transferData } from './FormHelpers'
-import { FormStateChart, FormStateSchema } from './FormStateChart'
+import { FormStateSchema, getStateChart } from './FormStateChart'
 import {
+  FetchProcess,
   FieldConfigObject,
   FieldValue,
   FormActions,
@@ -13,27 +14,26 @@ import {
   FormService,
   SubmitProcess,
   UpdateField,
-  FetchProcess,
 } from './FormTypes'
 
-export interface UseFormApi {
-  state: State<FormContext, FormMachineEvents, FormStateSchema>
+export interface UseFormApi<T> {
+  state: State<FormContext<T>, FormMachineEvents<T>, FormStateSchema>
   submit: () => void
   reset: () => void
-  updateField: UpdateField
+  updateField: UpdateField<T>
 }
 
 export function UseForm<T>(
-  fieldConfigs: FieldConfigObject,
+  fieldConfigs: FieldConfigObject<T>,
   initialValue: Record<keyof T, FieldValue>,
   submitProcess: SubmitProcess,
   fetchProcess: FetchProcess = () => Promise.resolve({})
-): UseFormApi {
+): UseFormApi<T> {
   const ref = useRef<any>() // execute only once, please assign type !!!!!
   if (!ref.current) {
     // Do something that you only want to do once...
-    const machine = Machine<FormContext, FormMachineEvents>(
-      FormStateChart,
+    const machine = Machine<FormContext<T>, FormMachineEvents<T>>(
+      getStateChart<T>(),
       {
         services: {
           [FormService.SUBMIT_SERVICE]: (ctx) =>
@@ -50,7 +50,9 @@ export function UseForm<T>(
     ref.current = machine
   }
 
-  const [state, send] = useMachine<FormContext, FormMachineEvents>(ref.current)
+  const [state, send] = useMachine<FormContext<T>, FormMachineEvents<T>>(
+    ref.current
+  )
 
   const submit = () => {
     send({ type: FormActions.SUBMIT })
@@ -60,7 +62,7 @@ export function UseForm<T>(
     send({ type: FormActions.RESET })
   }
 
-  const updateField = (id: string, value: FieldValue) => {
+  const updateField = (id: keyof T, value: FieldValue) => {
     send({ type: FormActions.UPDATE_FIELD, id, value })
   }
 

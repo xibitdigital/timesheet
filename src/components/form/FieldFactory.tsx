@@ -1,18 +1,19 @@
+import Checkbox from '@material-ui/core/Checkbox'
 import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import React from 'react'
+import { CollectionSelect } from './fields/CollectionSelect'
 import {
   Field,
   FieldType,
-  FormContext,
-  UpdateField,
   FieldValue,
+  UpdateField,
+  FieldConfigObject,
+  FieldContextObject,
 } from './FormTypes'
-import { CollectionSelect } from './fields/CollectionSelect'
-import Checkbox from '@material-ui/core/Checkbox'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -26,22 +27,24 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export interface FieldFactoryProps {
-  config: Field
-  context: FormContext
-  onChange: UpdateField
+export interface FieldFactoryProps<T> {
+  id: keyof T
+  config: FieldConfigObject<T>
+  fields: FieldContextObject<T>
+  onChange: UpdateField<T>
 }
 
-export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
-  const { context, onChange, config } = props
+export function FieldFactory<T>(props: FieldFactoryProps<T>) {
+  const { id, onChange, config, fields } = props
   const classes = useStyles()
+  const idSTring = id.toString()
 
-  if (!context) {
+  if (!fields) {
     return null
   }
 
-  const { id, label } = config
-  const { fields } = context
+  const fieldConfig = config[id]
+  const { label } = fieldConfig
   const fieldContext = fields[id]
 
   if (!fieldContext) {
@@ -63,13 +66,13 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
     onChange(id, value as FieldValue)
   }
 
-  const getField = (config: Field) => {
+  const getField = (config: Field<T>) => {
     switch (config.fieldType) {
       case FieldType.TEXT:
         return (
           <Input
-            id={id}
-            name={id}
+            id={idSTring}
+            name={idSTring}
             value={value}
             aria-describedby={label}
             onChange={handleChange}
@@ -79,8 +82,8 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
         const { firestore, collection } = config
         return (
           <CollectionSelect
-            id={id}
-            name={id}
+            id={idSTring}
+            name={idSTring}
             value={value}
             label={label}
             firestore={firestore}
@@ -91,8 +94,8 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
       case FieldType.CHECKBOX:
         return (
           <Checkbox
-            id={id}
-            name={id}
+            id={idSTring}
+            name={idSTring}
             value={value}
             aria-describedby={label}
             onChange={handleSelectChange}
@@ -104,10 +107,10 @@ export const FieldFactory: React.FC<FieldFactoryProps> = (props) => {
   }
 
   return (
-    context && (
+    fields && (
       <FormControl error={!valid} className={classes.formControl}>
-        <InputLabel htmlFor={id}>{label}</InputLabel>
-        {getField(config)}
+        <InputLabel htmlFor={idSTring}>{label}</InputLabel>
+        {getField(fieldConfig)}
         <FormHelperText>{errorMessage}</FormHelperText>
       </FormControl>
     )

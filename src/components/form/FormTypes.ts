@@ -2,9 +2,9 @@ export interface ValidatorReturn {
   valid: boolean
   errorMessage: string
 }
-export type ValidatorFn = (
+export type ValidatorFn<T> = (
   field: FieldContext,
-  fields: FieldContextObject
+  fields: FieldContextObject<T>
 ) => ValidatorReturn
 
 export enum FieldValidationStatus {
@@ -23,11 +23,11 @@ export enum FieldType {
   NONE = 'NONE',
 }
 
-export interface FieldBase {
-  id: string
+export interface FieldBase<T> {
+  id: keyof T
   label: string
   fieldType: FieldType
-  validators: Array<ValidatorFn>
+  validators: Array<ValidatorFn<T>>
   disabled?: boolean
   defaultValue?: FieldValue
   placeholder?: string
@@ -41,27 +41,30 @@ export interface FieldContext {
   disable: boolean
 }
 
-export interface TextField extends FieldBase {
+export interface TextField<T> extends FieldBase<T> {
   fieldType: FieldType.TEXT
 }
 
-export interface HiddenField extends FieldBase {
+export interface HiddenField<T> extends FieldBase<T> {
   fieldType: FieldType.NONE
 }
 
-export interface CheckboxField extends FieldBase {
+export interface CheckboxField<T> extends FieldBase<T> {
   fieldType: FieldType.CHECKBOX
 }
 
-export interface SelectField extends FieldBase {
+export interface SelectField<T> extends FieldBase<T> {
   fieldType: FieldType.SELECT
   collection: string
   firestore: firebase.firestore.Firestore
 }
 
 // all fields
-export type Field = TextField | SelectField | CheckboxField | HiddenField
-export type FormConfig<T> = Record<keyof T, Field>
+export type Field<T> =
+  | TextField<T>
+  | SelectField<T>
+  | CheckboxField<T>
+  | HiddenField<T>
 
 export enum FormStates {
   ACTIVE = 'ACTIVE',
@@ -94,29 +97,29 @@ export enum FormActions {
   UPDATE_FIELD = 'UPDATE_FIELD',
 }
 
-export type FormMachineEventUpdate = {
+export type FormMachineEventUpdate<T> = {
   type: FormActions.UPDATE_FIELD
-  id: string
+  id: keyof T
   value: FieldValue
 }
 
-export type FormMachineEvents =
-  | { type: FormActions.HYDRATE; fields: Field[] }
+export type FormMachineEvents<T> =
+  | { type: FormActions.HYDRATE; fields: Field<T>[] }
   | { type: FormActions.CHANGE; id: string; value: FieldValue }
   | { type: FormActions.VALIDATE }
   | { type: FormActions.SUBMIT }
   | { type: FormActions.RESET }
-  | { type: FormActions.INJECT_FIELD; id: string; field: Field }
-  | FormMachineEventUpdate
+  | { type: FormActions.INJECT_FIELD; id: string; field: Field<T> }
+  | FormMachineEventUpdate<T>
 
-export interface FormContext {
-  fields: FieldContextObject
-  fieldConfigs: FieldConfigObject
+export interface FormContext<T> {
+  fields: FieldContextObject<T>
+  fieldConfigs: FieldConfigObject<T>
   validity: boolean
   saved: boolean
 }
 
-export const FormInitialContext: FormContext = {
+export const FormInitialContext: FormContext<any> = {
   fields: {},
   fieldConfigs: {},
   validity: true,
@@ -129,9 +132,9 @@ export enum FormService {
 }
 
 // util types
-export type FieldContextObject = Record<string, FieldContext>
-export type FieldConfigObject = Record<string, Field>
+export type FieldContextObject<T> = Record<keyof T, FieldContext>
+export type FieldConfigObject<T> = Record<keyof T, Field<T>>
 export type FieldValueObject = Record<string, FieldValue>
-export type UpdateField = (id: string, value: FieldValue) => void
+export type UpdateField<T> = (id: keyof T, value: FieldValue) => void
 export type SubmitProcess = (data: FieldValueObject) => Promise<any>
 export type FetchProcess = () => Promise<Partial<FieldValueObject>>

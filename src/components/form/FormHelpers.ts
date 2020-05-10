@@ -7,10 +7,10 @@ import {
   ValidatorReturn,
 } from './FormTypes'
 
-export function updateField(
-  ctx: FormContext,
-  event: FormMachineEventUpdate
-): Partial<FormContext> {
+export function updateField<T>(
+  ctx: FormContext<T>,
+  event: FormMachineEventUpdate<T>
+): Partial<FormContext<T>> {
   const { fields } = ctx
   const { id, value } = event
   const field = fields[id]
@@ -22,41 +22,46 @@ export function updateField(
   return { fields: { ...fields, [id]: { ...newField, valid, errorMessage } } }
 }
 
-export function transferData(ctx: FormContext): FieldValueObject {
+export function transferData<T>(ctx: FormContext<T>): FieldValueObject {
   const { fields } = ctx
   let result = {}
-  Object.keys(fields).forEach((id: string) => {
-    const { value } = fields[id]
+  Object.keys(fields).forEach((id) => {
+    const kId = id as keyof T
+    const { value } = fields[kId]
     result = { ...result, [id]: value }
   })
   return result
 }
 
 // to be implemented
-export function validateFields(ctx: FormContext): Partial<FormContext> {
+export function validateFields<T>(
+  ctx: FormContext<T>
+): Partial<FormContext<T>> {
   const { fields } = ctx
   let validity: boolean = true
-  let newFields: FieldContextObject = {}
+  let newFields: FieldContextObject<T> = {} as any
 
-  Object.keys(fields).forEach((id: string) => {
-    const field = fields[id]
+  Object.keys(fields).forEach((id) => {
+    const kId = id as keyof T
+    const field = fields[kId]
     const { valid, errorMessage } = validateField(field, ctx)
     if (!valid) {
       validity = false
     }
-    newFields[id] = { ...field, valid, errorMessage }
+    newFields[kId] = { ...field, valid, errorMessage }
   })
 
   return { validity, fields: newFields }
 }
 
-export function validateField(
+export function validateField<T>(
   fieldContext: FieldContext,
-  ctx: FormContext
+  ctx: FormContext<T>
 ): ValidatorReturn {
   const { fieldConfigs, fields } = ctx
   const { id } = fieldContext
-  const fieldConfig = fieldConfigs[id]
+  const kId = id as keyof T
+  const fieldConfig = fieldConfigs[kId]
   const { validators = [] } = fieldConfig
 
   let res: ValidatorReturn = { valid: true, errorMessage: '' }
@@ -73,11 +78,11 @@ export function validateField(
   return res
 }
 
-export function initialFieldsContext(
+export function initialFieldsContext<T>(
   values: FieldValueObject
-): Partial<FormContext> {
+): Partial<FormContext<T>> {
   debugger
-  let fields: FieldContextObject = {}
+  let fields: FieldContextObject<T> = {} as any
   Object.keys(values).forEach((id) => {
     const value = values[id]
     const context: FieldContext = {

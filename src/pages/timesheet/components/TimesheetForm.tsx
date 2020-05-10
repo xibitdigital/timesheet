@@ -2,8 +2,8 @@ import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import React from 'react'
 import {
+  FieldConfigObject,
   FieldType,
-  FormConfig,
   SubmitProcess,
 } from '../../../components/form/FormTypes'
 import { requiredValidator } from '../../../components/form/Validators'
@@ -21,7 +21,7 @@ interface ClientFormProps {
   addClient: SubmitProcess
 }
 
-const ClientFormConfig: FormConfig<Omit<TimeSheet, 'workedDays'>> = {
+const ClientFormConfig: FieldConfigObject<Omit<TimeSheet, 'workedDays'>> = {
   id: {
     // this should be removed
     fieldType: FieldType.NONE,
@@ -54,7 +54,7 @@ const ClientFormConfig: FormConfig<Omit<TimeSheet, 'workedDays'>> = {
   year: {
     fieldType: FieldType.TEXT,
     label: 'Post Code',
-    id: 'postcode',
+    id: 'year',
     validators: [requiredValidator],
   },
 }
