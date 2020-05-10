@@ -4,7 +4,7 @@ import { FieldFactory } from '../../../components/form/FieldFactory'
 import { UseForm } from '../../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
 import { Client } from '../../../shared/collections'
-import { ClientFormConfig, DefaultFormValues } from './Client.config'
+import { ClientFormConfig, DefaultFormValues } from './ClientForm.config'
 
 interface ClientFormProps {
   saveData: SubmitProcess

@@ -15,57 +15,6 @@ export enum FieldValidationStatus {
 
 export type FieldValue = string | boolean | undefined
 
-export enum FieldType {
-  TEXT = 'TEXT',
-  DATE = 'DATE',
-  CHECKBOX = 'CHECKBOX',
-  SELECT = 'SELECT',
-  NONE = 'NONE',
-}
-
-export interface FieldBase<T> {
-  id: keyof T
-  label: string
-  fieldType: FieldType
-  validators: Array<ValidatorFn<T>>
-  disabled?: boolean
-  defaultValue?: FieldValue
-  placeholder?: string
-}
-
-export interface FieldContext {
-  id: string
-  value: FieldValue
-  valid: boolean
-  errorMessage: string
-  disable: boolean
-}
-
-export interface TextField<T> extends FieldBase<T> {
-  fieldType: FieldType.TEXT
-}
-
-export interface HiddenField<T> extends FieldBase<T> {
-  fieldType: FieldType.NONE
-}
-
-export interface CheckboxField<T> extends FieldBase<T> {
-  fieldType: FieldType.CHECKBOX
-}
-
-export interface SelectField<T> extends FieldBase<T> {
-  fieldType: FieldType.SELECT
-  collection: string
-  firestore: firebase.firestore.Firestore
-}
-
-// all fields
-export type Field<T> =
-  | TextField<T>
-  | SelectField<T>
-  | CheckboxField<T>
-  | HiddenField<T>
-
 export enum FormStates {
   ACTIVE = 'ACTIVE',
   VALID = 'VALID',
@@ -138,3 +87,55 @@ export type FieldValueObject = Record<string, FieldValue>
 export type UpdateField<T> = (id: keyof T, value: FieldValue) => void
 export type SubmitProcess = (data: FieldValueObject) => Promise<any>
 export type FetchProcess = () => Promise<Partial<FieldValueObject>>
+
+// fields
+export enum FieldType {
+  TEXT = 'TEXT',
+  DATE = 'DATE',
+  CHECKBOX = 'CHECKBOX',
+  SELECT = 'SELECT',
+  NONE = 'NONE',
+}
+
+export interface FieldBase<T> {
+  id: keyof T
+  label: string
+  fieldType: FieldType
+  validators: Array<ValidatorFn<T>>
+  disabled?: boolean
+  defaultValue?: FieldValue
+  placeholder?: string
+}
+
+export interface FieldContext {
+  id: string
+  value: FieldValue
+  valid: boolean
+  errorMessage: string
+  disable: boolean
+}
+
+export interface TextField<T> extends FieldBase<T> {
+  fieldType: FieldType.TEXT
+}
+
+export interface HiddenField<T> extends FieldBase<T> {
+  fieldType: FieldType.NONE
+}
+
+export interface CheckboxField<T> extends FieldBase<T> {
+  fieldType: FieldType.CHECKBOX
+}
+
+export interface SelectField<T> extends FieldBase<T> {
+  fieldType: FieldType.SELECT
+  collection: string
+  firestore: firebase.firestore.Firestore
+}
+
+// all fields
+export type Field<T> =
+  | TextField<T>
+  | SelectField<T>
+  | CheckboxField<T>
+  | HiddenField<T>
