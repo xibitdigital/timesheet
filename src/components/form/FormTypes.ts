@@ -94,6 +94,7 @@ export enum FieldType {
   DATE = 'DATE',
   CHECKBOX = 'CHECKBOX',
   SELECT = 'SELECT',
+  COLLECTION_SELECT = 'COLLECTION_SELECT',
   NONE = 'NONE',
 }
 
@@ -129,6 +130,11 @@ export interface CheckboxField<T> extends FieldBase<T> {
 
 export interface SelectField<T> extends FieldBase<T> {
   fieldType: FieldType.SELECT
+  options: { id: string; label: string }[]
+}
+
+export interface CollectionSelectField<T> extends FieldBase<T> {
+  fieldType: FieldType.COLLECTION_SELECT
   collection: string
   firestore: firebase.firestore.Firestore
 }
@@ -137,5 +143,6 @@ export interface SelectField<T> extends FieldBase<T> {
 export type Field<T> =
   | TextField<T>
   | SelectField<T>
+  | CollectionSelectField<T>
   | CheckboxField<T>
   | HiddenField<T>

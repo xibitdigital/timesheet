@@ -5,6 +5,7 @@ import {
 import { requiredValidator } from '../../../components/form/Validators'
 import { TimeSheet, COLLECTIONS } from '../../../shared/collections'
 import { FIRESTORE } from '../../../shared/firebase.config'
+import { range } from 'ramda'
 
 export const DefaultFormValues: TimeSheet = {
   id: '',
@@ -23,7 +24,7 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
     validators: [],
   },
   clientId: {
-    fieldType: FieldType.SELECT,
+    fieldType: FieldType.COLLECTION_SELECT,
     label: 'clientId',
     id: 'clientId',
     firestore: FIRESTORE,
@@ -31,7 +32,7 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
     validators: [requiredValidator],
   },
   projectId: {
-    fieldType: FieldType.SELECT,
+    fieldType: FieldType.COLLECTION_SELECT,
     label: 'projectId',
     id: 'projectId',
     firestore: FIRESTORE,
@@ -39,15 +40,23 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
     validators: [requiredValidator],
   },
   month: {
-    fieldType: FieldType.TEXT,
+    fieldType: FieldType.SELECT,
     label: 'Month',
     id: 'month',
+    options: range(1, 12).map((i) => ({
+      id: i.toString(),
+      label: i.toString(),
+    })), // move to utils
     validators: [requiredValidator],
   },
   year: {
-    fieldType: FieldType.TEXT,
-    label: 'Post Code',
+    fieldType: FieldType.SELECT,
+    label: 'Year',
     id: 'year',
+    options: range(2019, 2050).map((i) => ({
+      id: i.toString(),
+      label: i.toString(),
+    })), // move to utils
     validators: [requiredValidator],
   },
 }

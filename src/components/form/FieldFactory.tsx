@@ -14,6 +14,8 @@ import {
   FieldConfigObject,
   FieldContextObject,
 } from './FormTypes'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -79,6 +81,21 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
           />
         )
       case FieldType.SELECT:
+        const { options } = config
+        return (
+          <Select
+            id={idSTring}
+            name={idSTring}
+            value={value}
+            aria-describedby={label}
+            onChange={handleSelectChange}
+          >
+            {options.map(({ id: optionId, label: optionLabel }) => (
+              <MenuItem value={optionId}>{optionLabel}</MenuItem>
+            ))}
+          </Select>
+        )
+      case FieldType.COLLECTION_SELECT:
         const { firestore, collection } = config
         return (
           <CollectionSelect
