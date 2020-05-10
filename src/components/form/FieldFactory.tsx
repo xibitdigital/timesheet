@@ -91,7 +91,9 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             onChange={handleSelectChange}
           >
             {options.map(({ id: optionId, label: optionLabel }) => (
-              <MenuItem value={optionId}>{optionLabel}</MenuItem>
+              <MenuItem key={optionId} value={optionId}>
+                {optionLabel}
+              </MenuItem>
             ))}
           </Select>
         )
