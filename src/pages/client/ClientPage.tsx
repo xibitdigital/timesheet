@@ -1,4 +1,4 @@
-import { Box } from '@material-ui/core'
+import { Box, Typography } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
@@ -33,10 +33,7 @@ export const ClientPage: React.FC = () => {
 
   return (
     <Fragment>
-      <h1>Client {error ? 'Error' : ''} </h1>
-      <Box>
-        {loading ? 'loading' : 'ok!'} {items?.length}
-      </Box>
+      <Typography variant="h2">Client</Typography>
       <Box>
         <ClientForm saveData={saveData} loadData={loadData} />
       </Box>
