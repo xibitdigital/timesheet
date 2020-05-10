@@ -10,6 +10,7 @@ import {
   Button,
 } from '@material-ui/core'
 import { Client } from '../../../shared/collections'
+import EditIcon from '@material-ui/icons/Edit'
 
 interface ClientListProps {
   loading: boolean
@@ -42,7 +43,9 @@ export const ClientList: React.FC<ClientListProps> = ({
                 </TableCell>
                 <TableCell>{doc.fullAddress}</TableCell>
                 <TableCell>
-                  <Button onClick={() => onSelect(doc.id)}>S</Button>
+                  <Button onClick={() => onSelect(doc.id)}>
+                    <EditIcon />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
