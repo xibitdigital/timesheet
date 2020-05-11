@@ -54,7 +54,7 @@ const NavBarMenu: React.FC<NavBarMenuProps> = ({
         onClose={handleMenuClose}
       >
         {menus.map(({ title, action }) => (
-          <MenuItem onClick={compose(action, handleMenuClose)}>
+          <MenuItem key={title} onClick={compose(action, handleMenuClose)}>
             {title}
           </MenuItem>
         ))}

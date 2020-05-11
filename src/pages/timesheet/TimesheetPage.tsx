@@ -1,41 +1,60 @@
 import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
-import { TimeSheet } from '../../shared/collections'
-import { COLLECTIONS, FIRESTORE } from '../../shared/firebase.config'
-import { ClientSelect } from '../client/components/ClientSelect'
+import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import {
+  COLLECTIONS,
+  TimeSheet,
+  TimeSheetCollectionItem,
+} from '../../shared/collections'
+import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
+import { getCurrentUserUid } from '../../shared/firebase.utils'
 
 export const TimesheetPage: React.FC = () => {
-  const [items, loading, error] = useCollectionData<TimeSheet>(
-    FIRESTORE.collection(COLLECTIONS.TIMESHEET),
+  // const history = useHistory()
+  const [user] = useAuthState(FIREBASE.auth())
+  const [items, loading, error] = useCollectionData<TimeSheetCollectionItem>(
+    FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
+      'owner',
+      '==',
+      user ? user.uid : ''
+    ),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   )
 
-  const addTimesheet = (newClient: Partial<TimeSheet>) => {
-    FIRESTORE.collection(COLLECTIONS.CLIENT).add(newClient)
+  const saveData: SubmitProcess = (data: Partial<TimeSheet>) => {
+    const owner = getCurrentUserUid()
+    if (owner) {
+      const newItem: Partial<TimeSheetCollectionItem> = { ...data, owner }
+      return FIRESTORE.collection(COLLECTIONS.TIMESHEET).add(newItem)
+    }
+    return Promise.reject()
   }
+
+  const loadData: FetchProcess = () => {
+    return Promise.reject()
+  }
+
+  // const handleSelect = (id: string) => {
+  //   history.push(`/client/${id}`)
+  // }
 
   return (
     <Fragment>
-      <h1>Client {error ? 'Error' : ''} </h1>
-      <div>
-        {loading ? 'loading' : 'ok!'} {items?.length}
-      </div>
+      <Typography variant="h2">Timesheets</Typography>
       <Box>
-        <TimesheetForm AddTimesheet={addTimesheet} />
+        <TimesheetForm saveData={saveData} loadData={loadData} />
       </Box>
       <Box>
-        {' '}
         <TimeSheetList loading={loading} items={items} />
-      </Box>
-      <Box>
-        <ClientSelect onChange={(id) => console.log(id)} />
       </Box>
       <BackButton />
     </Fragment>

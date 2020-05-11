@@ -1,57 +1,71 @@
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import React from 'react'
+import { FieldFactory } from '../../../components/form/FieldFactory'
+import { UseForm } from '../../../components/form/FormHook'
+import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
 import { TimeSheet } from '../../../shared/collections'
-import { ClientSelect } from '../../client/components/ClientSelect'
-
-const defaultFormValues: TimeSheet = {
-  clientId: '',
-  projectId: '',
-  month: '',
-  year: '',
-  workedDays: [],
-}
-
+import { DefaultFormValues, TimesheetFormConfig } from './TimesheetForm.config'
 interface TimesheetFormProps {
-  AddTimesheet: (newTimesheet: Partial<TimeSheet>) => void
+  loadData: FetchProcess
+  saveData: SubmitProcess
 }
 
 export const TimesheetForm: React.FC<TimesheetFormProps> = ({
-  AddTimesheet,
+  loadData,
+  saveData,
 }: TimesheetFormProps): JSX.Element => {
-  const [formValues, setFormValues] = React.useState({})
+  const { state, submit, reset, updateField } = UseForm<TimeSheet>(
+    TimesheetFormConfig,
+    DefaultFormValues,
+    saveData,
+    loadData
+  )
 
-  function handleFormChange(evt: React.FormEvent<HTMLFormElement>) {
-    const { name, value } = evt.target as any
-    setFormValues({ ...formValues, [name]: value })
-  }
-
-  function handleFormSubmit(evt: React.FormEvent<HTMLFormElement>) {
-    console.log('Submit')
-    AddTimesheet(formValues)
-    evt.preventDefault()
-  }
-
-  function handleFormReset(nextValue: React.FormEvent<HTMLFormElement>) {
-    console.log('Reset', nextValue)
-    setFormValues(defaultFormValues)
-  }
-
-  function handleSelectChange(value: string) {
-    setFormValues({ ...formValues, clientId: value })
-  }
+  const {
+    context: { fields },
+  } = state
 
   return (
-    <form
-      onChange={handleFormChange}
-      onReset={handleFormReset}
-      onSubmit={handleFormSubmit}
-    >
-      <ClientSelect onChange={handleSelectChange} />
+    <React.Fragment>
+      <FieldFactory
+        id="name"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="clientId"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="projectId"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="month"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
+        id="year"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
       <Box>
-        <Button type="submit">Submit</Button>
-        <Button type="reset">Reset</Button>
+        <Button type="submit" color="primary" onClick={submit}>
+          Submit
+        </Button>
+        <Button type="reset" onClick={reset}>
+          Reset
+        </Button>
       </Box>
-    </form>
+    </React.Fragment>
   )
 }

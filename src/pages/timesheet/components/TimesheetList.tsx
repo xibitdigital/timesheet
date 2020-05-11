@@ -7,11 +7,11 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
-import { TimeSheet } from '../../../shared/collections'
+import { TimeSheetCollectionItem } from '../../../shared/collections'
 
 interface TimesheetProps {
   loading: boolean
-  items: TimeSheet[] | undefined
+  items: TimeSheetCollectionItem[] | undefined
 }
 
 const handleEdit = (id: string | undefined) => () => {
@@ -27,6 +27,7 @@ export const TimeSheetList: React.FC<TimesheetProps> = ({
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell scope="col">Name</TableCell>
             <TableCell scope="col">Month</TableCell>
             <TableCell scope="col">Year</TableCell>
             <TableCell scope="col">Actions</TableCell>
@@ -35,11 +36,12 @@ export const TimeSheetList: React.FC<TimesheetProps> = ({
         <TableBody>
           {!loading &&
             items &&
-            items.map((doc: TimeSheet) => (
+            items.map((doc) => (
               <TableRow key={doc.id}>
                 <TableCell scope="row">
-                  <strong>{doc.month}</strong>
+                  <strong>{doc.name}</strong>
                 </TableCell>
+                <TableCell>{doc.month}</TableCell>
                 <TableCell>{doc.year}</TableCell>
                 <TableCell>
                   <IconButton onClick={handleEdit(doc.id)}>
