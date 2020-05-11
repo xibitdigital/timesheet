@@ -2,6 +2,8 @@ import { MenuItem, Select, SelectProps } from '@material-ui/core'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { FirebaseCollectionItem } from '../../../shared/collections'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { FIREBASE } from '../../../shared/firebase.config'
 
 interface CollectionSelectProps extends SelectProps {
   firestore: firebase.firestore.Firestore
@@ -12,9 +14,12 @@ interface CollectionSelectProps extends SelectProps {
 export const CollectionSelect: React.FC<CollectionSelectProps> = (
   props
 ): JSX.Element => {
+  const [user] = useAuthState(FIREBASE.auth())
   const { id, firestore, onChange, collection, label = '', value = '' } = props
   const [items, loading, error] = useCollectionData<FirebaseCollectionItem>(
-    firestore.collection(collection),
+    firestore
+      .collection(collection)
+      .where('owner', '==', user ? user?.uid : ''),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },

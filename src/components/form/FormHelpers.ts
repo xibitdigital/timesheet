@@ -22,19 +22,15 @@ export function updateField<T>(
   return { fields: { ...fields, [id]: { ...newField, valid, errorMessage } } }
 }
 
-export function transferData<T>(
-  ctx: FormContext<T>,
-  user: firebase.User | undefined
-): FieldValueObject {
+export function transferData<T>(ctx: FormContext<T>): FieldValueObject {
   const { fields } = ctx
-  const owner = user && user.uid ? user.uid : '' // TODO review this one
   let result = {}
   Object.keys(fields).forEach((id) => {
     const kId = id as keyof T
     const { value } = fields[kId]
     result = { ...result, [id]: value }
   })
-  return { ...result, owner } // add owner
+  return result
 }
 
 // to be implemented

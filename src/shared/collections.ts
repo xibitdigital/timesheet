@@ -2,6 +2,7 @@
 export interface FirebaseCollectionItem {
   id: string
   name: string
+  owner: string // security, this should be added by formHook when saving
 }
 
 export interface Item {

@@ -9,22 +9,34 @@ import {
   ClientCollectionItem,
   COLLECTIONS,
 } from '../../shared/collections'
-import { FIRESTORE } from '../../shared/firebase.config'
+import { FIRESTORE, FIREBASE } from '../../shared/firebase.config'
 import { ClientForm } from './components/ClientForm'
 import { ClientList } from './components/ClientList'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { getCurrentUserUid } from '../../shared/firebase.utils'
 
 export const ClientPage: React.FC = () => {
   const history = useHistory()
+  const [user] = useAuthState(FIREBASE.auth())
   const [items, loading, error] = useCollectionData<ClientCollectionItem>(
-    FIRESTORE.collection(COLLECTIONS.CLIENT),
+    FIRESTORE.collection(COLLECTIONS.CLIENT).where(
+      'owner',
+      '==',
+      user ? user.uid : ''
+    ),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   )
 
-  const saveData: SubmitProcess = (newClient: Partial<Client>) => {
-    return FIRESTORE.collection(COLLECTIONS.CLIENT).add(newClient)
+  const saveData: SubmitProcess = (data: Partial<Client>) => {
+    const owner = getCurrentUserUid()
+    if (owner) {
+      const newItem: Partial<ClientCollectionItem> = { ...data, owner }
+      return FIRESTORE.collection(COLLECTIONS.CLIENT).add(newItem)
+    }
+    return Promise.reject()
   }
 
   const loadData: FetchProcess = () => {

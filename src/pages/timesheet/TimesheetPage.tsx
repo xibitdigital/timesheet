@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
@@ -9,22 +10,33 @@ import {
   TimeSheet,
   TimeSheetCollectionItem,
 } from '../../shared/collections'
-import { FIRESTORE } from '../../shared/firebase.config'
+import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
+import { getCurrentUserUid } from '../../shared/firebase.utils'
 
 export const TimesheetPage: React.FC = () => {
   // const history = useHistory()
+  const [user] = useAuthState(FIREBASE.auth())
   const [items, loading, error] = useCollectionData<TimeSheetCollectionItem>(
-    FIRESTORE.collection(COLLECTIONS.TIMESHEET),
+    FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
+      'owner',
+      '==',
+      user ? user.uid : ''
+    ),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   )
 
-  const saveData: SubmitProcess = (timesheet: Partial<TimeSheet>) => {
-    return FIRESTORE.collection(COLLECTIONS.TIMESHEET).add(timesheet)
+  const saveData: SubmitProcess = (data: Partial<TimeSheet>) => {
+    const owner = getCurrentUserUid()
+    if (owner) {
+      const newItem: Partial<TimeSheetCollectionItem> = { ...data, owner }
+      return FIRESTORE.collection(COLLECTIONS.TIMESHEET).add(newItem)
+    }
+    return Promise.reject()
   }
 
   const loadData: FetchProcess = () => {
