@@ -1,35 +1,42 @@
-export interface Item {
+// ID is added by default by Firebase
+export interface FirebaseCollectionItem {
   id: string
+  name: string
+}
+
+export interface Item {
   name: string
   surname: string
 }
 
 export interface Client {
-  id: string
   name: string
   fullAddress: string
   postcode: string
 }
+export type ClientCollectionItem = Client & FirebaseCollectionItem
 
 export interface Project {
-  id: string
   name: string
   clientId: string
 }
+export type ProjectCollectionItem = Project & FirebaseCollectionItem
+
 export interface WorkedDay {
-  id: string
   day: string
   time: number
   timesheetId: string
 }
+export type WorkedDayCollectionItem = WorkedDay & FirebaseCollectionItem
 
 export interface TimeSheet {
-  id: string
+  name: string
   clientId: string
   projectId: string
   month: string
   year: string
 }
+export type TimeSheetCollectionItem = TimeSheet & FirebaseCollectionItem
 
 export enum COLLECTIONS {
   ITEMS = 'items',

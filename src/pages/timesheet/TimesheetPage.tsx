@@ -1,17 +1,21 @@
 import Box from '@material-ui/core/Box'
+import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
-import { TimeSheet, COLLECTIONS } from '../../shared/collections'
+import {
+  COLLECTIONS,
+  TimeSheet,
+  TimeSheetCollectionItem,
+} from '../../shared/collections'
 import { FIRESTORE } from '../../shared/firebase.config'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
-import Typography from '@material-ui/core/Typography'
 
 export const TimesheetPage: React.FC = () => {
   // const history = useHistory()
-  const [items, loading, error] = useCollectionData<TimeSheet>(
+  const [items, loading, error] = useCollectionData<TimeSheetCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.TIMESHEET),
     {
       idField: 'id',

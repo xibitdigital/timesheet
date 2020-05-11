@@ -29,6 +29,12 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
   return (
     <React.Fragment>
       <FieldFactory
+        id="name"
+        fields={fields}
+        config={TimesheetFormConfig}
+        onChange={updateField}
+      />
+      <FieldFactory
         id="clientId"
         fields={fields}
         config={TimesheetFormConfig}

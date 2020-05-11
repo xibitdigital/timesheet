@@ -1,20 +1,20 @@
-import React from 'react'
 import {
-  Paper,
-  TableContainer,
-  Table,
-  TableHead,
-  TableCell,
-  TableRow,
-  TableBody,
   Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@material-ui/core'
-import { Client } from '../../../shared/collections'
 import EditIcon from '@material-ui/icons/Edit'
+import React from 'react'
+import { ClientCollectionItem } from '../../../shared/collections'
 
 interface ClientListProps {
   loading: boolean
-  items: Client[] | undefined
+  items: ClientCollectionItem[] | undefined
   onSelect: (id: string) => void
 }
 
@@ -36,7 +36,7 @@ export const ClientList: React.FC<ClientListProps> = ({
         <TableBody>
           {!loading &&
             items &&
-            items.map((doc: Client) => (
+            items.map((doc) => (
               <TableRow key={doc.id}>
                 <TableCell scope="row">
                   <strong>{doc.name}</strong>

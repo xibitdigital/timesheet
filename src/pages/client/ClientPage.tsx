@@ -4,14 +4,18 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
-import { Client, COLLECTIONS } from '../../shared/collections'
+import {
+  Client,
+  ClientCollectionItem,
+  COLLECTIONS,
+} from '../../shared/collections'
 import { FIRESTORE } from '../../shared/firebase.config'
 import { ClientForm } from './components/ClientForm'
 import { ClientList } from './components/ClientList'
 
 export const ClientPage: React.FC = () => {
   const history = useHistory()
-  const [items, loading, error] = useCollectionData<Client>(
+  const [items, loading, error] = useCollectionData<ClientCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.CLIENT),
     {
       idField: 'id',

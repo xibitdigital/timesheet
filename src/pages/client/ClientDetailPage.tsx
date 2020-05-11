@@ -1,6 +1,6 @@
 import { Box } from '@material-ui/core'
 import React, { Fragment } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { Client, COLLECTIONS } from '../../shared/collections'

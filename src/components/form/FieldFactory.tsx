@@ -64,7 +64,6 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
     event: React.ChangeEvent<{ name?: string | undefined; value: unknown }>
   ) => {
     const value = event.target.value as any
-    debugger
     onChange(id, value as FieldValue)
   }
 

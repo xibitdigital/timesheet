@@ -22,33 +22,41 @@ export function updateField<T>(
   return { fields: { ...fields, [id]: { ...newField, valid, errorMessage } } }
 }
 
-export function transferData<T>(ctx: FormContext<T>): FieldValueObject {
+export function transferData<T>(
+  ctx: FormContext<T>,
+  user: firebase.User | undefined
+): FieldValueObject {
   const { fields } = ctx
+  const owner = user && user.uid ? user.uid : '' // TODO review this one
   let result = {}
   Object.keys(fields).forEach((id) => {
     const kId = id as keyof T
     const { value } = fields[kId]
     result = { ...result, [id]: value }
   })
-  return result
+  return { ...result, owner } // add owner
 }
 
 // to be implemented
 export function validateFields<T>(
   ctx: FormContext<T>
 ): Partial<FormContext<T>> {
-  const { fields } = ctx
+  const { fields, fieldConfigs } = ctx
   let validity: boolean = true
   let newFields: FieldContextObject<T> = {} as any
 
   Object.keys(fields).forEach((id) => {
     const kId = id as keyof T
     const field = fields[kId]
-    const { valid, errorMessage } = validateField(field, ctx)
-    if (!valid) {
-      validity = false
+    const fieldConfig = fieldConfigs[kId]
+    // after model change or upgrade we should prevent checking extraneous fields
+    if (field && fieldConfig) {
+      const { valid, errorMessage } = validateField(field, ctx)
+      if (!valid) {
+        validity = false
+      }
+      newFields[kId] = { ...field, valid, errorMessage }
     }
-    newFields[kId] = { ...field, valid, errorMessage }
   })
 
   return { validity, fields: newFields }
@@ -81,7 +89,6 @@ export function validateField<T>(
 export function initialFieldsContext<T>(
   values: FieldValueObject
 ): Partial<FormContext<T>> {
-  debugger
   let fields: FieldContextObject<T> = {} as any
   Object.keys(values).forEach((id) => {
     const value = values[id]

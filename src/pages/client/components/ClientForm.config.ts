@@ -4,20 +4,12 @@ import { FieldType } from '../../../components/form/FormTypes'
 import { requiredValidator } from '../../../components/form/Validators'
 
 export const DefaultFormValues: Client = {
-  id: '',
   name: '',
   fullAddress: '',
   postcode: '',
 }
 
 export const ClientFormConfig: FieldConfigObject<Client> = {
-  id: {
-    // this should be removed
-    fieldType: FieldType.TEXT,
-    label: '',
-    id: 'id',
-    validators: [],
-  },
   name: {
     fieldType: FieldType.TEXT,
     label: 'Name',

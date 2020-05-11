@@ -1,23 +1,15 @@
-import { FieldConfigObject } from './../../../components/form/FormTypes'
-import { Client } from '../../../shared/collections'
 import { FieldType } from '../../../components/form/FormTypes'
 import { requiredValidator } from '../../../components/form/Validators'
+import { Client } from '../../../shared/collections'
+import { FieldConfigObject } from './../../../components/form/FormTypes'
 
 export const DefaultFormValues: Client = {
-  id: '',
   name: '',
   fullAddress: '',
   postcode: '',
 }
 
 export const ClientFormConfig: FieldConfigObject<Client> = {
-  id: {
-    // this should be removed
-    fieldType: FieldType.TEXT,
-    label: '',
-    id: 'id',
-    validators: [],
-  },
   name: {
     fieldType: FieldType.TEXT,
     label: 'Name',

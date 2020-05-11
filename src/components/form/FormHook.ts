@@ -15,6 +15,8 @@ import {
   SubmitProcess,
   UpdateField,
 } from './FormTypes'
+import { useAuthState } from 'react-firebase-hooks/auth'
+import { FIREBASE } from '../../shared/firebase.config'
 
 export interface UseFormApi<T> {
   state: State<FormContext<T>, FormMachineEvents<T>, FormStateSchema>
@@ -29,6 +31,7 @@ export function UseForm<T>(
   submitProcess: SubmitProcess,
   fetchProcess: FetchProcess = () => Promise.resolve({})
 ): UseFormApi<T> {
+  const [user] = useAuthState(FIREBASE.auth())
   const ref = useRef<any>() // execute only once, please assign type !!!!!
   if (!ref.current) {
     // Do something that you only want to do once...
@@ -37,7 +40,7 @@ export function UseForm<T>(
       {
         services: {
           [FormService.SUBMIT_SERVICE]: (ctx) =>
-            submitProcess(transferData(ctx)),
+            submitProcess(transferData(ctx, user)),
           [FormService.FETCHING_SERVICE]: (ctx) => fetchProcess(),
         },
       },

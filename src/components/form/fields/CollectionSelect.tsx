@@ -1,7 +1,7 @@
 import { MenuItem, Select, SelectProps } from '@material-ui/core'
 import React from 'react'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { Client } from '../../../shared/collections'
+import { FirebaseCollectionItem } from '../../../shared/collections'
 
 interface CollectionSelectProps extends SelectProps {
   firestore: firebase.firestore.Firestore
@@ -13,7 +13,7 @@ export const CollectionSelect: React.FC<CollectionSelectProps> = (
   props
 ): JSX.Element => {
   const { id, firestore, onChange, collection, label = '', value = '' } = props
-  const [items, loading, error] = useCollectionData<Client>(
+  const [items, loading, error] = useCollectionData<FirebaseCollectionItem>(
     firestore.collection(collection),
     {
       idField: 'id',
@@ -21,7 +21,7 @@ export const CollectionSelect: React.FC<CollectionSelectProps> = (
     }
   )
 
-  const selectOptions = loading || !items || error ? [] : Array.from(items)
+  const selectOptions = loading || !items || error ? [] : items
 
   return (
     <Select

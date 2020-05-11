@@ -8,7 +8,7 @@ import { FIRESTORE } from '../../../shared/firebase.config'
 import { range } from 'ramda'
 
 export const DefaultFormValues: TimeSheet = {
-  id: '',
+  name: '',
   clientId: '',
   projectId: '',
   month: '',
@@ -16,12 +16,11 @@ export const DefaultFormValues: TimeSheet = {
 }
 
 export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
-  id: {
-    // this should be removed
-    fieldType: FieldType.NONE,
-    label: '',
-    id: 'id',
-    validators: [],
+  name: {
+    fieldType: FieldType.TEXT,
+    label: 'Name',
+    id: 'name',
+    validators: [requiredValidator],
   },
   clientId: {
     fieldType: FieldType.COLLECTION_SELECT,
