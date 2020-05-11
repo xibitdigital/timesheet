@@ -7,8 +7,8 @@ import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
 import { TimeSheet } from '../../../shared/collections'
 import { DefaultFormValues, TimesheetFormConfig } from './TimesheetForm.config'
 interface TimesheetFormProps {
-  loadData: FetchProcess
-  saveData: SubmitProcess
+  loadData: FetchProcess<TimeSheet>
+  saveData: SubmitProcess<TimeSheet>
 }
 
 export const TimesheetForm: React.FC<TimesheetFormProps> = ({

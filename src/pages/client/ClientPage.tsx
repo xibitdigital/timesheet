@@ -1,5 +1,6 @@
 import { Box, Typography } from '@material-ui/core'
 import React, { Fragment } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
@@ -9,11 +10,10 @@ import {
   ClientCollectionItem,
   COLLECTIONS,
 } from '../../shared/collections'
-import { FIRESTORE, FIREBASE } from '../../shared/firebase.config'
+import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
+import { getCurrentUserUid } from '../../shared/firebase.utils'
 import { ClientForm } from './components/ClientForm'
 import { ClientList } from './components/ClientList'
-import { useAuthState } from 'react-firebase-hooks/auth'
-import { getCurrentUserUid } from '../../shared/firebase.utils'
 
 export const ClientPage: React.FC = () => {
   const history = useHistory()
@@ -30,7 +30,7 @@ export const ClientPage: React.FC = () => {
     }
   )
 
-  const saveData: SubmitProcess = (data: Partial<Client>) => {
+  const saveData: SubmitProcess<Client> = (data) => {
     const owner = getCurrentUserUid()
     if (owner) {
       const newItem: Partial<ClientCollectionItem> = { ...data, owner }
@@ -39,7 +39,7 @@ export const ClientPage: React.FC = () => {
     return Promise.reject()
   }
 
-  const loadData: FetchProcess = () => {
+  const loadData: FetchProcess<Client> = () => {
     return Promise.reject()
   }
 

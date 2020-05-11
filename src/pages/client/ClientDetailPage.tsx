@@ -11,7 +11,7 @@ export const ClientDetailPage: React.FC = () => {
   const { id } = useParams()
   const history = useHistory()
 
-  const saveData: SubmitProcess = (newClient: Partial<Client>) => {
+  const saveData: SubmitProcess<Client> = (newClient) => {
     return FIRESTORE.collection(COLLECTIONS.CLIENT)
       .doc(id)
       .update(newClient)
@@ -21,7 +21,7 @@ export const ClientDetailPage: React.FC = () => {
       })
   }
 
-  const loadData: FetchProcess = () => {
+  const loadData: FetchProcess<Client> = () => {
     return new Promise((resolve, reject) => {
       FIRESTORE.collection(COLLECTIONS.CLIENT)
         .doc(id)

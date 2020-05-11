@@ -4,11 +4,15 @@ import {
   ValidatorReturn,
   FieldContextObject,
 } from './FormTypes'
+import { isNil } from 'ramda'
+import { isBoolean, isString, isNumber } from 'util'
 
 export type CompareValidator<T> = (compareTo: string) => ValidatorFn<T>
 
 enum ValidationMessage {
   'REQUIRED' = 'Required',
+  'MIN_LENGTH' = 'Too short',
+  'MAX_LENGTH' = 'Too long',
 }
 
 function returnSuccess(): ValidatorReturn {
@@ -23,9 +27,34 @@ export function requiredValidator<T>(
   field: FieldContext,
   fields: FieldContextObject<T>
 ): ValidatorReturn {
-  return field && field.value && field.value.toString().length > 0
-    ? returnSuccess()
-    : returnError(ValidationMessage.REQUIRED)
+  if (field && !isNil(field.value)) {
+    if (isString(field.value) && field.value.length > 0) {
+      return returnSuccess()
+    } else if (isNumber(field.value) || isBoolean(field.value)) {
+      return returnSuccess()
+    }
+  }
+  return returnError(ValidationMessage.REQUIRED)
+}
+
+export function minLengthValidator<T>(comparator: number) {
+  return (
+    field: FieldContext,
+    fields: FieldContextObject<T>
+  ): ValidatorReturn =>
+    field && field.value && field.value.toString().length >= comparator
+      ? returnSuccess()
+      : returnError(ValidationMessage.MIN_LENGTH)
+}
+
+export function maxLengthValidator<T>(comparator: number) {
+  return (
+    field: FieldContext,
+    fields: FieldContextObject<T>
+  ): ValidatorReturn =>
+    field && field.value && field.value.toString().length <= comparator
+      ? returnSuccess()
+      : returnError(ValidationMessage.MAX_LENGTH)
 }
 
 export function numberValidator<T>(

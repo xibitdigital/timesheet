@@ -7,8 +7,8 @@ import { Client } from '../../../shared/collections'
 import { ClientFormConfig, DefaultFormValues } from './ClientForm.config'
 
 interface ClientFormProps {
-  saveData: SubmitProcess
-  loadData: FetchProcess
+  saveData: SubmitProcess<Client>
+  loadData: FetchProcess<Client>
 }
 
 export const ClientForm: React.FC<ClientFormProps> = ({
