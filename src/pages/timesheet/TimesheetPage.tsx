@@ -18,7 +18,7 @@ import { TimeSheetList } from './components/TimesheetList'
 export const TimesheetPage: React.FC = () => {
   // const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
-  const [items, loading, error] = useCollectionData<TimeSheetCollectionItem>(
+  const [items, loading] = useCollectionData<TimeSheetCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
       'owner',
       '==',

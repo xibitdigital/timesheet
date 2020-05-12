@@ -18,7 +18,7 @@ import { ClientList } from './components/ClientList'
 export const ClientPage: React.FC = () => {
   const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
-  const [items, loading, error] = useCollectionData<ClientCollectionItem>(
+  const [items, loading] = useCollectionData<ClientCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.CLIENT).where(
       'owner',
       '==',
