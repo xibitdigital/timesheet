@@ -1,11 +1,10 @@
+import { range } from 'ramda'
 import {
   FieldConfigObject,
   FieldType,
 } from '../../../components/form/FormTypes'
 import { requiredValidator } from '../../../components/form/Validators'
-import { TimeSheet, COLLECTIONS } from '../../../shared/collections'
-import { FIRESTORE } from '../../../shared/firebase.config'
-import { range } from 'ramda'
+import { COLLECTIONS, TimeSheet } from '../../../shared/collections'
 
 export const DefaultFormValues: TimeSheet = {
   name: '',
