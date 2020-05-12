@@ -24,14 +24,12 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
   clientId: {
     fieldType: FieldType.COLLECTION_SELECT,
     label: 'clientId',
-    firestore: FIRESTORE,
     collection: COLLECTIONS.CLIENT,
     validators: [requiredValidator],
   },
   projectId: {
     fieldType: FieldType.COLLECTION_SELECT,
     label: 'projectId',
-    firestore: FIRESTORE,
     collection: COLLECTIONS.PROJECT,
     validators: [requiredValidator],
   },

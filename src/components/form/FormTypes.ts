@@ -1,3 +1,5 @@
+import { COLLECTIONS } from '../../shared/collections'
+
 export interface ValidatorReturn {
   valid: boolean
   errorMessage: string
@@ -134,8 +136,7 @@ export interface SelectField<T> extends FieldBase<T> {
 
 export interface CollectionSelectField<T> extends FieldBase<T> {
   fieldType: FieldType.COLLECTION_SELECT
-  collection: string
-  firestore: firebase.firestore.Firestore
+  collection: COLLECTIONS
 }
 
 // all fields
