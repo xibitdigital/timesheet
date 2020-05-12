@@ -99,7 +99,6 @@ export enum FieldType {
 }
 
 export interface FieldBase<T> {
-  id: keyof T
   label: string
   fieldType: FieldType
   validators: Array<ValidatorFn<T>>

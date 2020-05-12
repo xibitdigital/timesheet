@@ -13,19 +13,16 @@ export const ClientFormConfig: FieldConfigObject<Client> = {
   name: {
     fieldType: FieldType.TEXT,
     label: 'Name',
-    id: 'name',
     validators: [requiredValidator],
   },
   fullAddress: {
     fieldType: FieldType.TEXT,
     label: 'Address',
-    id: 'fullAddress',
     validators: [requiredValidator],
   },
   postcode: {
     fieldType: FieldType.TEXT,
     label: 'Post Code',
-    id: 'postcode',
     validators: [requiredValidator],
   },
 }

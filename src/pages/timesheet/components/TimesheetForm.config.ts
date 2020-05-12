@@ -19,13 +19,11 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
   name: {
     fieldType: FieldType.TEXT,
     label: 'Name',
-    id: 'name',
     validators: [requiredValidator],
   },
   clientId: {
     fieldType: FieldType.COLLECTION_SELECT,
     label: 'clientId',
-    id: 'clientId',
     firestore: FIRESTORE,
     collection: COLLECTIONS.CLIENT,
     validators: [requiredValidator],
@@ -33,7 +31,6 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
   projectId: {
     fieldType: FieldType.COLLECTION_SELECT,
     label: 'projectId',
-    id: 'projectId',
     firestore: FIRESTORE,
     collection: COLLECTIONS.PROJECT,
     validators: [requiredValidator],
@@ -41,7 +38,6 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
   month: {
     fieldType: FieldType.SELECT,
     label: 'Month',
-    id: 'month',
     options: range(1, 12).map((i) => ({
       id: i.toString(),
       label: i.toString(),
@@ -51,7 +47,6 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
   year: {
     fieldType: FieldType.SELECT,
     label: 'Year',
-    id: 'year',
     options: range(2019, 2050).map((i) => ({
       id: i.toString(),
       label: i.toString(),

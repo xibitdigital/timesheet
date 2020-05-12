@@ -32,7 +32,6 @@ export function transferData<T>(ctx: FormContext<T>): T {
   return result as T
 }
 
-// to be implemented
 export function validateFields<T>(
   ctx: FormContext<T>
 ): Partial<FormContext<T>> {
