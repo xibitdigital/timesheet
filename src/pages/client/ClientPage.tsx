@@ -2,9 +2,9 @@ import { Box, Typography } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { ModalPanel } from '../../components/ModalPanel'
 import {
   Client,
   ClientCollectionItem,
@@ -16,8 +16,9 @@ import { ClientForm } from './ClientForm'
 import { ClientList } from './ClientList'
 
 export const ClientPage: React.FC = () => {
-  const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
+  const [modalOpen, setModalOpen] = React.useState(false)
+  const [documentId, setDocumentId] = React.useState('')
   const [items, loading] = useCollectionData<ClientCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.CLIENT).where(
       'owner',
@@ -43,8 +44,37 @@ export const ClientPage: React.FC = () => {
     return Promise.reject()
   }
 
+  const saveDocData: SubmitProcess<Client> = (newClient) => {
+    return FIRESTORE.collection(COLLECTIONS.CLIENT)
+      .doc(documentId)
+      .update(newClient)
+      .then((res) => {
+        setModalOpen(false)
+        return res
+      })
+  }
+
+  const loadDocData: FetchProcess<Client> = () => {
+    return new Promise((resolve, reject) => {
+      FIRESTORE.collection(COLLECTIONS.CLIENT)
+        .doc(documentId)
+        .get()
+        .then(
+          (doc) => {
+            resolve(doc.data())
+          },
+          () => reject({})
+        )
+    })
+  }
+
   const handleSelect = (id: string) => {
-    history.push(`/client/${id}`)
+    setDocumentId(id)
+    setModalOpen(true)
+  }
+
+  const handleClose = () => {
+    setModalOpen(false)
   }
 
   return (
@@ -56,6 +86,13 @@ export const ClientPage: React.FC = () => {
       <Box>
         <ClientList loading={loading} items={items} onSelect={handleSelect} />
       </Box>
+      <ModalPanel
+        title="Title"
+        description="Descr"
+        open={modalOpen}
+        onClose={handleClose}
+        body={<ClientForm saveData={saveDocData} loadData={loadDocData} />}
+      />
       <BackButton />
     </Fragment>
   )

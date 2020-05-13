@@ -2,12 +2,18 @@ import Button from '@material-ui/core/Button'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
 
-export const BackButton: React.FC = () => {
+interface BackButtonProps {
+  to?: string
+}
+
+export const BackButton: React.FC<BackButtonProps> = ({
+  to = '/',
+}: BackButtonProps) => {
   const history = useHistory()
-  const goToHomePage = () => history.push('/')
+  const handleOnButtonClick = () => history.push(to)
 
   return (
-    <Button type="button" onClick={goToHomePage}>
+    <Button type="button" onClick={handleOnButtonClick}>
       Go back
     </Button>
   )
