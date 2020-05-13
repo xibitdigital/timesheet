@@ -70,13 +70,13 @@ export type FormMachineEvents<T> =
 
 export interface FormContext<T> {
   fields: FieldConfigObject<T>
-  fieldsConfig: FieldConfigObject<T>
+  fieldsDefaults: FieldValueObject<T>
   validity: boolean
 }
 
 export const FormInitialContext: FormContext<any> = {
   fields: {},
-  fieldsConfig: {},
+  fieldsDefaults: {},
   validity: false,
 }
 

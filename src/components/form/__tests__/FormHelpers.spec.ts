@@ -15,35 +15,27 @@ describe('FormHelpers', () => {
   const formContext: FormContext<Model> = {
     fields: {
       name: {
+        fieldType: FieldType.TEXT,
+        label: 'Name',
         id: 'name',
         value: 'me',
-        valid: true,
+        error: false,
         errorMessage: '',
         disabled: false,
-      },
-      surname: {
-        id: 'surname',
-        value: '',
-        valid: true,
-        errorMessage: '',
-        disabled: false,
-      },
-    },
-    fieldConfigs: {
-      name: {
-        fieldType: FieldType.TEXT,
-        id: 'name',
-        label: '',
         validators: [requiredValidator],
       },
       surname: {
         fieldType: FieldType.TEXT,
+        label: 'Surname',
         id: 'surname',
-        label: '',
-        validators: [],
+        value: '',
+        error: false,
+        errorMessage: '',
+        disabled: false,
+        validators: [requiredValidator],
       },
     },
-    fieldDefaults: {
+    fieldsDefaults: {
       name: '',
       surname: '',
     },
@@ -82,10 +74,10 @@ describe('FormHelpers', () => {
         value: 'newValue',
       }
       const res: ValidatorReturn = validateField(
-        formContext.fields.name,
-        formContext
+        formContext,
+        formContext.fields.name
       )
-      expect(res).toEqual({ errorMessage: '', valid: true })
+      expect(res).toEqual({ errorMessage: '', error: false })
     })
   })
 })

@@ -5,6 +5,7 @@ import {
   FormMachineEventUpdate,
   ValidatorReturn,
   FormConfig,
+  FieldValueObject,
 } from './FormTypes'
 
 export function updateField<T>(
@@ -82,16 +83,15 @@ export function initialFieldsContext<T extends {}>(
   formConfig: FormConfig<T>
 ): Partial<FormContext<T>> {
   let fields: FieldConfigObject<T> = {} as any
-  let fieldsConfig: FieldConfigObject<T> = {} as any
+  let fieldsDefaults: FieldValueObject<T> = {} as any
 
   formConfig.forEach((fieldConfig) => {
-    const { id } = fieldConfig
+    const { id, value } = fieldConfig
     fields = { ...fields, [id]: { ...fieldConfig, error: false } }
-    fieldsConfig = { ...fieldsConfig, [id]: { ...fieldConfig } }
+    fieldsDefaults = { ...fieldsDefaults, [id]: value }
   })
 
-  debugger
-  return { fields, fieldsConfig }
+  return { fields, fieldsDefaults }
 }
 
 export function mergeFetchedData<T extends {}>(
@@ -110,12 +110,12 @@ export function mergeFetchedData<T extends {}>(
 }
 
 export function resetContext<T>(ctx: FormContext<T>): Partial<FormContext<T>> {
-  const { fields, fieldsConfig } = ctx
+  const { fields, fieldsDefaults } = ctx
   let newFields: FieldConfigObject<T> = {} as any
 
   Object.keys(fields).forEach((id) => {
     const kId = id as keyof T
-    const value = fieldsConfig[kId].value
+    const value = fieldsDefaults[kId]
     newFields = { ...newFields, [id]: { ...fields[kId], value } }
   })
   return { fields: newFields }
