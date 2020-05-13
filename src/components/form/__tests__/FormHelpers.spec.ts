@@ -1,4 +1,9 @@
-import { transferData, updateField, validateField } from '../FormHelpers'
+import {
+  transferData,
+  updateField,
+  validateField,
+  resetContext,
+} from '../FormHelpers'
 import { requiredValidator } from '../Validators'
 import {
   FieldType,
@@ -78,6 +83,13 @@ describe('FormHelpers', () => {
         formContext.fields.name
       )
       expect(res).toEqual({ errorMessage: '', error: false })
+    })
+  })
+
+  describe('resetContext()', () => {
+    it('should return new fields', () => {
+      const ctx: any = resetContext({ ...formContext })
+      expect(ctx.fields.name.value).toEqual('')
     })
   })
 })

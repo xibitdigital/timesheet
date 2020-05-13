@@ -41,7 +41,7 @@ export function getStateChart<T>(): MachineConfig<
             target: FormStates.VALIDATING_SUBMIT,
           },
           [FormActions.RESET]: {
-            actions: assign((ctx, event) => resetContext(ctx)),
+            actions: assign((ctx) => resetContext(ctx)),
           },
         },
       },
