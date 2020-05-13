@@ -127,7 +127,6 @@ export interface NumericField<T> extends FieldBase<T> {
 
 export interface HiddenField<T> extends FieldBase<T> {
   fieldType: FieldType.NONE
-  value: any // TODO fix types
 }
 
 export interface CheckboxField<T> extends FieldBase<T> {

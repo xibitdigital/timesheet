@@ -1,12 +1,12 @@
+import { transferData, updateField, validateField } from '../FormHelpers'
+import { requiredValidator } from '../Validators'
 import {
-  FormContext,
   FieldType,
-  FormMachineEventUpdate,
   FormActions,
+  FormContext,
+  FormMachineEventUpdate,
   ValidatorReturn,
 } from './../FormTypes'
-import { updateField, transferData, validateField } from '../FormHelpers'
-import { requiredValidator } from '../Validators'
 describe('FormHelpers', () => {
   interface Model {
     name: ''
