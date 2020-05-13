@@ -38,10 +38,10 @@ export const ClientDetailPage: React.FC = () => {
   return (
     <Fragment>
       <h1>Client Details {id}</h1>
-      <Box>
+      <Box paddingTop={3} paddingBottom={3}>
         <ClientForm saveData={saveData} loadData={loadData} />
       </Box>
-      <BackButton />
+      <BackButton to="/client" />
     </Fragment>
   )
 }
