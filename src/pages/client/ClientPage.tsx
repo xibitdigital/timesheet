@@ -87,8 +87,8 @@ export const ClientPage: React.FC = () => {
         <ClientList loading={loading} items={items} onSelect={handleSelect} />
       </Box>
       <ModalPanel
-        title="Title"
-        description="Descr"
+        title="Edit Client"
+        description="Amend data and press Submit"
         open={modalOpen}
         onClose={handleClose}
         body={<ClientForm saveData={saveDocData} loadData={loadDocData} />}
