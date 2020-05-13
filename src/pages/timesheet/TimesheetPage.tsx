@@ -1,9 +1,9 @@
 import Box from '@material-ui/core/Box'
+import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { ModalPanel } from '../../components/ModalPanel'
@@ -16,10 +16,8 @@ import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { TimesheetForm } from './TimesheetForm'
 import { TimeSheetList } from './TimesheetList'
 import { fetchTimeSheetDoc, upsertTimeSheetDoc } from './TimesheetUtils'
-import Button from '@material-ui/core/Button'
 
 export const TimesheetPage: React.FC = () => {
-  const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
   const [modalOpen, setModalOpen] = React.useState(false)
   const [documentId, setDocumentId] = React.useState('')
