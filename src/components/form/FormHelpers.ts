@@ -1,7 +1,6 @@
 import {
   FieldContext,
   FieldContextObject,
-  FieldValueObject,
   FormContext,
   FormMachineEventUpdate,
   ValidatorReturn,
@@ -22,7 +21,7 @@ export function updateField<T>(
   return { fields: { ...fields, [id]: { ...newField, valid, errorMessage } } }
 }
 
-export function transferData<T>(ctx: FormContext<T>): FieldValueObject {
+export function transferData<T>(ctx: FormContext<T>): T {
   const { fields } = ctx
   let result = {}
   Object.keys(fields).forEach((id) => {
@@ -30,10 +29,9 @@ export function transferData<T>(ctx: FormContext<T>): FieldValueObject {
     const { value } = fields[kId]
     result = { ...result, [id]: value }
   })
-  return result
+  return result as T
 }
 
-// to be implemented
 export function validateFields<T>(
   ctx: FormContext<T>
 ): Partial<FormContext<T>> {
@@ -82,20 +80,21 @@ export function validateField<T>(
   return res
 }
 
-export function initialFieldsContext<T>(
-  values: FieldValueObject
+export function initialFieldsContext<T extends {}>(
+  fieldDefaults: T
 ): Partial<FormContext<T>> {
   let fields: FieldContextObject<T> = {} as any
-  Object.keys(values).forEach((id) => {
-    const value = values[id]
+
+  Object.keys(fieldDefaults).forEach((id) => {
+    const value = (fieldDefaults as any)[id] // TODO fix this one
     const context: FieldContext = {
       id,
       value,
       valid: true,
       errorMessage: '',
-      disable: false,
+      disabled: false,
     }
     fields = { ...fields, [id]: context }
   })
-  return { fields }
+  return { fields, fieldDefaults }
 }

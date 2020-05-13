@@ -5,11 +5,6 @@ export interface FirebaseCollectionItem {
   owner: string // security, this should be added by formHook when saving
 }
 
-export interface Item {
-  name: string
-  surname: string
-}
-
 export interface Client {
   name: string
   fullAddress: string

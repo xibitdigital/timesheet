@@ -97,14 +97,13 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
           </Select>
         )
       case FieldType.COLLECTION_SELECT:
-        const { firestore, collection } = config
+        const { collection } = config
         return (
           <CollectionSelect
             id={idSTring}
             name={idSTring}
             value={value}
             label={label}
-            firestore={firestore}
             collection={collection}
             onChange={handleSelectChange}
           />

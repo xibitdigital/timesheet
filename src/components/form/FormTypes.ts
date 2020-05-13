@@ -1,3 +1,5 @@
+import { COLLECTIONS } from '../../shared/collections'
+
 export interface ValidatorReturn {
   valid: boolean
   errorMessage: string
@@ -13,7 +15,7 @@ export enum FieldValidationStatus {
   INVALID = 'INVALID',
 }
 
-export type FieldValue = string | boolean | undefined
+export type FieldValue = string | boolean | number | undefined
 
 export enum FormStates {
   ACTIVE = 'ACTIVE',
@@ -64,15 +66,15 @@ export type FormMachineEvents<T> =
 export interface FormContext<T> {
   fields: FieldContextObject<T>
   fieldConfigs: FieldConfigObject<T>
+  fieldDefaults: T
   validity: boolean
-  saved: boolean
 }
 
 export const FormInitialContext: FormContext<any> = {
   fields: {},
   fieldConfigs: {},
+  fieldDefaults: {},
   validity: true,
-  saved: false,
 }
 
 export enum FormService {
@@ -83,10 +85,10 @@ export enum FormService {
 // util types
 export type FieldContextObject<T> = Record<keyof T, FieldContext>
 export type FieldConfigObject<T> = Record<keyof T, Field<T>>
-export type FieldValueObject = Record<string, FieldValue>
+export type FieldValueObject<T> = Record<keyof T, FieldValue>
 export type UpdateField<T> = (id: keyof T, value: FieldValue) => void
-export type SubmitProcess = (data: FieldValueObject) => Promise<any>
-export type FetchProcess = () => Promise<Partial<FieldValueObject>>
+export type SubmitProcess<T> = (data: T) => Promise<any>
+export type FetchProcess<T> = () => Promise<Partial<T>>
 
 // fields
 export enum FieldType {
@@ -99,7 +101,6 @@ export enum FieldType {
 }
 
 export interface FieldBase<T> {
-  id: keyof T
   label: string
   fieldType: FieldType
   validators: Array<ValidatorFn<T>>
@@ -113,7 +114,7 @@ export interface FieldContext {
   value: FieldValue
   valid: boolean
   errorMessage: string
-  disable: boolean
+  disabled: boolean
 }
 
 export interface TextField<T> extends FieldBase<T> {
@@ -135,8 +136,7 @@ export interface SelectField<T> extends FieldBase<T> {
 
 export interface CollectionSelectField<T> extends FieldBase<T> {
   fieldType: FieldType.COLLECTION_SELECT
-  collection: string
-  firestore: firebase.firestore.Firestore
+  collection: COLLECTIONS
 }
 
 // all fields

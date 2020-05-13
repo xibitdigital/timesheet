@@ -11,14 +11,14 @@ import {
   TimeSheetCollectionItem,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
+import { getCurrentUserUid } from '../../shared/firebase.utils'
 import { TimesheetForm } from './components/TimesheetForm'
 import { TimeSheetList } from './components/TimesheetList'
-import { getCurrentUserUid } from '../../shared/firebase.utils'
 
 export const TimesheetPage: React.FC = () => {
   // const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
-  const [items, loading, error] = useCollectionData<TimeSheetCollectionItem>(
+  const [items, loading] = useCollectionData<TimeSheetCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
       'owner',
       '==',
@@ -30,7 +30,7 @@ export const TimesheetPage: React.FC = () => {
     }
   )
 
-  const saveData: SubmitProcess = (data: Partial<TimeSheet>) => {
+  const saveData: SubmitProcess<TimeSheet> = (data) => {
     const owner = getCurrentUserUid()
     if (owner) {
       const newItem: Partial<TimeSheetCollectionItem> = { ...data, owner }
@@ -39,7 +39,7 @@ export const TimesheetPage: React.FC = () => {
     return Promise.reject()
   }
 
-  const loadData: FetchProcess = () => {
+  const loadData: FetchProcess<TimeSheet> = () => {
     return Promise.reject()
   }
 

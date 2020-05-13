@@ -23,11 +23,11 @@ export interface UseFormApi<T> {
   updateField: UpdateField<T>
 }
 
-export function UseForm<T>(
+export function UseForm<T extends {}>(
   fieldConfigs: FieldConfigObject<T>,
-  initialValue: Record<keyof T, FieldValue>,
-  submitProcess: SubmitProcess,
-  fetchProcess: FetchProcess = () => Promise.resolve({})
+  initialValue: T,
+  submitProcess: SubmitProcess<T>,
+  fetchProcess: FetchProcess<T> = () => Promise.resolve({})
 ): UseFormApi<T> {
   const ref = useRef<any>() // execute only once, please assign type !!!!!
   if (!ref.current) {

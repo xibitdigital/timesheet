@@ -1,4 +1,4 @@
-import { assign, MachineConfig } from 'xstate'
+import { assign, MachineConfig, DoneInvokeEvent } from 'xstate'
 import {
   updateField,
   validateFields,
@@ -39,13 +39,20 @@ export function getStateChart<T>(): MachineConfig<
           [FormActions.SUBMIT]: {
             target: FormStates.VALIDATING_SUBMIT,
           },
+          [FormActions.RESET]: {
+            actions: assign((ctx, event) =>
+              initialFieldsContext(ctx.fieldDefaults)
+            ),
+          },
         },
       },
       [FormStates.FETCHING]: {
         invoke: {
           src: FormService.FETCHING_SERVICE,
           onDone: {
-            actions: assign((ctx, event) => initialFieldsContext(event.data)),
+            actions: assign((ctx, event: DoneInvokeEvent<T>) =>
+              initialFieldsContext(event.data)
+            ),
             target: FormStates.ACTIVE,
           },
           onError: {
