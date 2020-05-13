@@ -15,10 +15,13 @@ import { getCurrentUserUid } from '../../shared/firebase.utils'
 import { TimesheetForm } from './TimesheetForm'
 import { TimeSheetList } from './TimesheetList'
 import { useHistory } from 'react-router-dom'
+import { ModalPanel } from '../../components/ModalPanel'
 
 export const TimesheetPage: React.FC = () => {
   const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
+  const [modalOpen, setModalOpen] = React.useState(false)
+  const [documentId, setDocumentId] = React.useState('')
   const [items, loading] = useCollectionData<TimeSheetCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
       'owner',
@@ -40,8 +43,37 @@ export const TimesheetPage: React.FC = () => {
     return Promise.reject()
   }
 
+  const saveDocData: SubmitProcess<TimeSheet> = (newClient) => {
+    return FIRESTORE.collection(COLLECTIONS.CLIENT)
+      .doc(documentId)
+      .update(newClient)
+      .then((res) => {
+        setModalOpen(false)
+        return res
+      })
+  }
+
+  const loadDocData: FetchProcess<TimeSheet> = () => {
+    return new Promise((resolve, reject) => {
+      FIRESTORE.collection(COLLECTIONS.CLIENT)
+        .doc(documentId)
+        .get()
+        .then(
+          (doc) => {
+            resolve(doc.data())
+          },
+          () => reject({})
+        )
+    })
+  }
+
   const handleSelect = (id: string) => {
-    history.push(`/timesheet/${id}`)
+    setDocumentId(id)
+    setModalOpen(true)
+  }
+
+  const handleClose = () => {
+    setModalOpen(false)
   }
 
   return (
@@ -57,6 +89,13 @@ export const TimesheetPage: React.FC = () => {
           onSelect={handleSelect}
         />
       </Box>
+      <ModalPanel
+        title="Edit Timesheet"
+        description="Amend data and press Submit"
+        open={modalOpen}
+        onClose={handleClose}
+        body={<TimesheetForm saveData={saveDocData} loadData={loadDocData} />}
+      />
       <BackButton />
     </Fragment>
   )

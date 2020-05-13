@@ -1,4 +1,4 @@
-import { Box, Typography } from '@material-ui/core'
+import { Box, Button, Typography } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
@@ -11,14 +11,15 @@ import {
   COLLECTIONS,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
-import { getCurrentUserUid } from '../../shared/firebase.utils'
 import { ClientForm } from './ClientForm'
 import { ClientList } from './ClientList'
+import { fetchClientDoc, upsertClientDoc } from './ClientUtils'
 
 export const ClientPage: React.FC = () => {
   const [user] = useAuthState(FIREBASE.auth())
   const [modalOpen, setModalOpen] = React.useState(false)
   const [documentId, setDocumentId] = React.useState('')
+
   const [items, loading] = useCollectionData<ClientCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.CLIENT).where(
       'owner',
@@ -32,40 +33,19 @@ export const ClientPage: React.FC = () => {
   )
 
   const saveData: SubmitProcess<Client> = (data) => {
-    const owner = getCurrentUserUid()
-    if (owner) {
-      const newItem: Partial<ClientCollectionItem> = { ...data, owner }
-      return FIRESTORE.collection(COLLECTIONS.CLIENT).add(newItem)
-    }
-    return Promise.reject()
+    return upsertClientDoc(documentId, data).then((res) => {
+      setModalOpen(false)
+      return res
+    })
   }
 
   const loadData: FetchProcess<Client> = () => {
-    return Promise.reject()
+    return fetchClientDoc(documentId)
   }
 
-  const saveDocData: SubmitProcess<Client> = (newClient) => {
-    return FIRESTORE.collection(COLLECTIONS.CLIENT)
-      .doc(documentId)
-      .update(newClient)
-      .then((res) => {
-        setModalOpen(false)
-        return res
-      })
-  }
-
-  const loadDocData: FetchProcess<Client> = () => {
-    return new Promise((resolve, reject) => {
-      FIRESTORE.collection(COLLECTIONS.CLIENT)
-        .doc(documentId)
-        .get()
-        .then(
-          (doc) => {
-            resolve(doc.data())
-          },
-          () => reject({})
-        )
-    })
+  const handleNew = () => {
+    setDocumentId('')
+    setModalOpen(true)
   }
 
   const handleSelect = (id: string) => {
@@ -81,7 +61,7 @@ export const ClientPage: React.FC = () => {
     <Fragment>
       <Typography variant="h2">Client</Typography>
       <Box>
-        <ClientForm saveData={saveData} loadData={loadData} />
+        <Button onClick={handleNew}>New Client</Button>
       </Box>
       <Box>
         <ClientList loading={loading} items={items} onSelect={handleSelect} />
@@ -91,7 +71,7 @@ export const ClientPage: React.FC = () => {
         description="Amend data and press Submit"
         open={modalOpen}
         onClose={handleClose}
-        body={<ClientForm saveData={saveDocData} loadData={loadDocData} />}
+        body={<ClientForm saveData={saveData} loadData={loadData} />}
       />
       <BackButton />
     </Fragment>
