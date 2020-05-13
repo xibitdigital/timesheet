@@ -3,19 +3,19 @@ import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { ModalPanel } from '../../components/ModalPanel'
 import {
   COLLECTIONS,
   TimeSheet,
   TimeSheetCollectionItem,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
-import { getCurrentUserUid } from '../../shared/firebase.utils'
 import { TimesheetForm } from './TimesheetForm'
 import { TimeSheetList } from './TimesheetList'
-import { useHistory } from 'react-router-dom'
-import { ModalPanel } from '../../components/ModalPanel'
+import { fetchTimeSheetDoc, upsertTimeSheetDoc } from './TimesheetUtils'
 
 export const TimesheetPage: React.FC = () => {
   const history = useHistory()
@@ -30,41 +30,14 @@ export const TimesheetPage: React.FC = () => {
     )
   )
 
-  const saveData: SubmitProcess<TimeSheet> = (data) => {
-    const owner = getCurrentUserUid()
-    if (owner) {
-      const newItem: Partial<TimeSheetCollectionItem> = { ...data, owner }
-      return FIRESTORE.collection(COLLECTIONS.TIMESHEET).add(newItem)
-    }
-    return Promise.reject()
+  const saveData: SubmitProcess<TimeSheet> = async (data) => {
+    const res = await upsertTimeSheetDoc(documentId, data)
+    setModalOpen(false)
+    return res
   }
 
   const loadData: FetchProcess<TimeSheet> = () => {
-    return Promise.reject()
-  }
-
-  const saveDocData: SubmitProcess<TimeSheet> = (newClient) => {
-    return FIRESTORE.collection(COLLECTIONS.CLIENT)
-      .doc(documentId)
-      .update(newClient)
-      .then((res) => {
-        setModalOpen(false)
-        return res
-      })
-  }
-
-  const loadDocData: FetchProcess<TimeSheet> = () => {
-    return new Promise((resolve, reject) => {
-      FIRESTORE.collection(COLLECTIONS.CLIENT)
-        .doc(documentId)
-        .get()
-        .then(
-          (doc) => {
-            resolve(doc.data())
-          },
-          () => reject({})
-        )
-    })
+    return fetchTimeSheetDoc(documentId)
   }
 
   const handleSelect = (id: string) => {
@@ -94,7 +67,7 @@ export const TimesheetPage: React.FC = () => {
         description="Amend data and press Submit"
         open={modalOpen}
         onClose={handleClose}
-        body={<TimesheetForm saveData={saveDocData} loadData={loadDocData} />}
+        body={<TimesheetForm saveData={saveData} loadData={loadData} />}
       />
       <BackButton />
     </Fragment>

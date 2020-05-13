@@ -1,3 +1,5 @@
+import { FieldValueObject } from '../components/form/FormTypes'
+
 // ID is added by default by Firebase
 export interface FirebaseCollectionItem {
   id: string
@@ -30,6 +32,7 @@ export interface TimeSheet {
   projectId: string
   month: string
   year: string
+  workedDays: FieldValueObject<WorkedDay>[] // nested worked day struct
 }
 export type TimeSheetCollectionItem = TimeSheet & FirebaseCollectionItem
 

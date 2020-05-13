@@ -1,9 +1,10 @@
 import {
-  FieldContext,
-  FieldContextObject,
+  Field,
+  FieldConfigObject,
   FormContext,
   FormMachineEventUpdate,
   ValidatorReturn,
+  FormConfig,
 } from './FormTypes'
 
 export function updateField<T>(
@@ -12,13 +13,14 @@ export function updateField<T>(
 ): Partial<FormContext<T>> {
   const { fields } = ctx
   const { id, value } = event
-  const field = fields[id]
+  const kId = id as keyof T
+  const field = fields[kId]
   // assign new value
-  const newField = { ...field, value }
+  const newField: any = { ...field, value } // TODO fix type here
   // running validations
-  const { valid, errorMessage } = validateField(newField, ctx)
+  const { error, errorMessage } = validateField(ctx, newField)
   // update just value, we should set dirty status as well
-  return { fields: { ...fields, [id]: { ...newField, valid, errorMessage } } }
+  return { fields: { ...fields, [id]: { ...newField, error, errorMessage } } }
 }
 
 export function transferData<T>(ctx: FormContext<T>): T {
@@ -35,21 +37,21 @@ export function transferData<T>(ctx: FormContext<T>): T {
 export function validateFields<T>(
   ctx: FormContext<T>
 ): Partial<FormContext<T>> {
-  const { fields, fieldConfigs } = ctx
+  const { fields } = ctx
   let validity: boolean = true
-  let newFields: FieldContextObject<T> = {} as any
+  let newFields: FieldConfigObject<T> = {} as any
 
   Object.keys(fields).forEach((id) => {
     const kId = id as keyof T
     const field = fields[kId]
-    const fieldConfig = fieldConfigs[kId]
     // after model change or upgrade we should prevent checking extraneous fields
-    if (field && fieldConfig) {
-      const { valid, errorMessage } = validateField(field, ctx)
-      if (!valid) {
+    if (field) {
+      const { error, errorMessage } = validateField(ctx, field)
+      if (error) {
         validity = false
       }
-      newFields[kId] = { ...field, valid, errorMessage }
+
+      newFields = { ...newFields, [id]: { ...field, error, errorMessage } }
     }
   })
 
@@ -57,21 +59,17 @@ export function validateFields<T>(
 }
 
 export function validateField<T>(
-  fieldContext: FieldContext,
-  ctx: FormContext<T>
+  ctx: FormContext<T>,
+  field: Field<T>
 ): ValidatorReturn {
-  const { fieldConfigs, fields } = ctx
-  const { id } = fieldContext
-  const kId = id as keyof T
-  const fieldConfig = fieldConfigs[kId]
-  const { validators = [] } = fieldConfig
-
-  let res: ValidatorReturn = { valid: true, errorMessage: '' }
+  const { fields } = ctx
+  const { validators = [] } = field
+  let res: ValidatorReturn = { error: false, errorMessage: '' }
 
   validators.some((validator) => {
-    const { valid, errorMessage } = validator(fieldContext, fields)
-    if (!valid) {
-      res = { valid, errorMessage }
+    const { error, errorMessage } = validator(field, fields)
+    if (error) {
+      res = { error, errorMessage }
       return true
     }
     return false
@@ -81,20 +79,44 @@ export function validateField<T>(
 }
 
 export function initialFieldsContext<T extends {}>(
-  fieldDefaults: T
+  formConfig: FormConfig<T>
 ): Partial<FormContext<T>> {
-  let fields: FieldContextObject<T> = {} as any
+  let fields: FieldConfigObject<T> = {} as any
+  let fieldsConfig: FieldConfigObject<T> = {} as any
 
-  Object.keys(fieldDefaults).forEach((id) => {
-    const value = (fieldDefaults as any)[id] // TODO fix this one
-    const context: FieldContext = {
-      id,
-      value,
-      valid: true,
-      errorMessage: '',
-      disabled: false,
-    }
-    fields = { ...fields, [id]: context }
+  formConfig.forEach((fieldConfig) => {
+    const { id } = fieldConfig
+    fields = { ...fields, [id]: { ...fieldConfig, error: false } }
+    fieldsConfig = { ...fieldsConfig, [id]: { ...fieldConfig } }
   })
-  return { fields, fieldDefaults }
+
+  debugger
+  return { fields, fieldsConfig }
+}
+
+export function mergeFetchedData<T extends {}>(
+  ctx: FormContext<T>,
+  data: T
+): Partial<FormContext<T>> {
+  const { fields } = ctx
+  let newFields: FieldConfigObject<T> = {} as any
+
+  Object.keys(fields).forEach((id) => {
+    const kId = id as keyof T
+    const value = data[kId]
+    newFields = { ...newFields, [id]: { ...fields[kId], value } }
+  })
+  return { fields: newFields }
+}
+
+export function resetContext<T>(ctx: FormContext<T>): Partial<FormContext<T>> {
+  const { fields, fieldsConfig } = ctx
+  let newFields: FieldConfigObject<T> = {} as any
+
+  Object.keys(fields).forEach((id) => {
+    const kId = id as keyof T
+    const value = fieldsConfig[kId].value
+    newFields = { ...newFields, [id]: { ...fields[kId], value } }
+  })
+  return { fields: newFields }
 }

@@ -5,9 +5,9 @@ import { initialFieldsContext, transferData } from './FormHelpers'
 import { FormStateSchema, getStateChart } from './FormStateChart'
 import {
   FetchProcess,
-  FieldConfigObject,
   FieldValue,
   FormActions,
+  FormConfig,
   FormContext,
   FormInitialContext,
   FormMachineEvents,
@@ -24,8 +24,7 @@ export interface UseFormApi<T> {
 }
 
 export function UseForm<T extends {}>(
-  fieldConfigs: FieldConfigObject<T>,
-  initialValue: T,
+  config: FormConfig<T>,
   submitProcess: SubmitProcess<T>,
   fetchProcess: FetchProcess<T> = () => Promise.resolve({})
 ): UseFormApi<T> {
@@ -43,8 +42,7 @@ export function UseForm<T extends {}>(
       },
       {
         ...FormInitialContext,
-        ...initialFieldsContext(initialValue),
-        fieldConfigs,
+        ...initialFieldsContext(config),
       }
     )
     ref.current = machine

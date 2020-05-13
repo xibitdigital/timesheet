@@ -3,19 +3,18 @@ import FormControl from '@material-ui/core/FormControl'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import Input from '@material-ui/core/Input'
 import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import React from 'react'
 import { CollectionSelect } from './fields/CollectionSelect'
 import {
   Field,
+  FieldConfigObject,
   FieldType,
   FieldValue,
   UpdateField,
-  FieldConfigObject,
-  FieldContextObject,
 } from './FormTypes'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,29 +30,25 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export interface FieldFactoryProps<T> {
   id: keyof T
-  config: FieldConfigObject<T>
-  fields: FieldContextObject<T>
+  fields: FieldConfigObject<T>
   onChange: UpdateField<T>
 }
 
 export function FieldFactory<T>(props: FieldFactoryProps<T>) {
-  const { id, onChange, config, fields } = props
+  const { id, onChange, fields } = props
   const classes = useStyles()
   const idSTring = id.toString()
 
   if (!fields) {
     return null
   }
-
-  const fieldConfig = config[id]
-  const { label } = fieldConfig
   const fieldContext = fields[id]
 
   if (!fieldContext) {
     console.error('Invalid Id', id)
   }
 
-  const { value, valid, errorMessage } = fieldContext
+  const { label, value, error, errorMessage } = fieldContext
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -136,9 +131,9 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
 
   return (
     fields && (
-      <FormControl error={!valid} className={classes.formControl}>
+      <FormControl error={error} className={classes.formControl}>
         <InputLabel htmlFor={idSTring}>{label}</InputLabel>
-        {getField(fieldConfig)}
+        {getField(fieldContext)}
         <FormHelperText>{errorMessage}</FormHelperText>
       </FormControl>
     )

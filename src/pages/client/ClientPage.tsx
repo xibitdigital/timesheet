@@ -32,11 +32,10 @@ export const ClientPage: React.FC = () => {
     }
   )
 
-  const saveData: SubmitProcess<Client> = (data) => {
-    return upsertClientDoc(documentId, data).then((res) => {
-      setModalOpen(false)
-      return res
-    })
+  const saveData: SubmitProcess<Client> = async (data) => {
+    const res = await upsertClientDoc(documentId, data)
+    setModalOpen(false)
+    return res
   }
 
   const loadData: FetchProcess<Client> = () => {

@@ -4,7 +4,7 @@ import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { WorkedDay } from '../../shared/collections'
-import { WorkedDayFormConfig, DefaultFormValues } from './WorkedDayForm.config'
+import { WorkedDayFormConfig } from './WorkedDayForm.config'
 
 interface WorkedDayFormProps {
   saveData: SubmitProcess<WorkedDay>
@@ -17,7 +17,6 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
 }: WorkedDayFormProps): JSX.Element => {
   const { state, submit, reset, updateField } = UseForm<WorkedDay>(
     WorkedDayFormConfig,
-    DefaultFormValues,
     saveData,
     loadData
   )
@@ -28,18 +27,8 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
 
   return (
     <React.Fragment>
-      <FieldFactory
-        id="day"
-        fields={fields}
-        config={WorkedDayFormConfig}
-        onChange={updateField}
-      />
-      <FieldFactory
-        id="time"
-        fields={fields}
-        config={WorkedDayFormConfig}
-        onChange={updateField}
-      />
+      <FieldFactory id="day" fields={fields} onChange={updateField} />
+      <FieldFactory id="time" fields={fields} onChange={updateField} />
       <Box>
         <Button type="submit" color="primary" onClick={submit}>
           Submit

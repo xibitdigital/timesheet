@@ -5,7 +5,7 @@ import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { TimeSheet } from '../../shared/collections'
-import { DefaultFormValues, TimesheetFormConfig } from './TimesheetForm.config'
+import { TimesheetFormConfig } from './TimesheetForm.config'
 interface TimesheetFormProps {
   loadData: FetchProcess<TimeSheet>
   saveData: SubmitProcess<TimeSheet>
@@ -17,7 +17,6 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
 }: TimesheetFormProps): JSX.Element => {
   const { state, submit, reset, updateField } = UseForm<TimeSheet>(
     TimesheetFormConfig,
-    DefaultFormValues,
     saveData,
     loadData
   )
@@ -28,36 +27,16 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
 
   return (
     <React.Fragment>
-      <FieldFactory
-        id="name"
-        fields={fields}
-        config={TimesheetFormConfig}
-        onChange={updateField}
-      />
-      <FieldFactory
-        id="clientId"
-        fields={fields}
-        config={TimesheetFormConfig}
-        onChange={updateField}
-      />
-      <FieldFactory
-        id="projectId"
-        fields={fields}
-        config={TimesheetFormConfig}
-        onChange={updateField}
-      />
-      <FieldFactory
-        id="month"
-        fields={fields}
-        config={TimesheetFormConfig}
-        onChange={updateField}
-      />
-      <FieldFactory
-        id="year"
-        fields={fields}
-        config={TimesheetFormConfig}
-        onChange={updateField}
-      />
+      <FieldFactory id="name" fields={fields} onChange={updateField} />
+      <FieldFactory id="clientId" fields={fields} onChange={updateField} />
+      <FieldFactory id="projectId" fields={fields} onChange={updateField} />
+      <FieldFactory id="month" fields={fields} onChange={updateField} />
+      <FieldFactory id="year" fields={fields} onChange={updateField} />
+      {/* <div>
+        {fields.workedDays.map((workedDay)=> {
+          <div>{workedDay.}</div>
+        })}
+      </div> */}
       <Box>
         <Button type="submit" color="primary" onClick={submit}>
           Submit
