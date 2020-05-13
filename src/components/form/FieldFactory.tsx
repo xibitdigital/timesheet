@@ -79,6 +79,17 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             onChange={handleChange}
           />
         )
+      case FieldType.NUMBER:
+        return (
+          <Input
+            id={idSTring}
+            name={idSTring}
+            value={value}
+            type="number"
+            aria-describedby={label}
+            onChange={handleChange}
+          />
+        )
       case FieldType.SELECT:
         const { options } = config
         return (

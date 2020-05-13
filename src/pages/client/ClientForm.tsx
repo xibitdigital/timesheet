@@ -1,9 +1,9 @@
 import { Box, Button } from '@material-ui/core'
 import React from 'react'
-import { FieldFactory } from '../../../components/form/FieldFactory'
-import { UseForm } from '../../../components/form/FormHook'
-import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
-import { Client } from '../../../shared/collections'
+import { FieldFactory } from '../../components/form/FieldFactory'
+import { UseForm } from '../../components/form/FormHook'
+import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { Client } from '../../shared/collections'
 import { ClientFormConfig, DefaultFormValues } from './ClientForm.config'
 
 interface ClientFormProps {

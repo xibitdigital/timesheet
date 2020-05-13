@@ -1,11 +1,11 @@
-import { Box } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { Client, COLLECTIONS } from '../../shared/collections'
 import { FIRESTORE } from '../../shared/firebase.config'
-import { ClientForm } from './components/ClientForm'
+import { ClientForm } from './ClientForm'
+import Box from '@material-ui/core/Box'
 
 export const ClientDetailPage: React.FC = () => {
   const { id } = useParams()

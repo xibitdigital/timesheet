@@ -1,16 +1,13 @@
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableContainer from '@material-ui/core/TableContainer'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
-import { ClientCollectionItem } from '../../../shared/collections'
+import { ClientCollectionItem } from '../../shared/collections'
 
 interface ClientListProps {
   loading: boolean
@@ -24,7 +21,7 @@ export const ClientList: React.FC<ClientListProps> = ({
   onSelect,
 }: ClientListProps): JSX.Element => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table>
         <TableHead>
           <TableRow>
@@ -43,9 +40,9 @@ export const ClientList: React.FC<ClientListProps> = ({
                 </TableCell>
                 <TableCell>{doc.fullAddress}</TableCell>
                 <TableCell>
-                  <Button onClick={() => onSelect(doc.id)}>
+                  <IconButton onClick={() => onSelect(doc.id)}>
                     <EditIcon />
-                  </Button>
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

@@ -2,30 +2,24 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useParams } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import {
   COLLECTIONS,
   TimeSheet,
   TimeSheetCollectionItem,
+  WorkedDay,
+  WorkedDayCollectionItem,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { getCurrentUserUid } from '../../shared/firebase.utils'
 import { TimesheetForm } from './TimesheetForm'
-import { TimeSheetList } from './TimesheetList'
-import { useHistory } from 'react-router-dom'
+import { WorkedDayPage } from '../WorkedDay/WorkedDayPage'
 
-export const TimesheetPage: React.FC = () => {
-  const history = useHistory()
+export const TimesheetDetailPage: React.FC = () => {
+  const { id } = useParams()
   const [user] = useAuthState(FIREBASE.auth())
-  const [items, loading] = useCollectionData<TimeSheetCollectionItem>(
-    FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
-      'owner',
-      '==',
-      user ? user.uid : ''
-    )
-  )
 
   const saveData: SubmitProcess<TimeSheet> = (data) => {
     const owner = getCurrentUserUid()
@@ -37,11 +31,17 @@ export const TimesheetPage: React.FC = () => {
   }
 
   const loadData: FetchProcess<TimeSheet> = () => {
-    return Promise.reject()
-  }
-
-  const handleSelect = (id: string) => {
-    history.push(`/timesheet/${id}`)
+    return new Promise((resolve, reject) => {
+      FIRESTORE.collection(COLLECTIONS.TIMESHEET)
+        .doc(id)
+        .get()
+        .then(
+          (doc) => {
+            resolve(doc.data())
+          },
+          () => reject({})
+        )
+    })
   }
 
   return (
@@ -51,11 +51,7 @@ export const TimesheetPage: React.FC = () => {
         <TimesheetForm saveData={saveData} loadData={loadData} />
       </Box>
       <Box>
-        <TimeSheetList
-          loading={loading}
-          items={items}
-          onSelect={handleSelect}
-        />
+        <WorkedDayPage timesheetId={id} />
       </Box>
       <BackButton />
     </Fragment>

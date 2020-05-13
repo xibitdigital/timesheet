@@ -93,6 +93,7 @@ export type FetchProcess<T> = () => Promise<Partial<T>>
 // fields
 export enum FieldType {
   TEXT = 'TEXT',
+  NUMBER = 'NUMBER',
   DATE = 'DATE',
   CHECKBOX = 'CHECKBOX',
   SELECT = 'SELECT',
@@ -111,7 +112,7 @@ export interface FieldBase<T> {
 
 export interface FieldContext {
   id: string
-  value: FieldValue
+  value: FieldValue | FieldContext[] // nested forms
   valid: boolean
   errorMessage: string
   disabled: boolean
@@ -119,6 +120,10 @@ export interface FieldContext {
 
 export interface TextField<T> extends FieldBase<T> {
   fieldType: FieldType.TEXT
+}
+
+export interface NumericField<T> extends FieldBase<T> {
+  fieldType: FieldType.NUMBER
 }
 
 export interface HiddenField<T> extends FieldBase<T> {
@@ -142,6 +147,7 @@ export interface CollectionSelectField<T> extends FieldBase<T> {
 // all fields
 export type Field<T> =
   | TextField<T>
+  | NumericField<T>
   | SelectField<T>
   | CollectionSelectField<T>
   | CheckboxField<T>

@@ -21,7 +21,6 @@ export type ProjectCollectionItem = Project & FirebaseCollectionItem
 export interface WorkedDay {
   day: string
   time: number
-  timesheetId: string
 }
 export type WorkedDayCollectionItem = WorkedDay & FirebaseCollectionItem
 
@@ -39,4 +38,5 @@ export enum COLLECTIONS {
   CLIENT = 'clients',
   PROJECT = 'projects',
   TIMESHEET = 'timesheets',
+  WORKED_DAYS = 'worked-days',
 }

@@ -1,10 +1,10 @@
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import React from 'react'
-import { FieldFactory } from '../../../components/form/FieldFactory'
-import { UseForm } from '../../../components/form/FormHook'
-import { FetchProcess, SubmitProcess } from '../../../components/form/FormTypes'
-import { TimeSheet } from '../../../shared/collections'
+import { FieldFactory } from '../../components/form/FieldFactory'
+import { UseForm } from '../../components/form/FormHook'
+import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { TimeSheet } from '../../shared/collections'
 import { DefaultFormValues, TimesheetFormConfig } from './TimesheetForm.config'
 interface TimesheetFormProps {
   loadData: FetchProcess<TimeSheet>
