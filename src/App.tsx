@@ -2,9 +2,9 @@ import { Container } from '@material-ui/core'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
-import { ClientPage } from './pages/Client/ClientPage'
-import { Home } from './pages/Home'
-import { TimesheetPage } from './pages/Timesheet/TimesheetPage'
+import { ClientPage } from './pages/client'
+import { Home } from './pages/home'
+import { TimesheetPage } from './pages/timesheet'
 
 const App: React.FC = () => {
   return (

@@ -1,7 +1,7 @@
-import { FieldType } from '../../components/form/FormTypes'
-import { requiredValidator } from '../../components/form/Validators'
+import { FieldType } from '../../components/Form/FormTypes'
+import { requiredValidator } from '../../components/Form/Validators'
 import { WorkedDay } from '../../shared/collections'
-import { FormConfig } from './../../components/form/FormTypes'
+import { FormConfig } from '../../components/Form/FormTypes'
 
 export const WorkedDayFormConfig: FormConfig<WorkedDay> = [
   {

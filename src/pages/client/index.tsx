@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { BackButton } from '../../components/BackButton'
-import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { FetchProcess, SubmitProcess } from '../../components/Form/FormTypes'
 import { ModalPanel } from '../../components/ModalPanel'
 import {
   Client,

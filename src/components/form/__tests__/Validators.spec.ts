@@ -3,7 +3,7 @@ import {
   minLengthValidator,
   requiredValidator,
 } from '../Validators'
-import { FieldConfigObject, FieldType, Field } from './../FormTypes'
+import { FieldConfigObject, FieldType, Field } from '../FormTypes'
 
 describe('Validators', () => {
   interface Test {

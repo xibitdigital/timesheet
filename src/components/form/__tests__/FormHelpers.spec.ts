@@ -6,7 +6,7 @@ import {
   FormContext,
   FormMachineEventUpdate,
   ValidatorReturn,
-} from './../FormTypes'
+} from '../FormTypes'
 describe('FormHelpers', () => {
   interface Model {
     name: ''
