@@ -15,12 +15,11 @@ export enum FieldValidationStatus {
   INVALID = 'INVALID',
 }
 
+type FieldAllowedValue = string | boolean | number | undefined
+
 export type FieldValue =
-  | string
-  | boolean
-  | number
-  | undefined
-  | Array<FieldValueObject<any>> // experimental type
+  | FieldAllowedValue
+  | FieldValueObject<FieldAllowedValue>[] // Experimental !
 
 export enum FormStates {
   ACTIVE = 'ACTIVE',
