@@ -16,6 +16,7 @@ import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { TimesheetForm } from './TimesheetForm'
 import { TimeSheetList } from './TimesheetList'
 import { fetchTimeSheetDoc, upsertTimeSheetDoc } from './TimesheetUtils'
+import Button from '@material-ui/core/Button'
 
 export const TimesheetPage: React.FC = () => {
   const history = useHistory()
@@ -27,7 +28,11 @@ export const TimesheetPage: React.FC = () => {
       'owner',
       '==',
       user ? user.uid : ''
-    )
+    ),
+    {
+      idField: 'id',
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
   )
 
   const saveData: SubmitProcess<TimeSheet> = async (data) => {
@@ -49,11 +54,16 @@ export const TimesheetPage: React.FC = () => {
     setModalOpen(false)
   }
 
+  const handleNew = () => {
+    setDocumentId('')
+    setModalOpen(true)
+  }
+
   return (
     <Fragment>
       <Typography variant="h2">Timesheets</Typography>
       <Box>
-        <TimesheetForm saveData={saveData} loadData={loadData} />
+        <Button onClick={handleNew}>New Timesheet</Button>
       </Box>
       <Box>
         <TimeSheetList
