@@ -1,8 +1,8 @@
 import { range } from 'ramda'
-import { FieldType } from '../../components/Form/FormTypes'
-import { requiredValidator } from '../../components/Form/Validators'
+import { FieldType } from '../../components/form/FormTypes'
+import { requiredValidator } from '../../components/form/Validators'
 import { COLLECTIONS, TimeSheet } from '../../shared/collections'
-import { FormConfig } from '../../components/Form/FormTypes'
+import { FormConfig } from '../../components/form/FormTypes'
 
 export const TimesheetFormConfig: FormConfig<TimeSheet> = [
   {

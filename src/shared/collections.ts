@@ -1,4 +1,4 @@
-import { FieldValueObject } from '../components/Form/FormTypes'
+import { FieldValueObject } from '../components/form/FormTypes'
 
 // ID is added by default by Firebase
 export interface FirebaseCollectionItem {

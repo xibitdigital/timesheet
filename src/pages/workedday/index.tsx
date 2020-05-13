@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
-import { FetchProcess, SubmitProcess } from '../../components/Form/FormTypes'
+import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import {
   WorkedDay,
   WorkedDayCollectionItem,

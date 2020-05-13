@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
 import React from 'react'
-import { CollectionSelect } from './fields/CollectionSelect'
+import { CollectionSelect } from './components/CollectionSelect'
 import {
   Field,
   FieldConfigObject,
