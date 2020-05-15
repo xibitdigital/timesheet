@@ -56,8 +56,13 @@ describe('getDatesFromRange', () => {
     expect(actualResults).toEqual(expectedResults)
   })
 
-  it('should return an empty array of dates given two invalid date ranges', () => {
+  it('should return an empty array given two invalid date ranges', () => {
     const actualResults = getDatesFromRange('2020-01-01', '2020-01-01')
+    expect(actualResults).toEqual([])
+  })
+
+  it('should return an empty array  given two invalid dates', () => {
+    const actualResults = getDatesFromRange('gerva', 'soni')
     expect(actualResults).toEqual([])
   })
 })
