@@ -2,10 +2,9 @@ import { Container } from '@material-ui/core'
 import React from 'react'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Navbar } from './components/Navbar'
-import { ClientDetailPage } from './pages/client/ClientDetailPage'
-import { ClientPage } from './pages/client/ClientPage'
-import { Home } from './pages/Home'
-import { TimesheetPage } from './pages/timesheet/TimesheetPage'
+import { ClientPage } from './pages/client'
+import { Home } from './pages/home'
+import { TimesheetPage } from './pages/timesheet'
 
 const App: React.FC = () => {
   return (
@@ -14,7 +13,6 @@ const App: React.FC = () => {
       <Container maxWidth="xl">
         <Switch>
           <Route path="/" component={Home} exact />
-          <Route path="/client/:id" component={ClientDetailPage} />
           <Route path="/client" component={ClientPage} />
           <Route path="/timesheet" component={TimesheetPage} />
         </Switch>

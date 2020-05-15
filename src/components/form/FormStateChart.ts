@@ -1,8 +1,9 @@
-import { assign, MachineConfig, DoneInvokeEvent } from 'xstate'
+import { assign, DoneInvokeEvent, MachineConfig } from 'xstate'
 import {
+  mergeFetchedData,
+  resetContext,
   updateField,
   validateFields,
-  initialFieldsContext,
 } from './FormHelpers'
 import {
   FormActions,
@@ -40,9 +41,7 @@ export function getStateChart<T>(): MachineConfig<
             target: FormStates.VALIDATING_SUBMIT,
           },
           [FormActions.RESET]: {
-            actions: assign((ctx, event) =>
-              initialFieldsContext(ctx.fieldDefaults)
-            ),
+            actions: assign((ctx) => resetContext(ctx)),
           },
         },
       },
@@ -51,7 +50,7 @@ export function getStateChart<T>(): MachineConfig<
           src: FormService.FETCHING_SERVICE,
           onDone: {
             actions: assign((ctx, event: DoneInvokeEvent<T>) =>
-              initialFieldsContext(event.data)
+              mergeFetchedData(ctx, event.data)
             ),
             target: FormStates.ACTIVE,
           },

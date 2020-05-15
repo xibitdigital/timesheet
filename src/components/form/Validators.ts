@@ -1,11 +1,11 @@
+import { isNil } from 'ramda'
+import { isBoolean, isNumber, isString } from 'util'
 import {
-  FieldContext,
+  Field,
+  FieldConfigObject,
   ValidatorFn,
   ValidatorReturn,
-  FieldContextObject,
 } from './FormTypes'
-import { isNil } from 'ramda'
-import { isBoolean, isString, isNumber } from 'util'
 
 export type CompareValidator<T> = (compareTo: string) => ValidatorFn<T>
 
@@ -16,16 +16,16 @@ enum ValidationMessage {
 }
 
 function returnSuccess(): ValidatorReturn {
-  return { errorMessage: '', valid: true }
+  return { errorMessage: '', error: false }
 }
 
 function returnError(errorMessage: ValidationMessage): ValidatorReturn {
-  return { errorMessage, valid: false }
+  return { errorMessage, error: true }
 }
 
 export function requiredValidator<T>(
-  field: FieldContext,
-  fields: FieldContextObject<T>
+  field: Field<T>,
+  fields: FieldConfigObject<T>
 ): ValidatorReturn {
   if (field && !isNil(field.value)) {
     if (isString(field.value) && field.value.length > 0) {
@@ -38,28 +38,22 @@ export function requiredValidator<T>(
 }
 
 export function minLengthValidator<T>(comparator: number) {
-  return (
-    field: FieldContext,
-    fields: FieldContextObject<T>
-  ): ValidatorReturn =>
+  return (field: Field<T>, fields: FieldConfigObject<T>): ValidatorReturn =>
     field && field.value && field.value.toString().length >= comparator
       ? returnSuccess()
       : returnError(ValidationMessage.MIN_LENGTH)
 }
 
 export function maxLengthValidator<T>(comparator: number) {
-  return (
-    field: FieldContext,
-    fields: FieldContextObject<T>
-  ): ValidatorReturn =>
+  return (field: Field<T>, fields: FieldConfigObject<T>): ValidatorReturn =>
     field && field.value && field.value.toString().length <= comparator
       ? returnSuccess()
       : returnError(ValidationMessage.MAX_LENGTH)
 }
 
 export function numberValidator<T>(
-  field: FieldContext,
-  fields: FieldContextObject<T>
+  field: Field<T>,
+  fields: FieldConfigObject<T>
 ): ValidatorReturn {
   return field && field.value && parseInt(field.value.toString(), 10) > 0
     ? returnSuccess()
@@ -67,7 +61,7 @@ export function numberValidator<T>(
 }
 
 // export const minMaxValidator: CompareValidator = (compareWith: string): ValidatorFn =>
-//     (field: FieldContext, fields: fields: FieldContextObject<T>) => {
+//     (field: Field<T>, fields: fields: FieldConfigObject<T>) => {
 //        // code here
 //     }
 // }

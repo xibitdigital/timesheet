@@ -1,12 +1,12 @@
 import { COLLECTIONS } from '../../shared/collections'
 
 export interface ValidatorReturn {
-  valid: boolean
+  error: boolean
   errorMessage: string
 }
 export type ValidatorFn<T> = (
-  field: FieldContext,
-  fields: FieldContextObject<T>
+  field: Field<T>,
+  fields: FieldConfigObject<T>
 ) => ValidatorReturn
 
 export enum FieldValidationStatus {
@@ -15,7 +15,11 @@ export enum FieldValidationStatus {
   INVALID = 'INVALID',
 }
 
-export type FieldValue = string | boolean | number | undefined
+type FieldAllowedValue = string | boolean | number | undefined
+
+export type FieldValue =
+  | FieldAllowedValue
+  | FieldValueObject<FieldAllowedValue>[] // Experimental !
 
 export enum FormStates {
   ACTIVE = 'ACTIVE',
@@ -51,7 +55,7 @@ export enum FormActions {
 export type FormMachineEventUpdate<T> = {
   type: FormActions.UPDATE_FIELD
   id: keyof T
-  value: FieldValue
+  value: any
 }
 
 export type FormMachineEvents<T> =
@@ -64,17 +68,15 @@ export type FormMachineEvents<T> =
   | FormMachineEventUpdate<T>
 
 export interface FormContext<T> {
-  fields: FieldContextObject<T>
-  fieldConfigs: FieldConfigObject<T>
-  fieldDefaults: T
+  fields: FieldConfigObject<T>
+  fieldsDefaults: FieldValueObject<T>
   validity: boolean
 }
 
 export const FormInitialContext: FormContext<any> = {
   fields: {},
-  fieldConfigs: {},
-  fieldDefaults: {},
-  validity: true,
+  fieldsDefaults: {},
+  validity: false,
 }
 
 export enum FormService {
@@ -83,7 +85,7 @@ export enum FormService {
 }
 
 // util types
-export type FieldContextObject<T> = Record<keyof T, FieldContext>
+export type FormConfig<T> = Field<T>[]
 export type FieldConfigObject<T> = Record<keyof T, Field<T>>
 export type FieldValueObject<T> = Record<keyof T, FieldValue>
 export type UpdateField<T> = (id: keyof T, value: FieldValue) => void
@@ -93,6 +95,7 @@ export type FetchProcess<T> = () => Promise<Partial<T>>
 // fields
 export enum FieldType {
   TEXT = 'TEXT',
+  NUMBER = 'NUMBER',
   DATE = 'DATE',
   CHECKBOX = 'CHECKBOX',
   SELECT = 'SELECT',
@@ -101,24 +104,24 @@ export enum FieldType {
 }
 
 export interface FieldBase<T> {
+  id: keyof T
   label: string
   fieldType: FieldType
   validators: Array<ValidatorFn<T>>
-  disabled?: boolean
-  defaultValue?: FieldValue
-  placeholder?: string
-}
-
-export interface FieldContext {
-  id: string
   value: FieldValue
-  valid: boolean
-  errorMessage: string
-  disabled: boolean
+  disabled?: boolean
+  error?: boolean
+  errorMessage?: string
 }
 
 export interface TextField<T> extends FieldBase<T> {
   fieldType: FieldType.TEXT
+  value: string
+}
+
+export interface NumericField<T> extends FieldBase<T> {
+  fieldType: FieldType.NUMBER
+  value: number
 }
 
 export interface HiddenField<T> extends FieldBase<T> {
@@ -127,21 +130,25 @@ export interface HiddenField<T> extends FieldBase<T> {
 
 export interface CheckboxField<T> extends FieldBase<T> {
   fieldType: FieldType.CHECKBOX
+  value: boolean
 }
 
 export interface SelectField<T> extends FieldBase<T> {
   fieldType: FieldType.SELECT
   options: { id: string; label: string }[]
+  value: string
 }
 
 export interface CollectionSelectField<T> extends FieldBase<T> {
   fieldType: FieldType.COLLECTION_SELECT
   collection: COLLECTIONS
+  value: string
 }
 
 // all fields
 export type Field<T> =
   | TextField<T>
+  | NumericField<T>
   | SelectField<T>
   | CollectionSelectField<T>
   | CheckboxField<T>

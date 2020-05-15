@@ -1,38 +1,35 @@
 import { range } from 'ramda'
-import {
-  FieldConfigObject,
-  FieldType,
-} from '../../../components/form/FormTypes'
-import { requiredValidator } from '../../../components/form/Validators'
-import { COLLECTIONS, TimeSheet } from '../../../shared/collections'
+import { FieldType } from '../../components/form/FormTypes'
+import { requiredValidator } from '../../components/form/Validators'
+import { COLLECTIONS, TimeSheet } from '../../shared/collections'
+import { FormConfig } from '../../components/form/FormTypes'
 
-export const DefaultFormValues: TimeSheet = {
-  name: '',
-  clientId: '',
-  projectId: '',
-  month: '',
-  year: '',
-}
-
-export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
-  name: {
+export const TimesheetFormConfig: FormConfig<TimeSheet> = [
+  {
+    id: 'name',
     fieldType: FieldType.TEXT,
     label: 'Name',
     validators: [requiredValidator],
+    value: '',
   },
-  clientId: {
+  {
+    id: 'clientId',
     fieldType: FieldType.COLLECTION_SELECT,
     label: 'clientId',
     collection: COLLECTIONS.CLIENT,
     validators: [requiredValidator],
+    value: '',
   },
-  projectId: {
+  {
+    id: 'projectId',
     fieldType: FieldType.COLLECTION_SELECT,
     label: 'projectId',
     collection: COLLECTIONS.PROJECT,
     validators: [requiredValidator],
+    value: '',
   },
-  month: {
+  {
+    id: 'month',
     fieldType: FieldType.SELECT,
     label: 'Month',
     options: range(1, 12).map((i) => ({
@@ -40,8 +37,10 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
       label: i.toString(),
     })), // move to utils
     validators: [requiredValidator],
+    value: '',
   },
-  year: {
+  {
+    id: 'year',
     fieldType: FieldType.SELECT,
     label: 'Year',
     options: range(2019, 2050).map((i) => ({
@@ -49,5 +48,13 @@ export const TimesheetFormConfig: FieldConfigObject<TimeSheet> = {
       label: i.toString(),
     })), // move to utils
     validators: [requiredValidator],
+    value: '',
   },
-}
+  {
+    id: 'workedDays',
+    fieldType: FieldType.NONE,
+    label: 'Worked Days',
+    validators: [],
+    value: [],
+  },
+]

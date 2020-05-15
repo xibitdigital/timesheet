@@ -1,9 +1,9 @@
 import {
+  maxLengthValidator,
   minLengthValidator,
   requiredValidator,
-  maxLengthValidator,
 } from '../Validators'
-import { FieldContextObject } from './../FormTypes'
+import { FieldConfigObject, FieldType, Field } from '../FormTypes'
 
 describe('Validators', () => {
   interface Test {
@@ -11,37 +11,43 @@ describe('Validators', () => {
     surname: ''
   }
 
-  const fields: FieldContextObject<Test> = {
+  const fields: FieldConfigObject<Test> = {
     name: {
+      fieldType: FieldType.TEXT,
+      label: 'Name',
       id: 'name',
       value: 'me',
-      valid: true,
+      error: false,
       errorMessage: '',
       disabled: false,
+      validators: [requiredValidator],
     },
     surname: {
+      fieldType: FieldType.TEXT,
+      label: 'Surname',
       id: 'surname',
-      value: undefined,
-      valid: true,
+      value: '',
+      error: false,
       errorMessage: '',
       disabled: false,
+      validators: [requiredValidator],
     },
   }
 
   describe('requiredValidator()', () => {
     it('should pass', () => {
-      const field = fields.name
+      const field: Field<Test> = fields.name
       expect(requiredValidator(field, fields)).toEqual({
         errorMessage: '',
-        valid: true,
+        error: false,
       })
     })
 
     it('should return error', () => {
-      const field = fields.surname
+      const field: Field<Test> = fields.surname
       expect(requiredValidator(field, fields)).toEqual({
         errorMessage: 'Required',
-        valid: false,
+        error: true,
       })
     })
   })
@@ -49,19 +55,19 @@ describe('Validators', () => {
   describe('minLenghtValidator()', () => {
     it('should pass', () => {
       const validator = minLengthValidator(2)
-      const field = fields.name
+      const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: '',
-        valid: true,
+        error: false,
       })
     })
 
     it('should return error', () => {
       const validator = minLengthValidator(20)
-      const field = fields.name
+      const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: 'Too short',
-        valid: false,
+        error: true,
       })
     })
   })
@@ -69,19 +75,19 @@ describe('Validators', () => {
   describe('minLenghtValidator()', () => {
     it('should pass', () => {
       const validator = maxLengthValidator(4)
-      const field = fields.name
+      const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: '',
-        valid: true,
+        error: false,
       })
     })
 
     it('should return error', () => {
       const validator = maxLengthValidator(1)
-      const field = fields.name
+      const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: 'Too long',
-        valid: false,
+        error: true,
       })
     })
   })

@@ -1,11 +1,11 @@
 import { MenuItem, Select, SelectProps } from '@material-ui/core'
 import React from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import {
-  FirebaseCollectionItem,
   COLLECTIONS,
+  FirebaseCollectionItem,
 } from '../../../shared/collections'
-import { useAuthState } from 'react-firebase-hooks/auth'
 import { FIREBASE, FIRESTORE } from '../../../shared/firebase.config'
 
 interface CollectionSelectProps extends SelectProps {

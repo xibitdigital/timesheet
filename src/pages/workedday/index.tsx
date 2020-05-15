@@ -6,40 +6,44 @@ import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import {
-  Client,
-  ClientCollectionItem,
+  WorkedDay,
+  WorkedDayCollectionItem,
   COLLECTIONS,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { getCurrentUserUid } from '../../shared/firebase.utils'
-import { ClientForm } from './components/ClientForm'
-import { ClientList } from './components/ClientList'
+import { WorkedDayForm } from './WorkedDayForm'
+import { WorkedDayList } from './WorkedDayList'
 
-export const ClientPage: React.FC = () => {
+interface WorkedDayPageProps {
+  timesheetId: string
+}
+
+export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
+  timesheetId,
+}) => {
   const history = useHistory()
   const [user] = useAuthState(FIREBASE.auth())
-  const [items, loading] = useCollectionData<ClientCollectionItem>(
-    FIRESTORE.collection(COLLECTIONS.CLIENT).where(
-      'owner',
-      '==',
-      user ? user.uid : ''
-    ),
+  const [items, loading] = useCollectionData<WorkedDayCollectionItem>(
+    FIRESTORE.collection(COLLECTIONS.WORKED_DAYS)
+      .where('owner', '==', user ? user.uid : '')
+      .where('timesheetId', '==', timesheetId),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   )
 
-  const saveData: SubmitProcess<Client> = (data) => {
+  const saveData: SubmitProcess<WorkedDay> = (data) => {
     const owner = getCurrentUserUid()
     if (owner) {
-      const newItem: Partial<ClientCollectionItem> = { ...data, owner }
+      const newItem: Partial<WorkedDayCollectionItem> = { ...data, owner }
       return FIRESTORE.collection(COLLECTIONS.CLIENT).add(newItem)
     }
     return Promise.reject()
   }
 
-  const loadData: FetchProcess<Client> = () => {
+  const loadData: FetchProcess<WorkedDay> = () => {
     return Promise.reject()
   }
 
@@ -49,12 +53,16 @@ export const ClientPage: React.FC = () => {
 
   return (
     <Fragment>
-      <Typography variant="h2">Client</Typography>
+      <Typography variant="h2">WorkedDay</Typography>
       <Box>
-        <ClientForm saveData={saveData} loadData={loadData} />
+        <WorkedDayForm saveData={saveData} loadData={loadData} />
       </Box>
       <Box>
-        <ClientList loading={loading} items={items} onSelect={handleSelect} />
+        <WorkedDayList
+          loading={loading}
+          items={items}
+          onSelect={handleSelect}
+        />
       </Box>
       <BackButton />
     </Fragment>
