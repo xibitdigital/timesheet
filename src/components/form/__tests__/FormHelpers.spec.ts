@@ -1,22 +1,41 @@
 import {
+  initialFieldsContext,
+  resetContext,
   transferData,
   updateField,
   validateField,
-  resetContext,
 } from '../FormHelpers'
-import { requiredValidator } from '../Validators'
 import {
   FieldType,
   FormActions,
-  FormContext,
   FormMachineEventUpdate,
   ValidatorReturn,
 } from '../FormTypes'
+import { requiredValidator } from '../Validators'
+import { FormConfig, FormContext } from './../FormTypes'
 describe('FormHelpers', () => {
   interface Model {
     name: ''
     surname: ''
   }
+
+  const formConfig: FormConfig<Model> = [
+    {
+      fieldType: FieldType.TEXT,
+      label: 'Name',
+      id: 'name',
+      value: 'me',
+      validators: [requiredValidator],
+    },
+    {
+      fieldType: FieldType.TEXT,
+      label: 'Surname',
+      id: 'surname',
+      value: '',
+      validators: [requiredValidator],
+    },
+  ]
+
   const formContext: FormContext<Model> = {
     fields: {
       name: {
@@ -26,7 +45,6 @@ describe('FormHelpers', () => {
         value: 'me',
         error: false,
         errorMessage: '',
-        disabled: false,
         validators: [requiredValidator],
       },
       surname: {
@@ -36,7 +54,6 @@ describe('FormHelpers', () => {
         value: '',
         error: false,
         errorMessage: '',
-        disabled: false,
         validators: [requiredValidator],
       },
     },
@@ -46,6 +63,15 @@ describe('FormHelpers', () => {
     },
     validity: true,
   }
+
+  describe('resetContext()', () => {
+    it('should return new fields', () => {
+      const res: Partial<FormContext<Model>> = initialFieldsContext(formConfig)
+      expect(res.fields?.name).toBeDefined()
+      expect(res.fields?.surname).toBeDefined()
+    })
+  })
+
   describe('updateField()', () => {
     it('should update state machine context', () => {
       const event: FormMachineEventUpdate<Model> = {
