@@ -84,11 +84,11 @@ describe('dateToShortISO', () => {
 describe('formatDay', () => {
   it('should return a formatted week day', () => {
     const actualResults = formatDay(new Date('2020-01-01'))
-    expect(actualResults).toEqual({ day: '2020-01-01', type: 'weekday' })
+    expect(actualResults).toEqual({ day: '2020-01-01', type: 'Weekday' })
   })
 
   it('should return a formatted weekend day', () => {
     const actualResults = formatDay(new Date('2020-01-04'))
-    expect(actualResults).toEqual({ day: '2020-01-04', type: 'weekend' })
+    expect(actualResults).toEqual({ day: '2020-01-04', type: 'Weekend' })
   })
 })
