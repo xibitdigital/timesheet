@@ -34,6 +34,6 @@ export const formatPublicHolidays = R.map(R.pick(['date', 'type']))
 export const formatDay = R.applySpec({
   day: dateToShortISO,
   type: R.compose<Date, string>((date) =>
-    isWeekend(date) ? 'weekend' : 'weekday'
+    isWeekend(date) ? 'Weekend' : 'Weekday'
   ),
 })
