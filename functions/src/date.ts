@@ -1,5 +1,7 @@
 import * as R from 'ramda'
+import { HolidayDayType, DayType } from './types'
 import { datesCountriesDictionary } from './constants'
+import { getPublicHolidays } from './externalAPI'
 
 const dateToString = (date: any) => new Date(date).toString()
 
@@ -33,7 +35,7 @@ export const getYearFromShortISO = (ISODate: string): string =>
 export const formatPublicHoliday = R.pick(['date', 'type'])
 
 export const formatDay = R.applySpec({
-  day: dateToShortISO,
+  date: dateToShortISO,
   type: R.compose<Date, string>((date) =>
     isWeekend(date) ? 'Weekend' : 'Weekday'
   ),
@@ -41,3 +43,34 @@ export const formatDay = R.applySpec({
 
 export const isValidCountry = (countryCode: string) =>
   datesCountriesDictionary[countryCode] ? true : false
+
+const formatPublicHolidays = R.compose<
+  HolidayDayType[][],
+  HolidayDayType[],
+  DayType[]
+>(R.map(formatPublicHoliday), R.flatten)
+
+const daysToDictionary = R.compose<DayType[], any, any>(
+  R.fromPairs,
+  R.map(R.props(['date', 'type']))
+)
+
+export const getDays = async (
+  startDate: string,
+  endDate: string,
+  countryCode: string
+) => {
+  const days = getDatesFromRange(startDate, endDate).map(formatDay)
+  const years = R.uniq([startDate, endDate].map(getYearFromShortISO))
+  const publicHolidayDays = await Promise.all(
+    years.map((year) => getPublicHolidays(year, countryCode))
+  ) //?
+  const formattedPublicHolidays = formatPublicHolidays(publicHolidayDays)
+
+  const mergedDays = {
+    ...daysToDictionary(days),
+    ...daysToDictionary(formattedPublicHolidays),
+  }
+
+  return mergedDays //?
+}

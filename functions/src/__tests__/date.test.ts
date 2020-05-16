@@ -7,7 +7,26 @@ import {
   formatDay,
   getYearFromShortISO,
   isValidCountry,
+  getDays,
 } from '../date'
+
+jest.mock('../externalAPI', () => ({
+  getPublicHolidays: jest.fn(() =>
+    Promise.resolve([
+      {
+        date: '2020-12-25',
+        localName: 'Christmas Day',
+        name: 'Christmas Day',
+        countryCode: 'GB',
+        fixed: false,
+        global: true,
+        counties: null,
+        launchYear: null,
+        type: 'Public',
+      },
+    ])
+  ),
+}))
 
 describe('isValidDate', () => {
   it('should return true if a valid date is given', () => {
@@ -86,12 +105,12 @@ describe('dateToShortISO', () => {
 describe('formatDay', () => {
   it('should return a formatted week day', () => {
     const actualResults = formatDay(new Date('2020-01-01'))
-    expect(actualResults).toEqual({ day: '2020-01-01', type: 'Weekday' })
+    expect(actualResults).toEqual({ date: '2020-01-01', type: 'Weekday' })
   })
 
   it('should return a formatted weekend day', () => {
     const actualResults = formatDay(new Date('2020-01-04'))
-    expect(actualResults).toEqual({ day: '2020-01-04', type: 'Weekend' })
+    expect(actualResults).toEqual({ date: '2020-01-04', type: 'Weekend' })
   })
 })
 
@@ -111,5 +130,16 @@ describe('isValidCountry', () => {
   it('should return valid if not a matched county', () => {
     const actualResults = isValidCountry('Bosisio')
     expect(actualResults).toBeFalsy()
+  })
+})
+
+describe('getDays', () => {
+  it('should return a dictionary of days and type', () => {
+    const actualResults = getDays('2020-12-24', '2020-12-27', 'GB')
+    expect(actualResults).toEqual({
+      '2020-12-24': 'Weekday',
+      '2020-12-25': 'Public',
+      '2020-12-26': 'Weekend',
+    })
   })
 })
