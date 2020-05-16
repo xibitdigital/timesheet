@@ -34,7 +34,7 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
   )
 
   const {
-    context: { fields },
+    context: { fields, dirty },
   } = state
 
   return (
@@ -47,9 +47,7 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
           <FieldFactory id="time" fields={fields} onChange={updateField} />
         </TableCell>
         <TableCell>
-          <IconButton onClick={submit}>
-            <EditIcon />
-          </IconButton>
+          <IconButton onClick={submit}>{dirty && <EditIcon />}</IconButton>
         </TableCell>
       </TableRow>
     </React.Fragment>

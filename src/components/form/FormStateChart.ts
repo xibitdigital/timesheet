@@ -4,6 +4,7 @@ import {
   resetContext,
   updateField,
   validateFields,
+  postSubmit,
 } from './FormHelpers'
 import {
   FormActions,
@@ -78,6 +79,9 @@ export function getStateChart<T>(): MachineConfig<
         invoke: {
           src: FormService.SUBMIT_SERVICE,
           onDone: {
+            actions: assign((ctx, event: DoneInvokeEvent<T>) =>
+              postSubmit(ctx)
+            ),
             target: FormStates.ACTIVE,
           },
           onError: {

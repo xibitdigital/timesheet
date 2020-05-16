@@ -71,12 +71,14 @@ export interface FormContext<T> {
   fields: FieldConfigObject<T>
   fieldsDefaults: FieldValueObject<T>
   validity: boolean
+  dirty: boolean
 }
 
 export const FormInitialContext: FormContext<any> = {
   fields: {},
   fieldsDefaults: {},
   validity: false,
+  dirty: false,
 }
 
 export enum FormService {

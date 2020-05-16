@@ -21,7 +21,10 @@ export function updateField<T>(
   // running validations
   const { error, errorMessage } = validateField(ctx, newField)
   // update just value, we should set dirty status as well
-  return { fields: { ...fields, [id]: { ...newField, error, errorMessage } } }
+  return {
+    fields: { ...fields, [id]: { ...newField, error, errorMessage } },
+    dirty: true,
+  }
 }
 
 export function transferData<T>(ctx: FormContext<T>): T {
@@ -59,6 +62,10 @@ export function validateFields<T>(
   return { validity, fields: newFields }
 }
 
+export function postSubmit<T>(ctx: FormContext<T>): Partial<FormContext<T>> {
+  return { dirty: false }
+}
+
 export function validateField<T>(
   ctx: FormContext<T>,
   field: Field<T>
@@ -91,7 +98,7 @@ export function initialFieldsContext<T extends {}>(
     fieldsDefaults = { ...fieldsDefaults, [id]: value }
   })
 
-  return { fields, fieldsDefaults }
+  return { fields, fieldsDefaults, dirty: false }
 }
 
 export function mergeFetchedData<T extends {}>(
@@ -106,7 +113,7 @@ export function mergeFetchedData<T extends {}>(
     const value = data[kId]
     newFields = { ...newFields, [id]: { ...fields[kId], value } }
   })
-  return { fields: newFields }
+  return { fields: newFields, dirty: false }
 }
 
 export function resetContext<T>(ctx: FormContext<T>): Partial<FormContext<T>> {
@@ -118,5 +125,5 @@ export function resetContext<T>(ctx: FormContext<T>): Partial<FormContext<T>> {
     const value = fieldsDefaults[kId]
     newFields = { ...newFields, [id]: { ...fields[kId], value } }
   })
-  return { fields: newFields }
+  return { fields: newFields, dirty: true }
 }
