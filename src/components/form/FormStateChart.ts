@@ -44,6 +44,9 @@ export function getStateChart<T>(): MachineConfig<
           [FormActions.RESET]: {
             actions: assign((ctx) => resetContext(ctx)),
           },
+          [FormActions.DISABLE]: {
+            target: FormStates.DISABLED,
+          },
         },
       },
       [FormStates.FETCHING]: {
@@ -89,7 +92,13 @@ export function getStateChart<T>(): MachineConfig<
           },
         },
       },
-      [FormStates.DISABLED]: {},
+      [FormStates.DISABLED]: {
+        on: {
+          [FormActions.ENABLE]: {
+            target: FormStates.ACTIVE,
+          },
+        },
+      },
     },
   }
 }

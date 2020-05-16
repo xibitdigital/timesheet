@@ -50,6 +50,8 @@ export enum FormActions {
   HYDRATE = 'HYDRATE',
   INJECT_FIELD = 'INJECT_FIELD',
   UPDATE_FIELD = 'UPDATE_FIELD',
+  DISABLE = 'DISABLE',
+  ENABLE = 'ENABLE',
 }
 
 export type FormMachineEventUpdate<T> = {
@@ -64,6 +66,8 @@ export type FormMachineEvents<T> =
   | { type: FormActions.VALIDATE }
   | { type: FormActions.SUBMIT }
   | { type: FormActions.RESET }
+  | { type: FormActions.ENABLE }
+  | { type: FormActions.DISABLE }
   | { type: FormActions.INJECT_FIELD; id: string; field: Field<T> }
   | FormMachineEventUpdate<T>
 
