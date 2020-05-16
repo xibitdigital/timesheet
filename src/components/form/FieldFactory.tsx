@@ -48,7 +48,7 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
     console.error('Invalid Id', id)
   }
 
-  const { label, value, error, errorMessage } = fieldContext
+  const { label, value, error, errorMessage, readonly } = fieldContext
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
@@ -72,6 +72,7 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             value={value}
             aria-describedby={label}
             onChange={handleChange}
+            disabled={readonly}
           />
         )
       case FieldType.NUMBER:
@@ -83,6 +84,7 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             type="number"
             aria-describedby={label}
             onChange={handleChange}
+            disabled={readonly}
           />
         )
       case FieldType.SELECT:
@@ -94,6 +96,7 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             value={value}
             aria-describedby={label}
             onChange={handleSelectChange}
+            disabled={readonly}
           >
             {options.map(({ id: optionId, label: optionLabel }) => (
               <MenuItem key={optionId} value={optionId}>
@@ -112,6 +115,7 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             label={label}
             collection={collection}
             onChange={handleSelectChange}
+            disabled={readonly}
           />
         )
       case FieldType.CHECKBOX:
@@ -122,6 +126,7 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
             value={value}
             aria-describedby={label}
             onChange={handleSelectChange}
+            disabled={readonly}
           />
         )
       default:

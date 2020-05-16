@@ -61,7 +61,7 @@ export const TimesheetPage: React.FC = () => {
     <Fragment>
       <Typography variant="h2">Timesheets</Typography>
       <Box>
-        <Button onClick={handleNew}>New Timesheet</Button>
+        <Button onClick={handleNew}>New Timesheet {documentId}</Button>
       </Box>
       <Box>
         <TimeSheetList
@@ -75,7 +75,13 @@ export const TimesheetPage: React.FC = () => {
         description="Amend data and press Submit"
         open={modalOpen}
         onClose={handleClose}
-        body={<TimesheetForm saveData={saveData} loadData={loadData} />}
+        body={
+          <TimesheetForm
+            saveData={saveData}
+            loadData={loadData}
+            documentId={documentId}
+          />
+        }
       />
       <BackButton />
     </Fragment>

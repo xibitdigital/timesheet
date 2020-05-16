@@ -6,12 +6,16 @@ import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { TimeSheet } from '../../shared/collections'
 import { TimesheetFormConfig } from './TimesheetForm.config'
+import { WorkedDayPage } from '../workedday'
+import Divider from '@material-ui/core/Divider'
 interface TimesheetFormProps {
+  documentId: string
   loadData: FetchProcess<TimeSheet>
   saveData: SubmitProcess<TimeSheet>
 }
 
 export const TimesheetForm: React.FC<TimesheetFormProps> = ({
+  documentId,
   loadData,
   saveData,
 }: TimesheetFormProps): JSX.Element => {
@@ -32,11 +36,6 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
       <FieldFactory id="projectId" fields={fields} onChange={updateField} />
       <FieldFactory id="month" fields={fields} onChange={updateField} />
       <FieldFactory id="year" fields={fields} onChange={updateField} />
-      {/* <div>
-        {fields.workedDays.map((workedDay)=> {
-          <div>{workedDay.}</div>
-        })}
-      </div> */}
       <Box>
         <Button type="submit" color="primary" onClick={submit}>
           Submit
@@ -45,6 +44,8 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
           Reset
         </Button>
       </Box>
+      <Divider light />
+      <WorkedDayPage timesheetId={documentId}></WorkedDayPage>
     </React.Fragment>
   )
 }

@@ -16,6 +16,8 @@ function getModalStyle() {
   return {
     top: `${top}%`,
     left: `${left}%`,
+    minWidth: '50vw',
+    minHeight: '60vh',
     transform: `translate(-${top}%, -${left}%)`,
   }
 }

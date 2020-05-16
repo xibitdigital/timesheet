@@ -50,11 +50,4 @@ export const TimesheetFormConfig: FormConfig<TimeSheet> = [
     validators: [requiredValidator],
     value: '',
   },
-  {
-    id: 'workedDays',
-    fieldType: FieldType.NONE,
-    label: 'Worked Days',
-    validators: [],
-    value: [],
-  },
 ]

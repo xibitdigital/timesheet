@@ -112,6 +112,7 @@ export interface FieldBase<T> {
   disabled?: boolean
   error?: boolean
   errorMessage?: string
+  readonly?: boolean
 }
 
 export interface TextField<T> extends FieldBase<T> {

@@ -1,21 +1,33 @@
-import { Box, Button } from '@material-ui/core'
+import { IconButton, TableCell, TableRow } from '@material-ui/core'
+import EditIcon from '@material-ui/icons/Edit'
 import React from 'react'
 import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { WorkedDay } from '../../shared/collections'
+import { UpdateWorkDayProcess } from './workedDay.types'
 import { WorkedDayFormConfig } from './WorkedDayForm.config'
 
 interface WorkedDayFormProps {
-  saveData: SubmitProcess<WorkedDay>
-  loadData: FetchProcess<WorkedDay>
+  id: string
+  workedDay: WorkedDay
+  updateData: UpdateWorkDayProcess
 }
 
 export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
-  saveData,
-  loadData,
-}: WorkedDayFormProps): JSX.Element => {
-  const { state, submit, reset, updateField } = UseForm<WorkedDay>(
+  id,
+  workedDay,
+  updateData,
+}): JSX.Element => {
+  const saveData: SubmitProcess<WorkedDay> = (data) => {
+    return updateData(id, data)
+  }
+
+  const loadData: FetchProcess<WorkedDay> = () => {
+    return Promise.resolve(workedDay)
+  }
+
+  const { state, submit, updateField } = UseForm<WorkedDay>(
     WorkedDayFormConfig,
     saveData,
     loadData
@@ -27,16 +39,19 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
 
   return (
     <React.Fragment>
-      <FieldFactory id="day" fields={fields} onChange={updateField} />
-      <FieldFactory id="time" fields={fields} onChange={updateField} />
-      <Box>
-        <Button type="submit" color="primary" onClick={submit}>
-          Submit
-        </Button>
-        <Button type="reset" onClick={reset}>
-          Reset
-        </Button>
-      </Box>
+      <TableRow>
+        <TableCell scope="row">
+          <FieldFactory id="day" fields={fields} onChange={updateField} />
+        </TableCell>
+        <TableCell>
+          <FieldFactory id="time" fields={fields} onChange={updateField} />
+        </TableCell>
+        <TableCell>
+          <IconButton onClick={submit}>
+            <EditIcon />
+          </IconButton>
+        </TableCell>
+      </TableRow>
     </React.Fragment>
   )
 }
