@@ -34,22 +34,17 @@ const formatPublicHolidays = R.compose<
 
 exports.getDates = functions.https.onRequest(async (req, res) => {
   const { query } = req
-  // const { startDate, endDate, countryCode }: DatesReqQueryType = query // -_- what the
-  const { startDate, endDate, countryCode } = query
+  const { startDate, endDate, countryCode }: DatesReqQueryType = query
 
   if (
-    isValidDate(startDate as string) &&
-    isValidDate(endDate as string) &&
-    isValidCountry(countryCode as string)
+    isValidDate(startDate) &&
+    isValidDate(endDate) &&
+    isValidCountry(countryCode)
   ) {
     const days = getDatesFromRange(startDate, endDate)
-    const years = [startDate as string, endDate as string].map(
-      getYearFromShortISO
-    )
+    const years = [startDate, endDate].map(getYearFromShortISO)
     const publicHolidayDays = await Promise.all(
-      years.map((year: string) =>
-        getPublicHolidays(year, countryCode as string)
-      )
+      years.map((year: string) => getPublicHolidays(year, countryCode))
     )
     const formattedPublicHolidays = formatPublicHolidays(publicHolidayDays)
     const mergedDays = { ...days, ...formattedPublicHolidays }
