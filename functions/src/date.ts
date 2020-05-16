@@ -8,18 +8,14 @@ export const isValidDate = R.compose<any, string, boolean>(
 )
 
 export const getDatesFromRange = (startDate: any, endDate: any): Date[] => {
-  if (isValidDate(startDate) && isValidDate(endDate)) {
-    let dates: Date[] = []
-    const theDate = new Date(startDate)
-    const theEndDate = new Date(endDate)
-    while (theDate < theEndDate) {
-      dates = [...dates, new Date(theDate)]
-      theDate.setDate(theDate.getDate() + 1)
-    }
-    return dates
-  } else {
-    return []
+  let dates: Date[] = []
+  const theDate = new Date(startDate)
+  const theEndDate = new Date(endDate)
+  while (theDate < theEndDate) {
+    dates = [...dates, new Date(theDate)]
+    theDate.setDate(theDate.getDate() + 1)
   }
+  return dates
 }
 
 export const isWeekend = R.compose<Date, number, boolean>(
@@ -27,9 +23,13 @@ export const isWeekend = R.compose<Date, number, boolean>(
   (date: Date) => date.getDay()
 )
 
-export const dateToShortISO = (date: Date) => date.toISOString().slice(0, 10)
+export const dateToShortISO = (date: Date): string =>
+  date.toISOString().slice(0, 10)
 
-export const formatPublicHolidays = R.map(R.pick(['date', 'type']))
+export const getYearFromShortISO = (ISODate: string): string =>
+  ISODate.substr(0, 4)
+
+export const formatPublicHoliday = R.pick(['date', 'type'])
 
 export const formatDay = R.applySpec({
   day: dateToShortISO,

@@ -3,8 +3,9 @@ import {
   isValidDate,
   isWeekend,
   dateToShortISO,
-  formatPublicHolidays,
+  formatPublicHoliday,
   formatDay,
+  getYearFromShortISO,
 } from '../date'
 
 // https://github.com/jedfonner/firebase-functions-jest/blob/master/uppercase/functions/test/test.spec.js
@@ -23,27 +24,24 @@ describe('isValidDate', () => {
 
 describe('formatPublicHolidays', () => {
   it('should return formatted public holidays', () => {
-    const publicHolidaysAPIMock = [
-      {
-        date: '2020-01-01',
-        localName: 'Rebelot',
-        name: "New Year's Day",
-        countryCode: 'GB',
-        fixed: false,
-        global: true,
-        counties: null,
-        launchYear: null,
-        type: 'Public',
-      },
-    ]
-    const expectedResults = [
-      {
-        date: '2020-01-01',
-        type: 'Public',
-      },
-    ]
+    const publicHolidaysAPIMock = {
+      date: '2020-01-01',
+      localName: 'Rebelot',
+      name: "New Year's Day",
+      countryCode: 'GB',
+      fixed: false,
+      global: true,
+      counties: null,
+      launchYear: null,
+      type: 'Public',
+    }
 
-    const actualResults = formatPublicHolidays(publicHolidaysAPIMock)
+    const expectedResults = {
+      date: '2020-01-01',
+      type: 'Public',
+    }
+
+    const actualResults = formatPublicHoliday(publicHolidaysAPIMock)
     expect(actualResults).toEqual(expectedResults)
   })
 })
@@ -95,5 +93,12 @@ describe('formatDay', () => {
   it('should return a formatted weekend day', () => {
     const actualResults = formatDay(new Date('2020-01-04'))
     expect(actualResults).toEqual({ day: '2020-01-04', type: 'Weekend' })
+  })
+})
+
+describe('getYearFromShortISO', () => {
+  it('should return the year from an ISO string date', () => {
+    const actualResults = getYearFromShortISO('2020-01-04')
+    expect(actualResults).toEqual('2020')
   })
 })
