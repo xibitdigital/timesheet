@@ -64,7 +64,7 @@ export const getDays = async (
   const years = R.uniq([startDate, endDate].map(getYearFromShortISO))
   const publicHolidayDays = await Promise.all(
     years.map((year) => getPublicHolidays(year, countryCode))
-  ) //?
+  )
   const formattedPublicHolidays = formatPublicHolidays(publicHolidayDays)
 
   const mergedDays = {
@@ -72,5 +72,5 @@ export const getDays = async (
     ...daysToDictionary(formattedPublicHolidays),
   }
 
-  return mergedDays //?
+  return mergedDays
 }

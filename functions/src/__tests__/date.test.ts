@@ -134,8 +134,8 @@ describe('isValidCountry', () => {
 })
 
 describe('getDays', () => {
-  it('should return a dictionary of days and type', () => {
-    const actualResults = getDays('2020-12-24', '2020-12-27', 'GB')
+  it('should return a dictionary of days and type', async () => {
+    const actualResults = await getDays('2020-12-24', '2020-12-27', 'GB')
     expect(actualResults).toEqual({
       '2020-12-24': 'Weekday',
       '2020-12-25': 'Public',
