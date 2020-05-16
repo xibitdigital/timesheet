@@ -6,9 +6,8 @@ import {
   formatPublicHoliday,
   formatDay,
   getYearFromShortISO,
+  isValidCountry,
 } from '../date'
-
-// https://github.com/jedfonner/firebase-functions-jest/blob/master/uppercase/functions/test/test.spec.js
 
 describe('isValidDate', () => {
   it('should return true if a valid date is given', () => {
@@ -100,5 +99,17 @@ describe('getYearFromShortISO', () => {
   it('should return the year from an ISO string date', () => {
     const actualResults = getYearFromShortISO('2020-01-04')
     expect(actualResults).toEqual('2020')
+  })
+})
+
+describe('isValidCountry', () => {
+  it('should return valid if a matched county', () => {
+    const actualResults = isValidCountry('TN')
+    expect(actualResults).toBeTruthy()
+  })
+
+  it('should return valid if not a matched county', () => {
+    const actualResults = isValidCountry('Bosisio')
+    expect(actualResults).toBeFalsy()
   })
 })

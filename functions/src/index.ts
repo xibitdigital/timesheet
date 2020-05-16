@@ -8,6 +8,7 @@ import {
   getDatesFromRange,
   getYearFromShortISO,
   formatPublicHoliday,
+  isValidCountry,
 } from './date'
 import { HolidayDayType, DatesReqQueryType, DayType } from './types'
 import { AxiosResponse } from 'axios'
@@ -33,24 +34,24 @@ const formatPublicHolidays = R.compose<
 
 exports.getDates = functions.https.onRequest(async (req, res) => {
   const { query } = req
-
   // const { startDate, endDate, countryCode }: DatesReqQueryType = query // -_- what the
   const { startDate, endDate, countryCode } = query
 
-  if (isValidDate(startDate as string) && isValidDate(endDate as string)) {
+  if (
+    isValidDate(startDate as string) &&
+    isValidDate(endDate as string) &&
+    isValidCountry(countryCode as string)
+  ) {
     const days = getDatesFromRange(startDate, endDate)
     const years = [startDate as string, endDate as string].map(
       getYearFromShortISO
     )
-
-    const publicDays = await Promise.all(
+    const publicHolidayDays = await Promise.all(
       years.map((year: string) =>
         getPublicHolidays(year, countryCode as string)
       )
     )
-
-    const formattedPublicHolidays = formatPublicHolidays(publicDays)
-
+    const formattedPublicHolidays = formatPublicHolidays(publicHolidayDays)
     const mergedDays = { ...days, ...formattedPublicHolidays }
 
     res.json(mergedDays)

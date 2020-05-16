@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import { datesCountriesDictionary } from './constants'
 
 const dateToString = (date: any) => new Date(date).toString()
 
@@ -37,3 +38,6 @@ export const formatDay = R.applySpec({
     isWeekend(date) ? 'Weekend' : 'Weekday'
   ),
 })
+
+export const isValidCountry = (countryCode: string) =>
+  datesCountriesDictionary[countryCode] ? true : false
