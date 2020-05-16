@@ -17,6 +17,5 @@ export interface DayType {
 
 export interface DatesReqQueryType {
   startDate: string
-  endDate: string
   countryCode: string
 }

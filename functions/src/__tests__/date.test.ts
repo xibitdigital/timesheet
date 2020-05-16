@@ -8,6 +8,7 @@ import {
   getYearFromShortISO,
   isValidCountry,
   getDays,
+  getDateOfNextMonth,
 } from '../date'
 
 jest.mock('../externalAPI', () => ({
@@ -141,5 +142,12 @@ describe('getDays', () => {
       '2020-12-25': 'Public',
       '2020-12-26': 'Weekend',
     })
+  })
+})
+
+describe('getDateOfNextMonth', () => {
+  it('should return next month date', () => {
+    const actualResults = getDateOfNextMonth('2012-12-1')
+    expect(actualResults).toEqual('2013-01-01')
   })
 })

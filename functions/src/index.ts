@@ -1,13 +1,13 @@
 ///https://date.nager.at/api/v2/PublicHolidays/2020/GB
 
 import * as functions from 'firebase-functions'
-import { isValidDate, isValidCountry } from './date'
+import { isValidDate, isValidCountry, getDateOfNextMonth } from './date'
 import { DatesReqQueryType } from './types'
 
 exports.getDates = functions.https.onRequest(async (req, res) => {
   const { query } = req
-  const { startDate, endDate, countryCode }: DatesReqQueryType = query
-  // TODO endDate shouldn't be needed it can be calculated as last day of the month
+  const { startDate, countryCode }: DatesReqQueryType = query
+  const endDate = getDateOfNextMonth(startDate)
 
   if (
     isValidDate(startDate) &&

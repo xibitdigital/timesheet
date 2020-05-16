@@ -3,6 +3,7 @@ import { HolidayDayType, DayType } from './types'
 import { datesCountriesDictionary } from './constants'
 import { getPublicHolidays } from './externalAPI'
 
+const getDate = (date: any) => new Date(date)
 const dateToString = (date: any) => new Date(date).toString()
 
 export const isValidDate = R.compose<any, string, boolean>(
@@ -74,3 +75,12 @@ export const getDays = async (
 
   return mergedDays
 }
+
+export const getDateOfNextMonth = R.compose<any, Date, Date, string>(
+  dateToShortISO,
+  (date) => {
+    date.setMonth(date.getMonth() + 1)
+    return date
+  },
+  getDate
+)
