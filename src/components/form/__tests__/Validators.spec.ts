@@ -7,8 +7,8 @@ import { FieldConfigObject, FieldType, Field } from '../FormTypes'
 
 describe('Validators', () => {
   interface Test {
-    name: ''
-    surname: ''
+    name: string
+    surname: string
   }
 
   const fields: FieldConfigObject<Test> = {
@@ -54,7 +54,7 @@ describe('Validators', () => {
 
   describe('minLenghtValidator()', () => {
     it('should pass', () => {
-      const validator = minLengthValidator(2)
+      const validator = minLengthValidator<Test>(2)
       const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: '',
@@ -63,7 +63,7 @@ describe('Validators', () => {
     })
 
     it('should return error', () => {
-      const validator = minLengthValidator(20)
+      const validator = minLengthValidator<Test>(20)
       const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: 'Too short',
@@ -74,7 +74,7 @@ describe('Validators', () => {
 
   describe('minLenghtValidator()', () => {
     it('should pass', () => {
-      const validator = maxLengthValidator(4)
+      const validator = maxLengthValidator<Test>(4)
       const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: '',
@@ -83,7 +83,7 @@ describe('Validators', () => {
     })
 
     it('should return error', () => {
-      const validator = maxLengthValidator(1)
+      const validator = maxLengthValidator<Test>(1)
       const field: Field<Test> = fields.name
       expect(validator(field, fields)).toEqual({
         errorMessage: 'Too long',

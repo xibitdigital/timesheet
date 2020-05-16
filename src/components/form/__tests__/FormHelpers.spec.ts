@@ -4,6 +4,8 @@ import {
   transferData,
   updateField,
   validateField,
+  mergeFetchedData,
+  validateFields,
 } from '../FormHelpers'
 import {
   FieldType,
@@ -14,12 +16,12 @@ import {
 import { requiredValidator } from '../Validators'
 import { FormConfig, FormContext } from './../FormTypes'
 describe('FormHelpers', () => {
-  interface Model {
-    name: ''
-    surname: ''
+  interface Test {
+    name: string
+    surname: string
   }
 
-  const formConfig: FormConfig<Model> = [
+  const formConfig: FormConfig<Test> = [
     {
       fieldType: FieldType.TEXT,
       label: 'Name',
@@ -36,7 +38,7 @@ describe('FormHelpers', () => {
     },
   ]
 
-  const formContext: FormContext<Model> = {
+  const formContext: FormContext<Test> = {
     fields: {
       name: {
         fieldType: FieldType.TEXT,
@@ -62,11 +64,12 @@ describe('FormHelpers', () => {
       surname: '',
     },
     validity: true,
+    dirty: false,
   }
 
   describe('resetContext()', () => {
     it('should return new fields', () => {
-      const res: Partial<FormContext<Model>> = initialFieldsContext(formConfig)
+      const res = initialFieldsContext(formConfig)
       expect(res.fields?.name).toBeDefined()
       expect(res.fields?.surname).toBeDefined()
     })
@@ -74,7 +77,7 @@ describe('FormHelpers', () => {
 
   describe('updateField()', () => {
     it('should update state machine context', () => {
-      const event: FormMachineEventUpdate<Model> = {
+      const event: FormMachineEventUpdate<Test> = {
         type: FormActions.UPDATE_FIELD,
         id: 'name',
         value: 'newValue',
@@ -86,7 +89,7 @@ describe('FormHelpers', () => {
 
   describe('transferData()', () => {
     it('should preapare data for Firebase', () => {
-      const event: FormMachineEventUpdate<Model> = {
+      const event: FormMachineEventUpdate<Test> = {
         type: FormActions.UPDATE_FIELD,
         id: 'name',
         value: 'newValue',
@@ -99,7 +102,7 @@ describe('FormHelpers', () => {
 
   describe('validateField()', () => {
     it('should run field validators', () => {
-      const event: FormMachineEventUpdate<Model> = {
+      const event: FormMachineEventUpdate<Test> = {
         type: FormActions.UPDATE_FIELD,
         id: 'name',
         value: 'newValue',
@@ -112,10 +115,32 @@ describe('FormHelpers', () => {
     })
   })
 
+  describe('validateFields()', () => {
+    it('should run fields validators', () => {
+      const event: FormMachineEventUpdate<Test> = {
+        type: FormActions.UPDATE_FIELD,
+        id: 'name',
+        value: 'newValue',
+      }
+      const res = validateFields(formContext)
+      expect(res.fields?.name.error).toBeFalsy()
+      expect(res.fields?.surname.error).toBeTruthy()
+    })
+  })
+
   describe('resetContext()', () => {
     it('should return new fields', () => {
-      const ctx: any = resetContext({ ...formContext })
-      expect(ctx.fields.name.value).toEqual('')
+      const ctx = resetContext({ ...formContext })
+      expect(ctx.fields?.name.value).toEqual('')
+    })
+  })
+
+  describe('mergeFetchedData()', () => {
+    it('should return new fields', () => {
+      const fetchedData = { name: 'a', surname: 'b' }
+      const ctx = mergeFetchedData({ ...formContext }, fetchedData)
+      expect(ctx.fields?.name.value).toEqual('a')
+      expect(ctx.fields?.surname.value).toEqual('b')
     })
   })
 })
