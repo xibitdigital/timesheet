@@ -32,14 +32,21 @@ const formatPublicHolidays = R.compose<
 >(R.map(formatPublicHoliday), R.flatten)
 
 exports.getDates = functions.https.onRequest(async (req, res) => {
-  const { startDate, endDate, countryCode }: DatesReqQueryType = req.query
+  const { query } = req
 
-  if (isValidDate(startDate) && isValidDate(endDate)) {
+  // const { startDate, endDate, countryCode }: DatesReqQueryType = query // -_- what the
+  const { startDate, endDate, countryCode } = query
+
+  if (isValidDate(startDate as string) && isValidDate(endDate as string)) {
     const days = getDatesFromRange(startDate, endDate)
-    const years = [startDate, endDate].map(getYearFromShortISO)
+    const years = [startDate as string, endDate as string].map(
+      getYearFromShortISO
+    )
 
     const publicDays = await Promise.all(
-      years.map((year) => getPublicHolidays(year, countryCode))
+      years.map((year: string) =>
+        getPublicHolidays(year, countryCode as string)
+      )
     )
 
     const formattedPublicHolidays = formatPublicHolidays(publicDays)
