@@ -9,6 +9,7 @@ import {
   isValidCountry,
   getDays,
   getDateOfNextMonth,
+  getFirstDayOfTheMonth,
 } from '../date'
 
 jest.mock('../externalAPI', () => ({
@@ -149,5 +150,12 @@ describe('getDateOfNextMonth', () => {
   it('should return next month date', () => {
     const actualResults = getDateOfNextMonth('2012-12-1')
     expect(actualResults).toEqual('2013-01-01')
+  })
+})
+
+describe('getFirstDayOfTheMonth', () => {
+  it('should return next month date', () => {
+    const actualResults = getFirstDayOfTheMonth('2012-12-02')
+    expect(actualResults).toEqual('2012-12-01')
   })
 })

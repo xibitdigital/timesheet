@@ -84,3 +84,9 @@ export const getDateOfNextMonth = R.compose<any, Date, Date, string>(
   },
   getDate
 )
+
+export const getFirstDayOfTheMonth = R.compose<any, Date, Date, string>(
+  dateToShortISO,
+  (date) => new Date(date.getFullYear(), date.getMonth(), 1),
+  getDate
+)
