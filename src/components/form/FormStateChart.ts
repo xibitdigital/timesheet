@@ -5,6 +5,7 @@ import {
   updateField,
   validateFields,
   postSubmit,
+  undo,
 } from './FormHelpers'
 import {
   FormActions,
@@ -46,6 +47,9 @@ export function getStateChart<T>(): MachineConfig<
           },
           [FormActions.DISABLE]: {
             target: FormStates.DISABLED,
+          },
+          [FormActions.UNDO]: {
+            actions: assign((ctx) => undo(ctx)),
           },
         },
       },

@@ -21,6 +21,7 @@ export interface UseFormApi<T> {
   submit: () => void
   reset: () => void
   updateField: UpdateField<T>
+  undo: () => void
 }
 
 export function UseForm<T extends {}>(
@@ -60,9 +61,13 @@ export function UseForm<T extends {}>(
     send({ type: FormActions.RESET })
   }
 
+  const undo = () => {
+    send({ type: FormActions.UNDO })
+  }
+
   const updateField = (id: keyof T, value: FieldValue) => {
     send({ type: FormActions.UPDATE_FIELD, id, value })
   }
 
-  return { state, submit, reset, updateField }
+  return { state, submit, reset, updateField, undo }
 }

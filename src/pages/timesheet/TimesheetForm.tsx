@@ -19,7 +19,7 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
   loadData,
   saveData,
 }: TimesheetFormProps): JSX.Element => {
-  const { state, submit, reset, updateField } = UseForm<TimeSheet>(
+  const { state, submit, reset, updateField, undo } = UseForm<TimeSheet>(
     TimesheetFormConfig,
     saveData,
     loadData
@@ -36,12 +36,15 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
       <FieldFactory id="projectId" fields={fields} onChange={updateField} />
       <FieldFactory id="month" fields={fields} onChange={updateField} />
       <FieldFactory id="year" fields={fields} onChange={updateField} />
-      <Box>
-        <Button type="submit" color="primary" onClick={submit}>
-          Submit
-        </Button>
+      <Box justifyItems="flex-end">
         <Button type="reset" onClick={reset}>
           Reset
+        </Button>
+        <Button type="reset" onClick={undo}>
+          Undo
+        </Button>
+        <Button type="submit" color="primary" onClick={submit}>
+          Submit
         </Button>
       </Box>
       <Divider light />

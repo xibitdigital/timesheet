@@ -52,6 +52,7 @@ export enum FormActions {
   UPDATE_FIELD = 'UPDATE_FIELD',
   DISABLE = 'DISABLE',
   ENABLE = 'ENABLE',
+  UNDO = 'UNDO',
 }
 
 export type FormMachineEventUpdate<T> = {
@@ -68,11 +69,13 @@ export type FormMachineEvents<T> =
   | { type: FormActions.RESET }
   | { type: FormActions.ENABLE }
   | { type: FormActions.DISABLE }
+  | { type: FormActions.UNDO }
   | { type: FormActions.INJECT_FIELD; id: string; field: Field<T> }
   | FormMachineEventUpdate<T>
 
 export interface FormContext<T> {
   fields: FieldConfigObject<T>
+  fieldsHistory: FieldConfigObject<T>[]
   fieldsDefaults: FieldValueObject<T>
   validity: boolean
   dirty: boolean
@@ -80,6 +83,7 @@ export interface FormContext<T> {
 
 export const FormInitialContext: FormContext<any> = {
   fields: {},
+  fieldsHistory: [],
   fieldsDefaults: {},
   validity: false,
   dirty: false,

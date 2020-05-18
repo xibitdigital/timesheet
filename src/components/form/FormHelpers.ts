@@ -12,17 +12,29 @@ export function updateField<T>(
   ctx: FormContext<T>,
   event: FormMachineEventUpdate<T>
 ): Partial<FormContext<T>> {
-  const { fields } = ctx
+  const {
+    fields: fieldsCurrent,
+    fieldsHistory: fieldsHistoryCurrent = [],
+  } = ctx
   const { id, value } = event
   const kId = id as keyof T
-  const field = fields[kId]
+  const field = fieldsCurrent[kId]
   // assign new value
   const newField: any = { ...field, value } // TODO fix type here
   // running validations
   const { error, errorMessage } = validateField(ctx, newField)
   // update just value, we should set dirty status as well
+
+  const fields = {
+    ...fieldsCurrent,
+    [id]: { ...newField, error, errorMessage },
+  }
+
+  const fieldsHistory = [...fieldsHistoryCurrent, fields]
+
   return {
-    fields: { ...fields, [id]: { ...newField, error, errorMessage } },
+    fields,
+    fieldsHistory,
     dirty: true,
   }
 }
@@ -36,6 +48,18 @@ export function transferData<T>(ctx: FormContext<T>): T {
     result = { ...result, [id]: value }
   })
   return result as T
+}
+
+export function undo<T>(ctx: FormContext<T>): Partial<FormContext<T>> {
+  const { fieldsHistory: currentFieldsHistory = [] } = ctx
+  const historyLength = currentFieldsHistory.length
+
+  if (historyLength > 1) {
+    const fields = { ...currentFieldsHistory[historyLength - 2] }
+    const fieldsHistory = currentFieldsHistory.slice(0, -1)
+    return { fields, fieldsHistory }
+  }
+  return {}
 }
 
 export function validateFields<T>(
@@ -105,15 +129,15 @@ export function mergeFetchedData<T extends {}>(
   ctx: FormContext<T>,
   data: T
 ): Partial<FormContext<T>> {
-  const { fields } = ctx
-  let newFields: FieldConfigObject<T> = {} as any
+  const { fields: currentFields } = ctx
+  let fields: FieldConfigObject<T> = {} as any
 
-  Object.keys(fields).forEach((id) => {
+  Object.keys(currentFields).forEach((id) => {
     const kId = id as keyof T
     const value = data[kId]
-    newFields = { ...newFields, [id]: { ...fields[kId], value } }
+    fields = { ...fields, [id]: { ...currentFields[kId], value } }
   })
-  return { fields: newFields, dirty: false }
+  return { fields, fieldsHistory: [fields], dirty: false }
 }
 
 export function resetContext<T>(ctx: FormContext<T>): Partial<FormContext<T>> {

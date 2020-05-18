@@ -6,6 +6,7 @@ import {
   validateField,
   mergeFetchedData,
   validateFields,
+  undo,
 } from '../FormHelpers'
 import {
   FieldType,
@@ -63,6 +64,7 @@ describe('FormHelpers', () => {
       name: '',
       surname: '',
     },
+    fieldsHistory: [],
     validity: true,
     dirty: false,
   }
@@ -141,6 +143,27 @@ describe('FormHelpers', () => {
       const ctx = mergeFetchedData({ ...formContext }, fetchedData)
       expect(ctx.fields?.name.value).toEqual('a')
       expect(ctx.fields?.surname.value).toEqual('b')
+    })
+  })
+
+  describe('undo()', () => {
+    const ctx: FormContext<Test> = {
+      ...formContext,
+      fieldsHistory: [
+        {
+          ...formContext.fields,
+          name: { ...formContext.fields.name, value: '2' },
+        },
+        {
+          ...formContext.fields,
+          name: { ...formContext.fields.name, value: '23' },
+        },
+      ],
+    }
+
+    it('should return previous values', () => {
+      expect(undo(ctx).fields?.name.value).toEqual('2')
+      expect(undo(ctx).fields?.surname.value).toEqual('')
     })
   })
 })
