@@ -28,5 +28,5 @@ export interface WorkDay {
   date: string
   clientId: string
   timeSheetId: string
-  workedHours: string
+  workedHours: number
 }

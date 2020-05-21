@@ -9,6 +9,7 @@ import {
   isValidCountry,
   getDateOfNextMonth,
   getDays,
+  createWorkedDaysRecords,
 } from './date'
 import { DatesReqQueryType, WorkDay } from './types'
 
@@ -31,18 +32,6 @@ const insertWorkDays = async (
   return batch.commit()
 }
 
-const createWorkedDaysRecords = (clientId: string, timeSheetId: string) =>
-  R.compose<Record<string, string>, Record<string, WorkDay>, WorkDay[]>(
-    R.values,
-    R.mapObjIndexed((dayType, date) => ({
-      dayType,
-      date,
-      clientId,
-      timeSheetId,
-      workedHours: 0,
-    }))
-  )
-
 exports.getDates = functions.https.onRequest(async (req, res) => {
   const { query } = req
   const {
@@ -61,10 +50,10 @@ exports.getDates = functions.https.onRequest(async (req, res) => {
     isValidCountry(countryCode)
   ) {
     const days = await getDays(firstDayOfMonth.toString(), endDate, countryCode)
-    const workedDays = createWorkedDaysRecords(clientId, timeSheetId)(days)
+    const workDays = createWorkedDaysRecords(clientId, timeSheetId)(days)
 
     try {
-      const results = await insertWorkDays(db, workedDaysRef, workedDays)
+      const results = await insertWorkDays(db, workedDaysRef, workDays)
       res.json(results)
     } catch (err) {
       res.json(false)

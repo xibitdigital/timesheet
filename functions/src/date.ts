@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { HolidayDayType, DayType } from './types'
+import { HolidayDayType, DayType, WorkDay } from './types'
 import { datesCountriesDictionary } from './constants'
 import { getPublicHolidays } from './externalAPI'
 
@@ -90,3 +90,18 @@ export const getFirstDayOfTheMonth = R.compose<any, Date, Date, string>(
   (date) => new Date(date.getFullYear(), date.getMonth(), 1),
   getDate
 )
+
+export const createWorkedDaysRecords = (
+  clientId: string,
+  timeSheetId: string
+) =>
+  R.compose<Record<string, string>, Record<string, WorkDay>, WorkDay[]>(
+    R.values,
+    R.mapObjIndexed((dayType, date) => ({
+      dayType,
+      date,
+      clientId,
+      timeSheetId,
+      workedHours: 0,
+    }))
+  )

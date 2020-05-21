@@ -10,6 +10,7 @@ import {
   getDays,
   getDateOfNextMonth,
   getFirstDayOfTheMonth,
+  createWorkedDaysRecords,
 } from '../date'
 
 jest.mock('../externalAPI', () => ({
@@ -157,5 +158,43 @@ describe('getFirstDayOfTheMonth', () => {
   it('should return next month date', () => {
     const actualResults = getFirstDayOfTheMonth('2012-12-02')
     expect(actualResults).toEqual('2012-12-01')
+  })
+})
+
+describe('createWorkedDaysRecords', () => {
+  it('should return an array of work days record given a work dictionary', () => {
+    const actualResults = createWorkedDaysRecords(
+      'clientFoo',
+      'timeSheetBar'
+    )({
+      '2020-12-24': 'Weekday',
+      '2020-12-25': 'Public',
+      '2020-12-26': 'Weekend',
+    })
+    const expectedResults = [
+      {
+        clientId: 'clientFoo',
+        date: '2020-12-24',
+        dayType: 'Weekday',
+        timeSheetId: 'timeSheetBar',
+        workedHours: 0,
+      },
+      {
+        clientId: 'clientFoo',
+        date: '2020-12-25',
+        dayType: 'Public',
+        timeSheetId: 'timeSheetBar',
+        workedHours: 0,
+      },
+      {
+        clientId: 'clientFoo',
+        date: '2020-12-26',
+        dayType: 'Weekend',
+        timeSheetId: 'timeSheetBar',
+        workedHours: 0,
+      },
+    ]
+
+    expect(actualResults).toEqual(expectedResults)
   })
 })
