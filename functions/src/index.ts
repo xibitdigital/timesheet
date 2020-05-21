@@ -1,9 +1,6 @@
 ///https://date.nager.at/api/v2/PublicHolidays/2020/GB
 
 import * as functions from 'firebase-functions'
-import * as firebase from 'firebase-admin'
-import * as R from 'ramda'
-
 import {
   isValidDate,
   isValidCountry,
@@ -11,26 +8,8 @@ import {
   getDays,
   createWorkedDaysRecords,
 } from './date'
-import { DatesReqQueryType, WorkDay } from './types'
-
-const db = firebase.firestore()
-const workedDaysRef = db.collection('workeddays')
-
-const insertWorkDays = async (
-  db: FirebaseFirestore.Firestore,
-  collection: FirebaseFirestore.CollectionReference<
-    FirebaseFirestore.DocumentData
-  >,
-  days: WorkDay[]
-) => {
-  const batch = db.batch()
-
-  days.forEach((values) => {
-    batch.set(collection.doc(), values)
-  })
-
-  return batch.commit()
-}
+import { DatesReqQueryType } from './types'
+import { insertWorkDays } from './database'
 
 exports.getDates = functions.https.onRequest(async (req, res) => {
   const { query } = req
@@ -53,7 +32,7 @@ exports.getDates = functions.https.onRequest(async (req, res) => {
     const workDays = createWorkedDaysRecords(clientId, timeSheetId)(days)
 
     try {
-      const results = await insertWorkDays(db, workedDaysRef, workDays)
+      const results = await insertWorkDays(workDays)
       res.json(results)
     } catch (err) {
       res.json(false)
