@@ -60,7 +60,7 @@ export const getDays = async (
   startDate: string,
   endDate: string,
   countryCode: string
-) => {
+): Promise<Record<string, string>> => {
   const days = getDatesFromRange(startDate, endDate).map(formatDay)
   const years = R.uniq([startDate, endDate].map(getYearFromShortISO))
   const publicHolidayDays = await Promise.all(

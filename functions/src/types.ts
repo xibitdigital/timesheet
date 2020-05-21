@@ -16,6 +16,17 @@ export interface DayType {
 }
 
 export interface DatesReqQueryType {
-  startDate: string
+  year: string
+  month: string
   countryCode: string
+  timeSheetId: string
+  clientId: string
+}
+
+export interface WorkDay {
+  dayType: string
+  date: string
+  clientId: string
+  timeSheetId: string
+  workedHours: string
 }
