@@ -31,6 +31,18 @@ const insertWorkDays = async (
   return batch.commit()
 }
 
+const createWorkedDaysRecords = (clientId: string, timeSheetId: string) =>
+  R.compose<Record<string, string>, Record<string, WorkDay>, WorkDay[]>(
+    R.values,
+    R.mapObjIndexed((dayType, date) => ({
+      dayType,
+      date,
+      clientId,
+      timeSheetId,
+      workedHours: 0,
+    }))
+  )
+
 exports.getDates = functions.https.onRequest(async (req, res) => {
   const { query } = req
   const {
@@ -49,20 +61,7 @@ exports.getDates = functions.https.onRequest(async (req, res) => {
     isValidCountry(countryCode)
   ) {
     const days = await getDays(firstDayOfMonth.toString(), endDate, countryCode)
-    const workedDays = R.compose<
-      Record<string, string>,
-      Record<string, WorkDay>,
-      WorkDay[]
-    >(
-      R.values,
-      R.mapObjIndexed((dayType, date) => ({
-        dayType,
-        date,
-        clientId,
-        timeSheetId,
-        workedHours: 0,
-      }))
-    )(days)
+    const workedDays = createWorkedDaysRecords(clientId, timeSheetId)(days)
 
     try {
       const results = await insertWorkDays(db, workedDaysRef, workedDays)
