@@ -1,5 +1,3 @@
-///https://date.nager.at/api/v2/PublicHolidays/2020/GB
-
 import * as functions from 'firebase-functions'
 import {
   isValidDate,
