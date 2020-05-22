@@ -18,6 +18,7 @@ exports.getDates = functions.https.onRequest(async (req, res) => {
     timeSheetId,
     clientId,
   }: DatesReqQueryType = query
+
   const firstDayOfMonth = new Date(`${year}-${month}-01`)
   const endDate = getDateOfNextMonth(firstDayOfMonth)
 
