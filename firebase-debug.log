@@ -1,0 +1,23 @@
+[debug] [2020-05-22T20:54:53.377Z] ----------------------------------------------------------------------
+[debug] [2020-05-22T20:54:53.378Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2020-05-22T20:54:53.378Z] CLI Version:   8.2.0
+[debug] [2020-05-22T20:54:53.378Z] Platform:      darwin
+[debug] [2020-05-22T20:54:53.378Z] Node Version:  v12.13.1
+[debug] [2020-05-22T20:54:53.379Z] Time:          Fri May 22 2020 22:54:53 GMT+0200 (Central European Summer Time)
+[debug] [2020-05-22T20:54:53.379Z] ----------------------------------------------------------------------
+[debug] [2020-05-22T20:54:53.379Z] 
+[debug] [2020-05-22T20:54:53.385Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-05-22T20:54:53.386Z] > authorizing via signed-in user
+[debug] [2020-05-22T20:54:53.386Z] [iam] checking project sangatestproject for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2020-05-22T20:54:53.388Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/sangatestproject:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2020-05-22T20:54:53.711Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 22 May 2020 20:54:53 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=128","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-05-22T20:54:53.713Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/sangatestproject/serviceAccounts/sangatestproject@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2020-05-22T20:54:54.033Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 22 May 2020 20:54:53 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'sangatestproject'...
+[info] 
+[info] i  deploying functions
+[info] Running command: npm --prefix "$RESOURCE_DIR" run lint
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
