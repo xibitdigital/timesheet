@@ -10,15 +10,20 @@ interface ModalPanelProps {
 }
 
 function getModalStyle() {
-  const top = 50
-  const left = 50
+  const top = 10
+  const left = 10
 
   return {
     top: `${top}%`,
     left: `${left}%`,
-    minWidth: '50vw',
-    minHeight: '60vh',
-    transform: `translate(-${top}%, -${left}%)`,
+    right: `${left}%`,
+    bottom: `${top}%`,
+    // minWidth: '50vw',
+    // minHeight: '60vh',
+    width: '80vw',
+
+    // transform: `translate(-${top}%, -${left}%)`,
+    overflow: 'auto',
   }
 }
 
