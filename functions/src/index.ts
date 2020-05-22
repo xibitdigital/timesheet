@@ -18,6 +18,10 @@ import { insertWorkDays } from './database'
 exports.updateWorkedDays = functions.firestore
   .document('timesheets/{timeSheetId}')
   .onUpdate(async (change, context) => {
+    console.log('START')
+    console.log(context)
+    console.log(change.after.data())
+
     const { timeSheetId } = context.params
     const timesheet = change.after.data()
     const { year, month, countryCode, clientId } = timesheet as any // add timesheet type here

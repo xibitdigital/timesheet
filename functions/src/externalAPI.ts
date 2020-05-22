@@ -12,7 +12,8 @@ const holidaysAPI = (year: string, countryCode: string): string =>
 export const getPublicHolidays = (
   year: string,
   countryCode: string
-): Promise<HolidayDayType[]> =>
-  Axios.get(holidaysAPI(year, countryCode)).then(
-    (response: AxiosResponse) => response.data
-  )
+): Promise<HolidayDayType[]> => {
+  const url = holidaysAPI(year, countryCode)
+  console.log(url)
+  return Axios.get(url).then((response: AxiosResponse) => response.data)
+}
