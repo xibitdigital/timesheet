@@ -1,13 +1,10 @@
-import Axios, { AxiosResponse } from 'axios'
 import { HolidayDayType } from './types'
+import * as https from 'https'
 
 const datesAPIPrefix = `https://date.nager.at/api/v2`
 
 const holidaysAPI = (year: string, countryCode: string): string =>
   `${datesAPIPrefix}/PublicHolidays/${year}/${countryCode}`
-
-// const availableCountriesAPI = (): string =>
-//   `${datesAPIPrefix}/AvailableCountries`
 
 export const getPublicHolidays = (
   year: string,
@@ -15,7 +12,18 @@ export const getPublicHolidays = (
 ): Promise<HolidayDayType[]> => {
   const url = holidaysAPI(year, countryCode)
   console.log(url)
-  return Axios.get(url, {
-    headers: { 'Content-Type': 'application/json' },
-  }).then((response: AxiosResponse) => response.data)
+  return new Promise((resolve, reject) => {
+    https
+      .get(url, (resp) => {
+        let data = ''
+        resp.on('data', (chunk) => {
+          data += chunk
+        })
+        resp.on('end', () => {
+          const result = JSON.parse(data)
+          resolve(result)
+        })
+      })
+      .on('error', (err) => reject(err))
+  })
 }
