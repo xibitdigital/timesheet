@@ -165,7 +165,8 @@ describe('createWorkedDaysRecords', () => {
   it('should return an array of work days record given a work dictionary', () => {
     const actualResults = createWorkedDaysRecords(
       'clientFoo',
-      'timeSheetBar'
+      'timeSheetBar',
+      'owner'
     )({
       '2020-12-24': 'Weekday',
       '2020-12-25': 'Public',

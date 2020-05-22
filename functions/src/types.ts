@@ -29,4 +29,15 @@ export interface WorkDay {
   clientId: string
   timeSheetId: string
   workedHours: number
+  owner: string
+}
+
+export interface TimeSheet {
+  name: string
+  clientId: string
+  projectId: string
+  month: string
+  year: string
+  owner: string
+  countryCode: string
 }

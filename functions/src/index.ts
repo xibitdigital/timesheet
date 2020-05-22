@@ -14,6 +14,7 @@ import {
 } from './date'
 
 import { insertWorkDays } from './database'
+import { TimeSheet } from './types'
 
 exports.updateWorkedDays = functions.firestore
   .document('timesheets/{timeSheetId}')
@@ -24,7 +25,7 @@ exports.updateWorkedDays = functions.firestore
 
     const { timeSheetId } = context.params
     const timesheet = change.after.data()
-    const { year, month, countryCode, clientId } = timesheet as any // add timesheet type here
+    const { year, month, countryCode, clientId, owner } = timesheet as TimeSheet // add timesheet type here
 
     const firstDayOfMonth = new Date(`${year}-${month}-01`)
     const endDate = getDateOfNextMonth(firstDayOfMonth)
@@ -40,8 +41,9 @@ exports.updateWorkedDays = functions.firestore
         countryCode
       )
       const workDays = createWorkedDaysRecords(
-        clientId.toString(),
-        timeSheetId.toString()
+        clientId,
+        timeSheetId,
+        owner
       )(days)
       await insertWorkDays(db, workDays)
     }

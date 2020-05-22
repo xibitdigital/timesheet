@@ -11,7 +11,10 @@ export const isValidDate = R.compose<any, string, boolean>(
   dateToString
 )
 
-export const getDatesFromRange = (startDate: any, endDate: any): Date[] => {
+export const getDatesFromRange = (
+  startDate: string,
+  endDate: string
+): Date[] => {
   let dates: Date[] = []
   const theDate = new Date(startDate)
   const theEndDate = new Date(endDate)
@@ -93,7 +96,8 @@ export const getFirstDayOfTheMonth = R.compose<any, Date, Date, string>(
 
 export const createWorkedDaysRecords = (
   clientId: string,
-  timeSheetId: string
+  timeSheetId: string,
+  owner: string
 ) =>
   R.compose<Record<string, string>, Record<string, WorkDay>, WorkDay[]>(
     R.values,
@@ -103,5 +107,6 @@ export const createWorkedDaysRecords = (
       clientId,
       timeSheetId,
       workedHours: 0,
+      owner,
     }))
   )
