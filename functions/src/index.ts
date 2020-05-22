@@ -1,5 +1,5 @@
-import * as admin from 'firebase-admin'
-admin.initializeApp()
+import * as firebase from 'firebase-admin'
+firebase.initializeApp()
 
 import * as functions from 'firebase-functions'
 import {
@@ -12,35 +12,30 @@ import {
 
 import { insertWorkDays } from './database'
 
-exports.getDates = functions.https.onRequest(async (req, res) => {
-  const { query } = req
-  const { month, year, countryCode, timeSheetId, clientId } = query
+exports.updateWorkedDays = functions.firestore
+  .document('timesheets/{timeSheetId}')
+  .onUpdate(async (change, context) => {
+    const { timeSheetId } = context.params
+    const timesheet = change.after.data()
+    const { year, month, countryCode, clientId } = timesheet as any // add timesheet type here
 
-  const firstDayOfMonth = new Date(`${year}-${month}-01`)
-  const endDate = getDateOfNextMonth(firstDayOfMonth)
+    const firstDayOfMonth = new Date(`${year}-${month}-01`)
+    const endDate = getDateOfNextMonth(firstDayOfMonth)
 
-  if (
-    isValidDate(firstDayOfMonth) &&
-    isValidDate(endDate) &&
-    isValidCountry(countryCode.toString())
-  ) {
-    const days = await getDays(
-      firstDayOfMonth.toString(),
-      endDate,
-      countryCode.toString()
-    )
-    const workDays = createWorkedDaysRecords(
-      clientId.toString(),
-      timeSheetId.toString()
-    )(days)
-
-    try {
-      const results = await insertWorkDays(workDays)
-      res.json(results)
-    } catch (err) {
-      res.json(false)
+    if (
+      isValidDate(firstDayOfMonth) &&
+      isValidDate(endDate) &&
+      isValidCountry(countryCode)
+    ) {
+      const days = await getDays(
+        firstDayOfMonth.toString(),
+        endDate,
+        countryCode
+      )
+      const workDays = createWorkedDaysRecords(
+        clientId.toString(),
+        timeSheetId.toString()
+      )(days)
+      await insertWorkDays(workDays)
     }
-  } else {
-    res.status(422).send('invalid request')
-  }
-})
+  })

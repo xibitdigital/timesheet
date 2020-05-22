@@ -1,6 +1,7 @@
 import * as firebase from 'firebase-admin'
-
+firebase.initializeApp()
 const db = firebase.firestore()
+
 const workedDaysRef = db.collection('workeddays')
 
 import { WorkDay } from './types'
