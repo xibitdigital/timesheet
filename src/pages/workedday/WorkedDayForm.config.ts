@@ -4,7 +4,7 @@ import { WorkedDay } from '../../shared/collections'
 
 export const WorkedDayFormConfig: FormConfig<WorkedDay> = [
   {
-    id: 'day',
+    id: 'date',
     fieldType: FieldType.TEXT, // READ ONLY, days are calculated automatically using an API
     label: 'Day',
     validators: [],
@@ -12,7 +12,7 @@ export const WorkedDayFormConfig: FormConfig<WorkedDay> = [
     readonly: true,
   },
   {
-    id: 'time',
+    id: 'workedHours',
     fieldType: FieldType.NUMBER,
     label: 'Time',
     validators: [requiredValidator],

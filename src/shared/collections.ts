@@ -19,9 +19,11 @@ export interface Project {
 export type ProjectCollectionItem = Project & FirebaseCollectionItem
 
 export interface WorkedDay {
-  day: string
-  time: number
-  timesheetId: string
+  clientId: string
+  date: string
+  dayType: string
+  workedHours: number
+  timeSheetId: string
 }
 export type WorkedDayCollectionItem = WorkedDay & FirebaseCollectionItem
 
@@ -31,6 +33,7 @@ export interface TimeSheet {
   projectId: string
   month: string
   year: string
+  countryCode: string
 }
 export type TimeSheetCollectionItem = TimeSheet & FirebaseCollectionItem
 

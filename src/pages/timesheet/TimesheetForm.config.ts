@@ -3,6 +3,7 @@ import { FieldType } from '../../components/form/FormTypes'
 import { requiredValidator } from '../../components/form/Validators'
 import { COLLECTIONS, TimeSheet } from '../../shared/collections'
 import { FormConfig } from '../../components/form/FormTypes'
+import { datesCountries } from '../../shared/constants'
 
 export const TimesheetFormConfig: FormConfig<TimeSheet> = [
   {
@@ -46,6 +47,17 @@ export const TimesheetFormConfig: FormConfig<TimeSheet> = [
     options: range(2019, 2050).map((i) => ({
       id: i.toString(),
       label: i.toString(),
+    })), // move to utils
+    validators: [requiredValidator],
+    value: '',
+  },
+  {
+    id: 'countryCode',
+    fieldType: FieldType.SELECT,
+    label: 'Country',
+    options: datesCountries.map((i) => ({
+      id: i.key,
+      label: i.value,
     })), // move to utils
     validators: [requiredValidator],
     value: '',

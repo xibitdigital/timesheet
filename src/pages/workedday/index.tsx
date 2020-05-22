@@ -31,7 +31,7 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
   const [items, loading] = useCollectionData<WorkedDayCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.WORKED_DAYS)
       .where('owner', '==', user ? user.uid : '')
-      .where('timesheetId', '==', timesheetId),
+      .where('timeSheetId', '==', timesheetId),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },

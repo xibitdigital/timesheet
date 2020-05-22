@@ -41,10 +41,14 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
     <React.Fragment>
       <TableRow>
         <TableCell scope="row">
-          <FieldFactory id="day" fields={fields} onChange={updateField} />
+          <FieldFactory id="date" fields={fields} onChange={updateField} />
         </TableCell>
         <TableCell>
-          <FieldFactory id="time" fields={fields} onChange={updateField} />
+          <FieldFactory
+            id="workedHours"
+            fields={fields}
+            onChange={updateField}
+          />
         </TableCell>
         <TableCell>
           <IconButton onClick={submit}>{dirty && <EditIcon />}</IconButton>

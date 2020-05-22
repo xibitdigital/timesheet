@@ -36,6 +36,7 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
       <FieldFactory id="projectId" fields={fields} onChange={updateField} />
       <FieldFactory id="month" fields={fields} onChange={updateField} />
       <FieldFactory id="year" fields={fields} onChange={updateField} />
+      <FieldFactory id="countryCode" fields={fields} onChange={updateField} />
       <Box justifyItems="flex-end">
         <Button type="reset" onClick={reset}>
           Reset
