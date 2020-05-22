@@ -1,11 +1,11 @@
-import * as firebase from 'firebase-admin'
-const db = firebase.firestore()
-
-const workedDaysRef = db.collection('workeddays')
-
+import * as admin from 'firebase-admin'
 import { WorkDay } from './types'
 
-export const insertWorkDays = async (days: WorkDay[]) => {
+export const insertWorkDays = async (
+  db: admin.firestore.Firestore,
+  days: WorkDay[]
+) => {
+  const workedDaysRef = db.collection('workeddays')
   const batch = db.batch()
 
   days.forEach((values) => {

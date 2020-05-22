@@ -1,5 +1,8 @@
-import * as firebase from 'firebase-admin'
-firebase.initializeApp()
+// import { firebase } from 'firebase/app';
+import * as admin from 'firebase-admin'
+admin.initializeApp()
+
+const db = admin.firestore()
 
 import * as functions from 'firebase-functions'
 import {
@@ -36,6 +39,6 @@ exports.updateWorkedDays = functions.firestore
         clientId.toString(),
         timeSheetId.toString()
       )(days)
-      await insertWorkDays(workDays)
+      await insertWorkDays(db, workDays)
     }
   })
