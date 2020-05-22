@@ -1,5 +1,9 @@
 import * as R from 'ramda'
+import { HolidayDayType, DayType, WorkDay } from './types'
+import { datesCountriesDictionary } from './constants'
+import { getPublicHolidays } from './externalAPI'
 
+const getDate = (date: any) => new Date(date)
 const dateToString = (date: any) => new Date(date).toString()
 
 export const isValidDate = R.compose<any, string, boolean>(
@@ -7,19 +11,18 @@ export const isValidDate = R.compose<any, string, boolean>(
   dateToString
 )
 
-export const getDatesFromRange = (startDate: any, endDate: any): Date[] => {
-  if (isValidDate(startDate) && isValidDate(endDate)) {
-    let dates: Date[] = []
-    const theDate = new Date(startDate)
-    const theEndDate = new Date(endDate)
-    while (theDate < theEndDate) {
-      dates = [...dates, new Date(theDate)]
-      theDate.setDate(theDate.getDate() + 1)
-    }
-    return dates
-  } else {
-    return []
+export const getDatesFromRange = (
+  startDate: string,
+  endDate: string
+): Date[] => {
+  let dates: Date[] = []
+  const theDate = new Date(startDate)
+  const theEndDate = new Date(endDate)
+  while (theDate < theEndDate) {
+    dates = [...dates, new Date(theDate)]
+    theDate.setDate(theDate.getDate() + 1)
   }
+  return dates
 }
 
 export const isWeekend = R.compose<Date, number, boolean>(
@@ -27,13 +30,83 @@ export const isWeekend = R.compose<Date, number, boolean>(
   (date: Date) => date.getDay()
 )
 
-export const dateToShortISO = (date: Date) => date.toISOString().slice(0, 10)
+export const dateToShortISO = (date: Date): string =>
+  date.toISOString().slice(0, 10)
 
-export const formatPublicHolidays = R.map(R.pick(['date', 'type']))
+export const getYearFromShortISO = (ISODate: string): string =>
+  ISODate.substr(0, 4)
+
+export const formatPublicHoliday = R.pick(['date', 'type'])
 
 export const formatDay = R.applySpec({
-  day: dateToShortISO,
+  date: dateToShortISO,
   type: R.compose<Date, string>((date) =>
     isWeekend(date) ? 'Weekend' : 'Weekday'
   ),
 })
+
+export const isValidCountry = (countryCode: string) =>
+  datesCountriesDictionary[countryCode] ? true : false
+
+const formatPublicHolidays = R.compose<
+  HolidayDayType[][],
+  HolidayDayType[],
+  DayType[]
+>(R.map(formatPublicHoliday), R.flatten)
+
+const daysToDictionary = R.compose<DayType[], any, any>(
+  R.fromPairs,
+  R.map(R.props(['date', 'type']))
+)
+
+export const getDays = async (
+  startDate: string,
+  endDate: string,
+  countryCode: string
+): Promise<Record<string, string>> => {
+  const days = getDatesFromRange(startDate, endDate).map(formatDay)
+  const years = R.uniq([startDate, endDate].map(getYearFromShortISO))
+  const publicHolidayDays = await Promise.all(
+    years.map((year) => getPublicHolidays(year, countryCode))
+  )
+  const formattedPublicHolidays = formatPublicHolidays(publicHolidayDays)
+
+  const mergedDays = {
+    ...daysToDictionary(days),
+    ...daysToDictionary(formattedPublicHolidays),
+  }
+
+  return mergedDays
+}
+
+export const getDateOfNextMonth = R.compose<any, Date, Date, string>(
+  dateToShortISO,
+  (date) => {
+    date.setMonth(date.getMonth() + 1)
+    return date
+  },
+  getDate
+)
+
+export const getFirstDayOfTheMonth = R.compose<any, Date, Date, string>(
+  dateToShortISO,
+  (date) => new Date(date.getFullYear(), date.getMonth(), 1),
+  getDate
+)
+
+export const createWorkedDaysRecords = (
+  clientId: string,
+  timeSheetId: string,
+  owner: string
+) =>
+  R.compose<Record<string, string>, Record<string, WorkDay>, WorkDay[]>(
+    R.values,
+    R.mapObjIndexed((dayType, date) => ({
+      dayType,
+      date,
+      clientId,
+      timeSheetId,
+      workedHours: 0,
+      owner,
+    }))
+  )

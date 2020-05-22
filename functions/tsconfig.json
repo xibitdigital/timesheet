@@ -9,5 +9,7 @@
     "target": "es2017"
   },
   "compileOnSave": true,
-  "include": ["src", "wallaby.js"]
+  "include": ["src", "wallaby.js"],
+  "baseUrl": "types",
+  "typeRoots": ["types"]
 }
