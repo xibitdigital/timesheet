@@ -5,10 +5,10 @@ name: Node.js CI
 #     branches:
 #       - master
 
-on: [push]
+# on: [push]
 
 jobs:
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -25,11 +25,8 @@ jobs:
         run: yarn test:once
       - name: Build
         run: yarn build
-        env:
-          CI: true
-
   firebase-deploy-hosting:
-    needs: build
+    needs: build-frontend
     runs-on: ubuntu-latest
     steps:
       - uses: w9jds/firebase-action@master
