@@ -1,5 +1,10 @@
 name: Node.js CI
 
+# on:
+#   push:
+#     branches:
+#       - master
+
 on: [push]
 
 jobs:
@@ -22,3 +27,13 @@ jobs:
         run: yarn build
         env:
           CI: true
+
+  firebase-deploy-hosting:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
