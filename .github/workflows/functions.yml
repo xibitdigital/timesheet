@@ -14,14 +14,13 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
         with:
-          node-version: '10.x'
+          node-version: '8.13'
       - run: cd functions
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - name: Run Tests
         run: yarn test:once
       - run: cd ..
-      - run: npm install -g tslint
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
