@@ -1,8 +1,8 @@
 {
   "name": "functions",
   "scripts": {
-    "lint": "npm tslint --project tsconfig.json",
-    "build": "npm tsc --skipLibCheck",
+    "lint": "tslint --project tsconfig.json",
+    "build": "tsc --skipLibCheck",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
