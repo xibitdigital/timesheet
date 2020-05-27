@@ -18,8 +18,6 @@ jobs:
       - run: cd functions
       - name: Install dependencies
         run: yarn --frozen-lockfile
-      - name: Lint
-        run: yarn lint
       - name: Run Tests
         run: yarn test:once
       - run: cd ..
