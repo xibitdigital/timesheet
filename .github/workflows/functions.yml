@@ -21,7 +21,7 @@ jobs:
       - name: Lint
         run: yarn lint
       - name: Run Tests
-        run: yarn test
+        run: yarn test:once
       - run: cd -
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
