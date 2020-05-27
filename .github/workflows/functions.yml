@@ -15,15 +15,13 @@ jobs:
       - uses: actions/setup-node@master
         with:
           node-version: '10.x'
-      - run: cd functions
       - name: Install dependencies
-        run: yarn --frozen-lockfile
-      - name: Run Tests
-        run: yarn test:once
-      - name: Lint
-        run: yarn lint
-      - name: Build
-        run: yarn build
+        run: |
+          - cd functions
+          - yarn --frozen-lockfile
+          - yarn test:once
+          - yarn lint
+          - yarn build
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
