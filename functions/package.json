@@ -31,5 +31,11 @@
     "tslint": "^5.12.0",
     "typescript": "3.8.3"
   },
+  "wallaby": {
+    "autoDetect": true
+  },
+  "jest": {
+    "preset": "ts-jest"
+  },
   "private": true
 }
