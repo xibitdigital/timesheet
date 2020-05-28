@@ -17,14 +17,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Install dependencies
-        run: yarn --frozen-lockfile
-      - name: Lint
-        run: yarn lint
-      - name: Run Tests
-        run: yarn test:once
-      - name: Build
-        run: yarn build
+      - name: Build solution
+        run: |
+          yarn --frozen-lockfile
+          yarn test:once
+          yarn lint
+          yarn build
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
