@@ -5,6 +5,8 @@ import { Navbar } from './components/Navbar'
 import { ClientPage } from './pages/client'
 import { Home } from './pages/home'
 import { TimesheetPage } from './pages/timesheet'
+import { ClientEdit } from './pages/client/ClientEdit'
+import { TimesheetEdit } from './pages/timesheet/TimesheetEdit'
 
 const App: React.FC = () => {
   return (
@@ -13,8 +15,14 @@ const App: React.FC = () => {
       <Container maxWidth="xl">
         <Switch>
           <Route path="/" component={Home} exact />
-          <Route path="/client" component={ClientPage} />
-          <Route path="/timesheet" component={TimesheetPage} />
+          <Route path="/client/:documentId" component={ClientEdit} />
+          <Route path="/client" component={ClientPage} exact />
+          <Route
+            path="/timesheet/:documentId"
+            component={TimesheetEdit}
+            exact
+          />
+          <Route path="/timesheet" component={TimesheetPage} exact />
         </Switch>
       </Container>
     </BrowserRouter>
