@@ -16,7 +16,7 @@ jobs:
           node-version: '12.x'
       - name: Build solution
         run: |
-          $(echo $FIREBASE_ENV > | base64 --decode > .env)
+          ./env.sh
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
