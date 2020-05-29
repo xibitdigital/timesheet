@@ -20,7 +20,7 @@ jobs:
         env:
           REACT_ENV: ${{ secrets.REACT_ENV }}
         run: |
-          echo $REACT_ENV > .env
+          'echo "$REACT_ENV" > .env'
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
