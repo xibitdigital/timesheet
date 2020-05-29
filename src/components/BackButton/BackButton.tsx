@@ -10,7 +10,7 @@ export const BackButton: React.FC<BackButtonProps> = ({
   to = '/',
 }: BackButtonProps) => {
   const history = useHistory()
-  const handleOnButtonClick = () => history.push(to)
+  const handleOnButtonClick = () => history.goBack()
 
   return (
     <Button type="button" onClick={handleOnButtonClick}>

@@ -2,23 +2,16 @@ import { Box, Button, Typography } from '@material-ui/core'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
-import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
-import { ModalPanel } from '../../components/ModalPanel'
-import {
-  Client,
-  ClientCollectionItem,
-  COLLECTIONS,
-} from '../../shared/collections'
+import { ClientCollectionItem, COLLECTIONS } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
-import { ClientForm } from './ClientForm'
+import { Routes } from '../../shared/routes'
 import { ClientList } from './ClientList'
-import { fetchClientDoc, upsertClientDoc } from './ClientUtils'
 
 export const ClientPage: React.FC = () => {
   const [user] = useAuthState(FIREBASE.auth())
-  const [modalOpen, setModalOpen] = React.useState(false)
-  const [documentId, setDocumentId] = React.useState('')
+  const history = useHistory()
 
   const [items, loading] = useCollectionData<ClientCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.CLIENT).where(
@@ -32,28 +25,12 @@ export const ClientPage: React.FC = () => {
     }
   )
 
-  const saveData: SubmitProcess<Client> = async (data) => {
-    const res = await upsertClientDoc(documentId, data)
-    setModalOpen(false)
-    return res
-  }
-
-  const loadData: FetchProcess<Client> = () => {
-    return fetchClientDoc(documentId)
-  }
-
   const handleNew = () => {
-    setDocumentId('')
-    setModalOpen(true)
+    history.push(`${Routes.CLIENT}/new`)
   }
 
   const handleSelect = (id: string) => {
-    setDocumentId(id)
-    setModalOpen(true)
-  }
-
-  const handleClose = () => {
-    setModalOpen(false)
+    history.push(`${Routes.CLIENT}/${id}`)
   }
 
   return (
@@ -65,13 +42,6 @@ export const ClientPage: React.FC = () => {
       <Box>
         <ClientList loading={loading} items={items} onSelect={handleSelect} />
       </Box>
-      <ModalPanel
-        title="Edit Client"
-        description="Amend data and press Submit"
-        open={modalOpen}
-        onClose={handleClose}
-        body={<ClientForm saveData={saveData} loadData={loadData} />}
-      />
       <BackButton />
     </Fragment>
   )

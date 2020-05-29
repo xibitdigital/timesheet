@@ -4,23 +4,17 @@ import Typography from '@material-ui/core/Typography'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
-import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
-import { ModalPanel } from '../../components/ModalPanel'
-import {
-  COLLECTIONS,
-  TimeSheet,
-  TimeSheetCollectionItem,
-} from '../../shared/collections'
+import { COLLECTIONS, TimeSheetCollectionItem } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
-import { TimesheetForm } from './TimesheetForm'
 import { TimeSheetList } from './TimesheetList'
-import { fetchTimeSheetDoc, upsertTimeSheetDoc } from './TimesheetUtils'
+import { Routes } from '../../shared/routes'
 
 export const TimesheetPage: React.FC = () => {
   const [user] = useAuthState(FIREBASE.auth())
-  const [modalOpen, setModalOpen] = React.useState(false)
-  const [documentId, setDocumentId] = React.useState('')
+  const history = useHistory()
+
   const [items, loading] = useCollectionData<TimeSheetCollectionItem>(
     FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
       'owner',
@@ -33,35 +27,19 @@ export const TimesheetPage: React.FC = () => {
     }
   )
 
-  const saveData: SubmitProcess<TimeSheet> = async (data) => {
-    const res = await upsertTimeSheetDoc(documentId, data)
-    setModalOpen(false)
-    return res
-  }
-
-  const loadData: FetchProcess<TimeSheet> = () => {
-    return fetchTimeSheetDoc(documentId)
-  }
-
   const handleSelect = (id: string) => {
-    setDocumentId(id)
-    setModalOpen(true)
-  }
-
-  const handleClose = () => {
-    setModalOpen(false)
+    history.push(`${Routes.TIMESHEET}/${id}`)
   }
 
   const handleNew = () => {
-    setDocumentId('')
-    setModalOpen(true)
+    history.push(`${Routes.TIMESHEET}/new`)
   }
 
   return (
     <Fragment>
       <Typography variant="h2">Timesheets</Typography>
       <Box>
-        <Button onClick={handleNew}>New Timesheet {documentId}</Button>
+        <Button onClick={handleNew}>New Timesheet</Button>
       </Box>
       <Box>
         <TimeSheetList
@@ -70,19 +48,6 @@ export const TimesheetPage: React.FC = () => {
           onSelect={handleSelect}
         />
       </Box>
-      <ModalPanel
-        title="Edit Timesheet"
-        description="Amend data and press Submit"
-        open={modalOpen}
-        onClose={handleClose}
-        body={
-          <TimesheetForm
-            saveData={saveData}
-            loadData={loadData}
-            documentId={documentId}
-          />
-        }
-      />
       <BackButton />
     </Fragment>
   )
