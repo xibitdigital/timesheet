@@ -16,11 +16,11 @@ jobs:
           node-version: '12.x'
       - name: Build solution
         run: |
+          $(echo $FIREBASE_ENV > | base64 --decode > .env)
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
           yarn build
-          echo $FIREBASE_ENV > | base64 --decode > .env
         env:
           FIREBASE_ENV: ${{ secrets.FIREBASE_ENV }}
       - name: Deploy to Firebase
