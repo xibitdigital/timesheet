@@ -22,6 +22,7 @@ jobs:
           REACT_ENV: ${{ secrets.REACT_ENV }}
       - name: Build solution
         run: |
+          cat .env
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
