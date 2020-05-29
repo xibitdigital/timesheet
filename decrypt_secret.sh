@@ -5,4 +5,4 @@
 gpg --quiet --batch --yes --decrypt --passphrase="$REACT_ENV" \
 --output .env .env.gpg
 
-cat .env
+# cat .env
