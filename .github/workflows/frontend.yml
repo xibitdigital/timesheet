@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: '12.x'
       - name: Build solution
+        shell: bash
         env:
           REACT_ENV: ${{ secrets.REACT_ENV }}
         run: |
