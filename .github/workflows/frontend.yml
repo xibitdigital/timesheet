@@ -3,7 +3,7 @@ name: React CI/CD
 on:
   push:
     branches:
-      - master
+      - ci_auth
 
 jobs:
   deploy_frontend:
@@ -16,13 +16,13 @@ jobs:
           node-version: '12.x'
       - name: Build solution
         run: |
-          ./decrypt_secret.sh
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
           yarn build
+          echo $FIREBASE_ENV > | base64 --decode > .env
         env:
-          REACT_ENV: ${{ secrets.REACT_ENV }}
+          FIREBASE_ENV: ${{ secrets.FIREBASE_ENV }}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
