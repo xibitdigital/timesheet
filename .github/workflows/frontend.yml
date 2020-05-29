@@ -16,12 +16,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-      - name: Build solution
-        shell: bash
+      - name: Build env file
+        run: ./decrypt_secret.sh
         env:
           REACT_ENV: ${{ secrets.REACT_ENV }}
+      - name: Build solution
         run: |
-          ./decrypt_secret.sh
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
