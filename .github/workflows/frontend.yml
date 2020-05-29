@@ -17,7 +17,10 @@ jobs:
         with:
           node-version: '12.x'
       - name: Build solution
+        env:
+          REACT_ENV: ${{ secrets.REACT_ENV }}
         run: |
+          echo $REACT_ENV > .env
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
