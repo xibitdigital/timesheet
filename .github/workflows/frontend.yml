@@ -21,7 +21,7 @@ jobs:
         env:
           REACT_ENV: ${{ secrets.REACT_ENV }}
         run: |
-          'echo "$REACT_ENV" > .env'
+          ./decrypt_secret.sh
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
