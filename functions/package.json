@@ -8,7 +8,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "test": "jest --watchAll --verbose=false"
+    "test": "jest --watchAll --verbose=false",
+    "test:once": "jest --watchAll=false --verbose=false"
   },
   "engines": {
     "node": "8"
@@ -29,6 +30,12 @@
     "ts-jest": "^25.5.1",
     "tslint": "^5.12.0",
     "typescript": "3.8.3"
+  },
+  "wallaby": {
+    "autoDetect": true
+  },
+  "jest": {
+    "preset": "ts-jest"
   },
   "private": true
 }

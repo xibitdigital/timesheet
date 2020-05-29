@@ -1,0 +1,28 @@
+name: Functions CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy_functions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: '8.13.x'
+      - name: Build solution
+        run: |
+          cd functions
+          yarn --frozen-lockfile
+          yarn test:once
+          yarn lint
+          yarn build
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only functions
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

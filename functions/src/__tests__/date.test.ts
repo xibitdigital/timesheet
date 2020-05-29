@@ -138,7 +138,7 @@ describe('isValidCountry', () => {
 
 describe('getDays', () => {
   it('should return a dictionary of days and type', async () => {
-    const actualResults = await getDays('2020-12-24', '2020-12-27', 'GB')
+    const actualResults = await getDays('2020-12-24', '2020-12-27', 'GB') //?
     expect(actualResults).toEqual({
       '2020-12-24': 'Weekday',
       '2020-12-25': 'Public',
@@ -177,6 +177,7 @@ describe('createWorkedDaysRecords', () => {
         clientId: 'clientFoo',
         date: '2020-12-24',
         dayType: 'Weekday',
+        owner: 'owner',
         timeSheetId: 'timeSheetBar',
         workedHours: 0,
       },
@@ -184,6 +185,7 @@ describe('createWorkedDaysRecords', () => {
         clientId: 'clientFoo',
         date: '2020-12-25',
         dayType: 'Public',
+        owner: 'owner',
         timeSheetId: 'timeSheetBar',
         workedHours: 0,
       },
@@ -191,6 +193,7 @@ describe('createWorkedDaysRecords', () => {
         clientId: 'clientFoo',
         date: '2020-12-26',
         dayType: 'Weekend',
+        owner: 'owner',
         timeSheetId: 'timeSheetBar',
         workedHours: 0,
       },
