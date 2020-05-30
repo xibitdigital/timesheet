@@ -1,24 +1,63 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
+import { Box } from '@material-ui/core'
+import moment from 'moment'
 import React, { Fragment } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import styled from 'styled-components'
 import {
   COLLECTIONS,
   WorkedDay,
   WorkedDayCollectionItem,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
+import { UpdateWorkDayProcess } from './workedDay.types'
 import { WorkedDayForm } from './WorkedDayForm'
 import { updateWorkday } from './WorkedDayUtils'
-import { UpdateWorkDayProcess } from './workedDay.types'
+
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: min-content;
+`
+
+interface GridAreaProps {
+  row: number
+  col: number
+}
+
+const GridArea = styled.div<GridAreaProps>`
+  display: grid;
+  grid-area: ${(props) => props.col} / ${(props) => props.row};
+  border: 1px solid red;
+`
+
+export interface GridElementProps {
+  workedDay: WorkedDayCollectionItem
+  updateData: UpdateWorkDayProcess
+}
+
+export const GridElement: React.FC<GridElementProps> = ({
+  workedDay,
+  updateData,
+}) => {
+  const { date, id } = workedDay
+  const dayOfWeek = moment(date).dates()
+  const row = Math.floor(dayOfWeek / 7) + 1
+  const col = (dayOfWeek % 7) + 1
+
+  console.log(date, row, col)
+
+  return (
+    <GridArea col={col} row={row}>
+      <WorkedDayForm
+        id={id}
+        workedDay={workedDay}
+        updateData={updateData}
+        key={id}
+      />
+    </GridArea>
+  )
+}
 
 interface WorkedDayPageProps {
   timesheetId: string
@@ -48,29 +87,17 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
   return (
     <Fragment>
       <Box>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell scope="col">Day</TableCell>
-                <TableCell scope="col">Time</TableCell>
-                <TableCell scope="col">Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!loading &&
-                items &&
-                items.map((workedDay) => (
-                  <WorkedDayForm
-                    id={workedDay.id}
-                    workedDay={workedDay}
-                    updateData={updateData}
-                    key={workedDay.id}
-                  />
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <GridContainer>
+          {!loading &&
+            items &&
+            items.map((workedDay) => (
+              <GridElement
+                key={workedDay.id}
+                workedDay={workedDay}
+                updateData={updateData}
+              />
+            ))}
+        </GridContainer>
       </Box>
     </Fragment>
   )
