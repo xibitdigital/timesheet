@@ -1,6 +1,14 @@
-import { IconButton, TableCell, TableRow } from '@material-ui/core'
+import {
+  Card,
+  CardActions,
+  CardContent,
+  IconButton,
+  makeStyles,
+  Typography,
+} from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
-import React from 'react'
+import moment from 'moment'
+import React, { useMemo } from 'react'
 import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
@@ -14,11 +22,25 @@ interface WorkedDayFormProps {
   updateData: UpdateWorkDayProcess
 }
 
+const useStyles = makeStyles({
+  root: {},
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+})
+
 export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
   id,
   workedDay,
   updateData,
 }): JSX.Element => {
+  const classes = useStyles()
+  const { date } = workedDay
+  const formattedDate = useMemo(() => moment(date).format('ddd D'), [date])
+
   const saveData: SubmitProcess<WorkedDay> = (data) => {
     return updateData(id, data)
   }
@@ -38,22 +60,20 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
   } = state
 
   return (
-    <React.Fragment>
-      <TableRow>
-        <TableCell scope="row">
-          <FieldFactory id="date" fields={fields} onChange={updateField} />
-        </TableCell>
-        <TableCell>
-          <FieldFactory
-            id="workedHours"
-            fields={fields}
-            onChange={updateField}
-          />
-        </TableCell>
-        <TableCell>
+    <Card className={classes.root}>
+      <CardContent>
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
+          {formattedDate}
+        </Typography>
+        <FieldFactory id="workedHours" fields={fields} onChange={updateField} />
+        <CardActions>
           <IconButton onClick={submit}>{dirty && <EditIcon />}</IconButton>
-        </TableCell>
-      </TableRow>
-    </React.Fragment>
+        </CardActions>
+      </CardContent>
+    </Card>
   )
 }

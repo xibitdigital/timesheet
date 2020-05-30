@@ -29,7 +29,7 @@ interface GridAreaProps {
 const GridArea = styled.div<GridAreaProps>`
   display: grid;
   grid-area: ${(props) => props.row} / ${(props) => props.col};
-  border: 1px solid red;
+  padding: 0.5em;
 `
 
 export interface GridElementProps {
@@ -45,8 +45,6 @@ export const GridElement: React.FC<GridElementProps> = ({
   const momentObj = moment(date)
   const row = momentObj.week()
   const col = momentObj.day() + 1
-
-  console.log(date, row, col)
 
   return (
     <GridArea col={col} row={row}>
@@ -67,6 +65,7 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
     FIRESTORE.collection(COLLECTIONS.WORKED_DAYS)
       .where('owner', '==', user ? user.uid : '')
       .where('timeSheetId', '==', timesheetId),
+    /* .orderBy('date') */
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
