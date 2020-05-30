@@ -16,13 +16,13 @@ jobs:
           node-version: '12.x'
       - name: Build solution
         run: |
-          ./decrypt_secret.sh
+          ./generate_env.sh
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
           yarn build
         env:
-          REACT_ENV: ${{ secrets.REACT_ENV }}
+          FIREBASE_ENV_CONFIG: ${{ secrets.FIREBASE_ENV_CONFIG }}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
