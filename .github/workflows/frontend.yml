@@ -3,7 +3,6 @@ name: React CI/CD
 on:
   push:
     branches:
-      - master
 
 jobs:
   deploy_frontend:
@@ -29,3 +28,6 @@ jobs:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+        push:
+          branches:
+            - master
