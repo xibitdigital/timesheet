@@ -16,6 +16,7 @@ jobs:
       - name: Build solution
         run: |
           ./generate_env.sh
+          echo $FIREBASE_ENV_CONFIG
           cat .env
           yarn --frozen-lockfile
           yarn test:once
