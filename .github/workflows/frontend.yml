@@ -3,7 +3,6 @@ name: React CI/CD
 on:
   push:
     branches:
-      - master
 
 jobs:
   deploy_frontend:
@@ -25,6 +24,7 @@ jobs:
           FIREBASE_ENV: ${{ secrets.FIREBASE_ENV }}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
+        if: steps.extract_branch.outputs.branch == 'master'
         with:
           args: deploy --only hosting
         env:
