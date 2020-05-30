@@ -3,7 +3,7 @@ name: React CI/CD
 on:
   push:
     branches:
-      - ci_auth
+      - master
 
 jobs:
   deploy_frontend:
