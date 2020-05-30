@@ -24,10 +24,8 @@ jobs:
           FIREBASE_ENV_CONFIG: ${{ secrets.FIREBASE_ENV_CONFIG }}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
+        if: steps.extract_branch.outputs.branch == 'master'
         with:
           args: deploy --only hosting
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        push:
-          branches:
-            - master
