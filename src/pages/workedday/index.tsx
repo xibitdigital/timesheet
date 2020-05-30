@@ -17,7 +17,8 @@ import { updateWorkday } from './WorkedDayUtils'
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-auto-rows: min-content;
+  grid-template-rows: repeat(53, min-content);
+  /* gap: 1em; */
 `
 
 interface GridAreaProps {
@@ -27,7 +28,7 @@ interface GridAreaProps {
 
 const GridArea = styled.div<GridAreaProps>`
   display: grid;
-  grid-area: ${(props) => props.col} / ${(props) => props.row};
+  grid-area: ${(props) => props.row} / ${(props) => props.col};
   border: 1px solid red;
 `
 
@@ -41,20 +42,15 @@ export const GridElement: React.FC<GridElementProps> = ({
   updateData,
 }) => {
   const { date, id } = workedDay
-  const dayOfWeek = moment(date).dates()
-  const row = Math.floor(dayOfWeek / 7) + 1
-  const col = (dayOfWeek % 7) + 1
+  const momentObj = moment(date)
+  const row = momentObj.week()
+  const col = momentObj.day() + 1
 
   console.log(date, row, col)
 
   return (
     <GridArea col={col} row={row}>
-      <WorkedDayForm
-        id={id}
-        workedDay={workedDay}
-        updateData={updateData}
-        key={id}
-      />
+      <WorkedDayForm id={id} workedDay={workedDay} updateData={updateData} />
     </GridArea>
   )
 }
