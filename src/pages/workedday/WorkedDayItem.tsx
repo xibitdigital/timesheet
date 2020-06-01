@@ -14,13 +14,14 @@ export const WorkedDayItem: React.FC<CalendarItemProps> = ({
   workedDay,
   updateData,
 }) => {
-  const { date, id } = workedDay
+  const { date, id, dayType } = workedDay
   const momentObj = moment(date)
   const row = momentObj.week()
   const col = momentObj.day() + 1
+  const holiday = dayType !== 'Weekday'
 
   return (
-    <CalendarDay day={col} week={row}>
+    <CalendarDay day={col} week={row} holiday={holiday}>
       <WorkedDayForm id={id} workedDay={workedDay} updateData={updateData} />
     </CalendarDay>
   )
