@@ -10,7 +10,6 @@ export const CalendarDay = styled.div<GridAreaProps>`
   display: grid;
   grid-area: ${(props) => props.week} / ${(props) => props.day};
   padding: 0.5em;
-  background: ${(props) => (props.holiday ? '#eeeeee' : 'white')};
   grid-template-rows: min-content min-content;
   grid-template-columns: 3fr 1fr;
   grid-template-areas: 'title actions' 'form form';
@@ -18,7 +17,8 @@ export const CalendarDay = styled.div<GridAreaProps>`
 `
 
 export const CalendarDayTitle = styled.div`
-  font-weight: 600;
+  padding: 0.5em;
+  font-weight: 500;
   display: flex;
   align-items: center;
   grid-area: title;

@@ -50,7 +50,9 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
     <React.Fragment>
       <CalendarDayTitle>{formattedDate}</CalendarDayTitle>
       <CalendarDayActions>
-        <IconButton onClick={submit}>{dirty && <EditIcon />}</IconButton>
+        <IconButton size="small" onClick={submit}>
+          {dirty && <EditIcon />}
+        </IconButton>
       </CalendarDayActions>
       <CalendarDayForm>
         <FieldFactory id="workedHours" fields={fields} onChange={updateField} />
