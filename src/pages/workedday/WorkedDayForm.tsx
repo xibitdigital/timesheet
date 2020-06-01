@@ -13,8 +13,8 @@ import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { WorkedDay } from '../../shared/collections'
-import { UpdateWorkDayProcess } from './workedDay.types'
-import { WorkedDayFormConfig } from './WorkedDayForm.config'
+import { UpdateWorkDayProcess } from './types'
+import { WorkedDayFormConfig } from './form'
 
 interface WorkedDayFormProps {
   id: string
