@@ -1,5 +1,5 @@
-import { WorkedDayCollectionItem } from './../../shared/collections'
 import moment from 'moment'
+import { WorkedDayCollectionItem } from './../../shared/collections'
 
 export interface useCalendarGridReturn {
   week: number
@@ -17,4 +17,17 @@ export function calculateGridPos(
   const holiday = dayType !== 'Weekday'
 
   return { week, day, holiday }
+}
+
+export function calculateWorkedHours(
+  workedDays: WorkedDayCollectionItem[] | undefined
+): number {
+  if (!workedDays) {
+    return 0
+  }
+  return workedDays.reduce(
+    (acc: number, current: WorkedDayCollectionItem) =>
+      acc + parseInt(current.workedHours),
+    0
+  )
 }

@@ -1,5 +1,5 @@
-import { Box } from '@material-ui/core'
-import React, { Fragment } from 'react'
+import { Box, Typography } from '@material-ui/core'
+import React, { Fragment, useMemo } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { CalendarContainer } from '../../components/calendar/CalendarContainer'
@@ -12,6 +12,7 @@ import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { UpdateWorkDayProcess } from './types'
 import { updateWorkday } from './WorkedDayUtils'
 import { WorkedDayItem } from './WorkedDayItem'
+import { calculateWorkedHours } from './utils'
 
 interface WorkedDayPageProps {
   timesheetId: string
@@ -32,6 +33,8 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
     }
   )
 
+  const workedHours = useMemo(() => calculateWorkedHours(items), [items])
+
   const updateData: UpdateWorkDayProcess = (
     documentId: string,
     data: WorkedDay
@@ -41,6 +44,11 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
 
   return (
     <Fragment>
+      <Box>
+        <Typography variant="h4" component="h2">
+          Total: {workedHours}h
+        </Typography>
+      </Box>
       <Box>
         <CalendarContainer>
           {!loading &&

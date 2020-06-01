@@ -14,6 +14,12 @@ import { WorkedDay } from '../../shared/collections'
 import { WorkedDayFormConfig } from './form'
 import { UpdateWorkDayProcess } from './types'
 
+interface GridAreaProps {
+  week: number
+  day: number
+  holiday: boolean
+}
+
 interface WorkedDayFormProps {
   id: string
   workedDay: WorkedDay
@@ -50,7 +56,12 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
     <React.Fragment>
       <CalendarDayTitle>{formattedDate}</CalendarDayTitle>
       <CalendarDayActions>
-        <IconButton size="small" onClick={submit}>
+        <IconButton
+          size="small"
+          onClick={submit}
+          color="secondary"
+          disabled={!dirty}
+        >
           {dirty && <EditIcon />}
         </IconButton>
       </CalendarDayActions>
