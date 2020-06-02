@@ -11,6 +11,9 @@
     "test": "jest --watchAll --verbose=false",
     "test:once": "jest --watchAll=false --verbose=false"
   },
+  "engines": {
+    "node": "8"
+  },
   "main": "lib/index.js",
   "dependencies": {
     "axios": "^0.19.2",
