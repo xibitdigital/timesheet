@@ -154,7 +154,7 @@ describe('isValidCountry', () => {
 })
 
 describe('getDays', () => {
-  it('should return a dictionary of days and type', async () => {
+  it('should return a dictionary of days and type for one month range', async () => {
     const actualResults = await getDays(
       moment.utc('2020-08-01'),
       moment.utc('2020-08-31'),
