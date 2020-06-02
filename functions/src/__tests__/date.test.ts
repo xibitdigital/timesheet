@@ -29,6 +29,17 @@ jest.mock('../externalAPI', () => ({
         launchYear: null,
         type: 'Public',
       },
+      {
+        date: '2020-03-01',
+        localName: 'Fake HolyDay',
+        name: 'Fake HolyDay',
+        countryCode: 'GB',
+        fixed: false,
+        global: true,
+        counties: null,
+        launchYear: null,
+        type: 'Public',
+      },
     ])
   ),
 }))
