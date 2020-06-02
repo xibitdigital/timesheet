@@ -154,52 +154,10 @@ describe('isValidCountry', () => {
 })
 
 describe('getDays', () => {
-  it('should return a dictionary of days and type for one month range', async () => {
-    const actualResults = await getDays(
-      moment.utc('2020-08-01'),
-      moment.utc('2020-08-31'),
-      'IT'
-    ) //?
-    expect(actualResults).toEqual({
-      '2020-08-01': 'Weekend',
-      '2020-08-02': 'Weekend',
-      '2020-08-03': 'Weekday',
-      '2020-08-04': 'Weekday',
-      '2020-08-05': 'Weekday',
-      '2020-08-06': 'Weekday',
-      '2020-08-07': 'Weekday',
-      '2020-08-08': 'Weekend',
-      '2020-08-09': 'Weekend',
-      '2020-08-10': 'Weekday',
-      '2020-08-11': 'Weekday',
-      '2020-08-12': 'Weekday',
-      '2020-08-13': 'Weekday',
-      '2020-08-14': 'Weekday',
-      '2020-08-15': 'Weekend',
-      '2020-08-16': 'Weekend',
-      '2020-08-17': 'Weekday',
-      '2020-08-18': 'Weekday',
-      '2020-08-19': 'Weekday',
-      '2020-08-20': 'Weekday',
-      '2020-08-21': 'Weekday',
-      '2020-08-22': 'Weekend',
-      '2020-08-23': 'Weekend',
-      '2020-08-24': 'Weekday',
-      '2020-08-25': 'Weekday',
-      '2020-08-26': 'Weekday',
-      '2020-08-27': 'Weekday',
-      '2020-08-28': 'Weekday',
-      '2020-08-29': 'Weekend',
-      '2020-08-30': 'Weekend',
-      '2020-08-31': 'Weekday',
-      // "2020-09-01": "WeekDay",
-    })
-  })
-
   it('should return a dictionary of days and type', async () => {
     const actualResults = await getDays(
       moment.utc('2020-12-24'),
-      moment.utc('2020-12-27'),
+      moment.utc('2020-12-31'),
       'GB'
     ) //?
     expect(actualResults).toEqual({
@@ -207,6 +165,10 @@ describe('getDays', () => {
       '2020-12-25': 'Public',
       '2020-12-26': 'Weekend',
       '2020-12-27': 'Weekend',
+      '2020-12-28': 'Weekday',
+      '2020-12-29': 'Weekday',
+      '2020-12-30': 'Weekday',
+      '2020-12-31': 'Weekday',
     })
   })
 })
