@@ -21,6 +21,7 @@ jobs:
           yarn build
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
+        if: steps.extract_branch.outputs.branch == 'master'
         with:
           args: deploy --only functions
         env:
