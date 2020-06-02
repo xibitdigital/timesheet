@@ -36,11 +36,7 @@ exports.updateWorkedDays = functions.firestore
       isValidDate(endDate) &&
       isValidCountry(countryCode)
     ) {
-      const days = await getDays(
-        firstDayOfMonth.toString(),
-        endDate,
-        countryCode
-      )
+      const days = await getDays(firstDayOfMonth, endDate, countryCode)
       const workDays = createWorkedDaysRecords(
         clientId,
         timeSheetId,
