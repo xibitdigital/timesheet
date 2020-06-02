@@ -1,20 +1,19 @@
 // import { firebase } from 'firebase/app';
 import * as admin from 'firebase-admin'
+import * as functions from 'firebase-functions'
+import { insertWorkDays } from './database'
+import {
+  createWorkedDaysRecords,
+  getDays,
+  getFirstDayOfTheMonth,
+  getLastDayOfTheMonth,
+  isValidCountry,
+  isValidDate,
+} from './date'
+import { TimeSheet } from './types'
 admin.initializeApp()
 
 const db = admin.firestore()
-
-import * as functions from 'firebase-functions'
-import {
-  isValidDate,
-  isValidCountry,
-  getDateOfNextMonth,
-  getDays,
-  createWorkedDaysRecords,
-} from './date'
-
-import { insertWorkDays } from './database'
-import { TimeSheet } from './types'
 
 exports.updateWorkedDays = functions.firestore
   .document('timesheets/{timeSheetId}')
@@ -27,8 +26,10 @@ exports.updateWorkedDays = functions.firestore
     const timesheet = change.after.data()
     const { year, month, countryCode, clientId, owner } = timesheet as TimeSheet // add timesheet type here
 
-    const firstDayOfMonth = new Date(`${year}-${month}-01`)
-    const endDate = getDateOfNextMonth(firstDayOfMonth)
+    const firstDayOfMonth = getFirstDayOfTheMonth(year, month)
+    const endDate = getLastDayOfTheMonth(firstDayOfMonth)
+
+    console.log('RANGE', firstDayOfMonth.toISOString(), endDate.toISOString())
 
     if (
       isValidDate(firstDayOfMonth) &&

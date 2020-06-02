@@ -1,17 +1,19 @@
 import {
+  createWorkedDaysRecords,
+  dateToShortISO,
+  formatDay,
+  formatPublicHoliday,
+  getLastDayOfTheMonth,
   getDatesFromRange,
+  getDays,
+  getFirstDayOfTheMonth,
+  getYear,
+  isValidCountry,
   isValidDate,
   isWeekend,
-  dateToShortISO,
-  formatPublicHoliday,
-  formatDay,
-  getYearFromShortISO,
-  isValidCountry,
-  getDays,
-  getDateOfNextMonth,
-  getFirstDayOfTheMonth,
-  createWorkedDaysRecords,
+  rangeToDates,
 } from '../date'
+import * as moment from 'moment'
 
 jest.mock('../externalAPI', () => ({
   getPublicHolidays: jest.fn(() =>
@@ -33,12 +35,12 @@ jest.mock('../externalAPI', () => ({
 
 describe('isValidDate', () => {
   it('should return true if a valid date is given', () => {
-    const actualResults = isValidDate('2020-01-01')
+    const actualResults = isValidDate(moment.utc('2020-01-01'))
     expect(actualResults).toBeTruthy()
   })
 
   it('should return false if an invalid date is given', () => {
-    const actualResults = isValidDate('seeee')
+    const actualResults = isValidDate(moment.utc('seeee'))
     expect(actualResults).toBeFalsy()
   })
 })
@@ -69,57 +71,72 @@ describe('formatPublicHolidays', () => {
 
 describe('getDatesFromRange', () => {
   it('should return an array of dates given two valid date ranges', () => {
-    const expectedResults = [new Date('2020-01-01'), new Date('2020-01-02')]
+    const expectedResults = ['2020-01-01', '2020-01-02', '2020-01-03']
 
-    const actualResults = getDatesFromRange('2020-01-01', '2020-01-03')
-    expect(actualResults).toEqual(expectedResults)
+    const actualResults = getDatesFromRange(
+      moment.utc('2020-01-01'),
+      moment.utc('2020-01-03')
+    )
+    expect(rangeToDates(actualResults).map((i) => dateToShortISO(i))).toEqual(
+      expectedResults
+    )
   })
 
   it('should return an empty array given two invalid date ranges', () => {
-    const actualResults = getDatesFromRange('2020-01-01', '2020-01-01')
-    expect(actualResults).toEqual([])
+    const actualResults = getDatesFromRange(
+      moment.utc('2020-01-01'),
+      moment.utc('2020-01-01')
+    )
+    expect(rangeToDates(actualResults).map((i) => dateToShortISO(i))).toEqual([
+      '2020-01-01',
+    ])
   })
 
   it('should return an empty array  given two invalid dates', () => {
-    const actualResults = getDatesFromRange('gerva', 'soni')
-    expect(actualResults).toEqual([])
+    const actualResults = getDatesFromRange(
+      moment.utc('gerva'),
+      moment.utc('soni')
+    )
+    expect(rangeToDates(actualResults).map((i) => dateToShortISO(i))).toEqual(
+      []
+    )
   })
 })
 
 describe('isWeekend', () => {
   it('should return false when given a weekday', () => {
-    const actualResults = isWeekend(new Date('2020-01-01'))
+    const actualResults = isWeekend(moment.utc('2020-01-01'))
     expect(actualResults).toBeFalsy()
   })
 
   it('should return true when given a weekend', () => {
-    const actualResults = isWeekend(new Date('2020-01-04'))
+    const actualResults = isWeekend(moment.utc('2020-01-04'))
     expect(actualResults).toBeTruthy()
   })
 })
 
 describe('dateToShortISO', () => {
   it('should return a short version of the ISO format given a date object', () => {
-    const actualResults = dateToShortISO(new Date('2020-01-01'))
+    const actualResults = dateToShortISO(moment.utc('2020-01-01'))
     expect(actualResults).toEqual('2020-01-01')
   })
 })
 
 describe('formatDay', () => {
   it('should return a formatted week day', () => {
-    const actualResults = formatDay(new Date('2020-01-01'))
+    const actualResults = formatDay(moment.utc('2020-01-01'))
     expect(actualResults).toEqual({ date: '2020-01-01', type: 'Weekday' })
   })
 
   it('should return a formatted weekend day', () => {
-    const actualResults = formatDay(new Date('2020-01-04'))
+    const actualResults = formatDay(moment.utc('2020-01-04'))
     expect(actualResults).toEqual({ date: '2020-01-04', type: 'Weekend' })
   })
 })
 
-describe('getYearFromShortISO', () => {
+describe('getYear', () => {
   it('should return the year from an ISO string date', () => {
-    const actualResults = getYearFromShortISO('2020-01-04')
+    const actualResults = getYear(moment.utc('2020-01-04'))
     expect(actualResults).toEqual('2020')
   })
 })
@@ -138,26 +155,73 @@ describe('isValidCountry', () => {
 
 describe('getDays', () => {
   it('should return a dictionary of days and type', async () => {
-    const actualResults = await getDays('2020-12-24', '2020-12-27', 'GB') //?
+    const actualResults = await getDays(
+      moment.utc('2020-08-01'),
+      moment.utc('2020-08-31'),
+      'IT'
+    ) //?
+    expect(actualResults).toEqual({
+      '2020-08-01': 'Weekend',
+      '2020-08-02': 'Weekend',
+      '2020-08-03': 'Weekday',
+      '2020-08-04': 'Weekday',
+      '2020-08-05': 'Weekday',
+      '2020-08-06': 'Weekday',
+      '2020-08-07': 'Weekday',
+      '2020-08-08': 'Weekend',
+      '2020-08-09': 'Weekend',
+      '2020-08-10': 'Weekday',
+      '2020-08-11': 'Weekday',
+      '2020-08-12': 'Weekday',
+      '2020-08-13': 'Weekday',
+      '2020-08-14': 'Weekday',
+      '2020-08-15': 'Weekend',
+      '2020-08-16': 'Weekend',
+      '2020-08-17': 'Weekday',
+      '2020-08-18': 'Weekday',
+      '2020-08-19': 'Weekday',
+      '2020-08-20': 'Weekday',
+      '2020-08-21': 'Weekday',
+      '2020-08-22': 'Weekend',
+      '2020-08-23': 'Weekend',
+      '2020-08-24': 'Weekday',
+      '2020-08-25': 'Weekday',
+      '2020-08-26': 'Weekday',
+      '2020-08-27': 'Weekday',
+      '2020-08-28': 'Weekday',
+      '2020-08-29': 'Weekend',
+      '2020-08-30': 'Weekend',
+      '2020-08-31': 'Weekday',
+      // "2020-09-01": "WeekDay",
+    })
+  })
+
+  it('should return a dictionary of days and type', async () => {
+    const actualResults = await getDays(
+      moment.utc('2020-12-24'),
+      moment.utc('2020-12-27'),
+      'GB'
+    ) //?
     expect(actualResults).toEqual({
       '2020-12-24': 'Weekday',
       '2020-12-25': 'Public',
       '2020-12-26': 'Weekend',
+      '2020-12-27': 'Weekend',
     })
   })
 })
 
-describe('getDateOfNextMonth', () => {
-  it('should return next month date', () => {
-    const actualResults = getDateOfNextMonth('2012-12-1')
-    expect(actualResults).toEqual('2013-01-01')
+describe('getLastDayOfTheMonth', () => {
+  it('should return last date of the month', () => {
+    const actualResults = getLastDayOfTheMonth(moment.utc('2012-12-01'))
+    expect(dateToShortISO(actualResults)).toEqual('2012-12-31')
   })
 })
 
 describe('getFirstDayOfTheMonth', () => {
   it('should return next month date', () => {
-    const actualResults = getFirstDayOfTheMonth('2012-12-02')
-    expect(actualResults).toEqual('2012-12-01')
+    const actualResults = getFirstDayOfTheMonth('2012', '12')
+    expect(dateToShortISO(actualResults)).toEqual('2012-12-01')
   })
 })
 
