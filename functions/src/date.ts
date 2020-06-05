@@ -1,48 +1,34 @@
+import * as Moment from 'moment'
+import { DateRange, extendMoment } from 'moment-range'
 import * as R from 'ramda'
-import { HolidayDayType, DayType, WorkDay } from './types'
 import { datesCountriesDictionary } from './constants'
 import { getPublicHolidays } from './externalAPI'
+import { DayFlag, DayType, HolidayDayType, WorkDay } from './types'
+const moment = extendMoment(Moment)
 
-const getDate = (date: any) => new Date(date)
-const dateToString = (date: any) => new Date(date).toString()
-
-export const isValidDate = R.compose<any, string, boolean>(
-  (str) => str !== 'Invalid Date',
-  dateToString
-)
+export const isValidDate = (date: Moment.Moment) => date.isValid()
 
 export const getDatesFromRange = (
-  startDate: string,
-  endDate: string
-): Date[] => {
-  let dates: Date[] = []
-  const theDate = new Date(startDate)
-  const theEndDate = new Date(endDate)
-  while (theDate < theEndDate) {
-    dates = [...dates, new Date(theDate)]
-    theDate.setDate(theDate.getDate() + 1)
-  }
-  return dates
+  startDate: Moment.Moment,
+  endDate: Moment.Moment
+): DateRange => moment.range(startDate, endDate)
+
+export const rangeToDates = (range: DateRange) => Array.from(range.by('days'))
+
+export const isWeekend = (date: Moment.Moment) => {
+  return [0, 6].includes(date.day())
 }
 
-export const isWeekend = R.compose<Date, number, boolean>(
-  R.or(R.equals(6), R.equals(0)),
-  (date: Date) => date.getDay()
-)
+export const dateToShortISO = (date: Moment.Moment): string =>
+  date.format('YYYY-MM-DD')
 
-export const dateToShortISO = (date: Date): string =>
-  date.toISOString().slice(0, 10)
-
-export const getYearFromShortISO = (ISODate: string): string =>
-  ISODate.substr(0, 4)
+export const getYear = (date: Moment.Moment): string => date.year().toString()
 
 export const formatPublicHoliday = R.pick(['date', 'type'])
 
-export const formatDay = R.applySpec({
-  date: dateToShortISO,
-  type: R.compose<Date, string>((date) =>
-    isWeekend(date) ? 'Weekend' : 'Weekday'
-  ),
+export const formatDay = (date: Moment.Moment) => ({
+  date: dateToShortISO(date),
+  type: isWeekend(date) ? DayFlag.WEEKEND : DayFlag.WEEKDAY,
 })
 
 export const isValidCountry = (countryCode: string) =>
@@ -60,16 +46,22 @@ const daysToDictionary = R.compose<DayType[], any, any>(
 )
 
 export const getDays = async (
-  startDate: string,
-  endDate: string,
+  startDate: Moment.Moment,
+  endDate: Moment.Moment,
   countryCode: string
 ): Promise<Record<string, string>> => {
-  const days = getDatesFromRange(startDate, endDate).map(formatDay)
-  const years = R.uniq([startDate, endDate].map(getYearFromShortISO))
+  const range = getDatesFromRange(startDate, endDate)
+  const days: DayType[] = rangeToDates(range).map((momentObj) =>
+    formatDay(momentObj)
+  )
+
+  const years = R.uniq([startDate, endDate].map(getYear))
   const publicHolidayDays = await Promise.all(
     years.map((year) => getPublicHolidays(year, countryCode))
   )
-  const formattedPublicHolidays = formatPublicHolidays(publicHolidayDays)
+  const formattedPublicHolidays = formatPublicHolidays(
+    publicHolidayDays
+  ).filter(({ date }) => range.contains(moment.utc(date))) // refactor this
 
   const mergedDays = {
     ...daysToDictionary(days),
@@ -79,20 +71,11 @@ export const getDays = async (
   return mergedDays
 }
 
-export const getDateOfNextMonth = R.compose<any, Date, Date, string>(
-  dateToShortISO,
-  (date) => {
-    date.setMonth(date.getMonth() + 1)
-    return date
-  },
-  getDate
-)
+export const getLastDayOfTheMonth = (date: Moment.Moment): Moment.Moment =>
+  date.endOf('month')
 
-export const getFirstDayOfTheMonth = R.compose<any, Date, Date, string>(
-  dateToShortISO,
-  (date) => new Date(date.getFullYear(), date.getMonth(), 1),
-  getDate
-)
+export const getFirstDayOfTheMonth = (year: string, month: string) =>
+  moment.utc(`${year}-${month}-01`)
 
 export const createWorkedDaysRecords = (
   clientId: string,

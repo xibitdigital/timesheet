@@ -41,3 +41,9 @@ export interface TimeSheet {
   owner: string
   countryCode: string
 }
+
+export enum DayFlag {
+  PUBLIC = 'Public',
+  WEEKEND = 'Weekend',
+  WEEKDAY = 'Weekday',
+}

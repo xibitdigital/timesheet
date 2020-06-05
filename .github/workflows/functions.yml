@@ -18,6 +18,7 @@ jobs:
           yarn --frozen-lockfile
           yarn test:once
           yarn lint
+          yarn test:once
           yarn build
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
