@@ -13,6 +13,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Extract Branch Name
+        run: echo "::set-env name=BRANCH::$(echo ${GITHUB_REF##*/})"
       - name: Build solution
         run: |
           ./env.sh
@@ -24,7 +26,7 @@ jobs:
           FIREBASE_ENV: ${{ secrets.FIREBASE_ENV }}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
-        if: steps.extract_branch.outputs.branch == 'master'
+        if: env.BRANCH == 'master'
         with:
           args: deploy --only hosting
         env:
