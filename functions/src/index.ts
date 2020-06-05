@@ -30,6 +30,8 @@ exports.updateWorkedDays = functions.firestore
     const firstDayOfMonth = new Date(`${year}-${month}-01`)
     const endDate = getDateOfNextMonth(firstDayOfMonth)
 
+    console.log(firstDayOfMonth, endDate)
+
     if (
       isValidDate(firstDayOfMonth) &&
       isValidDate(endDate) &&

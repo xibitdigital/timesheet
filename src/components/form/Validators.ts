@@ -10,9 +10,11 @@ import {
 export type CompareValidator<T> = (compareTo: string) => ValidatorFn<T>
 
 enum ValidationMessage {
-  'REQUIRED' = 'Required',
-  'MIN_LENGTH' = 'Too short',
-  'MAX_LENGTH' = 'Too long',
+  REQUIRED = 'Required',
+  MIN_LENGTH = 'Too short',
+  MAX_LENGTH = 'Too long',
+  MIN = 'Too small',
+  MAX = 'Too big',
 }
 
 function returnSuccess(): ValidatorReturn {
@@ -58,6 +60,20 @@ export function numberValidator<T>(
   return field && field.value && parseInt(field.value.toString(), 10) > 0
     ? returnSuccess()
     : returnError(ValidationMessage.REQUIRED)
+}
+
+export function minValidator<T>(comparator: number) {
+  return (field: Field<T>): ValidatorReturn =>
+    field && field.value && Number(field.value) >= comparator
+      ? returnSuccess()
+      : returnError(ValidationMessage.MIN)
+}
+
+export function maxValidator<T>(comparator: number) {
+  return (field: Field<T>): ValidatorReturn =>
+    field && field.value && Number(field.value) <= comparator
+      ? returnSuccess()
+      : returnError(ValidationMessage.MAX)
 }
 
 // export const minMaxValidator: CompareValidator = (compareWith: string): ValidatorFn =>

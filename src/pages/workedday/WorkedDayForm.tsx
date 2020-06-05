@@ -1,12 +1,24 @@
-import { IconButton, TableCell, TableRow } from '@material-ui/core'
+import { IconButton } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
-import React from 'react'
+import moment from 'moment'
+import React, { useMemo } from 'react'
+import {
+  CalendarDayActions,
+  CalendarDayForm,
+  CalendarDayTitle,
+} from '../../components/calendar/CalendarDay'
 import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { WorkedDay } from '../../shared/collections'
-import { UpdateWorkDayProcess } from './workedDay.types'
-import { WorkedDayFormConfig } from './WorkedDayForm.config'
+import { WorkedDayFormConfig } from './form'
+import { UpdateWorkDayProcess } from './types'
+
+interface GridAreaProps {
+  week: number
+  day: number
+  holiday: boolean
+}
 
 interface WorkedDayFormProps {
   id: string
@@ -19,6 +31,9 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
   workedDay,
   updateData,
 }): JSX.Element => {
+  const { date } = workedDay
+  const formattedDate = useMemo(() => moment(date).format('ddd D'), [date])
+
   const saveData: SubmitProcess<WorkedDay> = (data) => {
     return updateData(id, data)
   }
@@ -39,21 +54,20 @@ export const WorkedDayForm: React.FC<WorkedDayFormProps> = ({
 
   return (
     <React.Fragment>
-      <TableRow>
-        <TableCell scope="row">
-          <FieldFactory id="date" fields={fields} onChange={updateField} />
-        </TableCell>
-        <TableCell>
-          <FieldFactory
-            id="workedHours"
-            fields={fields}
-            onChange={updateField}
-          />
-        </TableCell>
-        <TableCell>
-          <IconButton onClick={submit}>{dirty && <EditIcon />}</IconButton>
-        </TableCell>
-      </TableRow>
+      <CalendarDayTitle>{formattedDate}</CalendarDayTitle>
+      <CalendarDayActions>
+        <IconButton
+          size="small"
+          onClick={submit}
+          color="secondary"
+          disabled={!dirty}
+        >
+          {dirty && <EditIcon />}
+        </IconButton>
+      </CalendarDayActions>
+      <CalendarDayForm>
+        <FieldFactory id="workedHours" fields={fields} onChange={updateField} />
+      </CalendarDayForm>
     </React.Fragment>
   )
 }

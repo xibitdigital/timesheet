@@ -1,6 +1,7 @@
 import { FieldType, FormConfig } from '../../components/form/FormTypes'
 import { requiredValidator } from '../../components/form/Validators'
 import { WorkedDay } from '../../shared/collections'
+import { maxValidator } from './../../components/form/Validators'
 
 export const WorkedDayFormConfig: FormConfig<WorkedDay> = [
   {
@@ -15,7 +16,7 @@ export const WorkedDayFormConfig: FormConfig<WorkedDay> = [
     id: 'workedHours',
     fieldType: FieldType.NUMBER,
     label: 'Time',
-    validators: [requiredValidator],
+    validators: [requiredValidator, maxValidator(8)],
     value: 0,
   },
 ]

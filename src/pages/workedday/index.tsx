@@ -1,24 +1,18 @@
-import {
-  Box,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from '@material-ui/core'
-import React, { Fragment } from 'react'
+import { Box, Typography } from '@material-ui/core'
+import React, { Fragment, useMemo } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { CalendarContainer } from '../../components/calendar/CalendarContainer'
 import {
   COLLECTIONS,
   WorkedDay,
   WorkedDayCollectionItem,
 } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
-import { WorkedDayForm } from './WorkedDayForm'
+import { UpdateWorkDayProcess } from './types'
 import { updateWorkday } from './WorkedDayUtils'
-import { UpdateWorkDayProcess } from './workedDay.types'
+import { WorkedDayItem } from './WorkedDayItem'
+import { calculateWorkedHours } from './utils'
 
 interface WorkedDayPageProps {
   timesheetId: string
@@ -32,11 +26,14 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
     FIRESTORE.collection(COLLECTIONS.WORKED_DAYS)
       .where('owner', '==', user ? user.uid : '')
       .where('timeSheetId', '==', timesheetId),
+    /* .orderBy('date') */
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
     }
   )
+
+  const workedHours = useMemo(() => calculateWorkedHours(items), [items])
 
   const updateData: UpdateWorkDayProcess = (
     documentId: string,
@@ -48,29 +45,22 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
   return (
     <Fragment>
       <Box>
-        <TableContainer>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell scope="col">Day</TableCell>
-                <TableCell scope="col">Time</TableCell>
-                <TableCell scope="col">Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {!loading &&
-                items &&
-                items.map((workedDay) => (
-                  <WorkedDayForm
-                    id={workedDay.id}
-                    workedDay={workedDay}
-                    updateData={updateData}
-                    key={workedDay.id}
-                  />
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Typography variant="h4" component="h2">
+          Total: {workedHours}h
+        </Typography>
+      </Box>
+      <Box>
+        <CalendarContainer>
+          {!loading &&
+            items &&
+            items.map((workedDay) => (
+              <WorkedDayItem
+                key={workedDay.id}
+                workedDay={workedDay}
+                updateData={updateData}
+              />
+            ))}
+        </CalendarContainer>
       </Box>
     </Fragment>
   )

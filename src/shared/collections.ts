@@ -22,7 +22,7 @@ export interface WorkedDay {
   clientId: string
   date: string
   dayType: string
-  workedHours: number
+  workedHours: string
   timeSheetId: string
 }
 export type WorkedDayCollectionItem = WorkedDay & FirebaseCollectionItem

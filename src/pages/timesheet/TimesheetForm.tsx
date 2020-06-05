@@ -5,7 +5,7 @@ import { FieldFactory } from '../../components/form/FieldFactory'
 import { UseForm } from '../../components/form/FormHook'
 import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { TimeSheet } from '../../shared/collections'
-import { TimesheetFormConfig } from './TimesheetForm.config'
+import { TimesheetFormConfig } from './form'
 import { WorkedDayPage } from '../workedday'
 import Divider from '@material-ui/core/Divider'
 interface TimesheetFormProps {

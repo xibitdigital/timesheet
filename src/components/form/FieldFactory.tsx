@@ -67,7 +67,6 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
       case FieldType.TEXT:
         return (
           <Input
-            id={idSTring}
             name={idSTring}
             value={value}
             aria-describedby={label}
@@ -78,7 +77,6 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
       case FieldType.NUMBER:
         return (
           <Input
-            id={idSTring}
             name={idSTring}
             value={value}
             type="number"
@@ -91,7 +89,6 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
         const { options } = config
         return (
           <Select
-            id={idSTring}
             name={idSTring}
             value={value}
             aria-describedby={label}
@@ -109,7 +106,6 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
         const { collection } = config
         return (
           <CollectionSelect
-            id={idSTring}
             name={idSTring}
             value={value}
             label={label}
@@ -121,7 +117,6 @@ export function FieldFactory<T>(props: FieldFactoryProps<T>) {
       case FieldType.CHECKBOX:
         return (
           <Checkbox
-            id={idSTring}
             name={idSTring}
             value={value}
             aria-describedby={label}
