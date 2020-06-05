@@ -37,9 +37,7 @@ export const TimeSheetList: React.FC<TimesheetProps> = ({
             items.map((doc) => (
               <TableRow key={doc.id}>
                 <TableCell scope="row">
-                  <strong title={doc.id}>
-                    {doc.name} [{doc.id}] >>> debug
-                  </strong>
+                  <strong title={doc.id}>{doc.name}</strong>
                 </TableCell>
                 <TableCell>{doc.month}</TableCell>
                 <TableCell>{doc.year}</TableCell>

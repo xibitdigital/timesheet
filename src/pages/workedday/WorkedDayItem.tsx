@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
-import { CalendarDay } from '../../components/calendar/CalendarDay'
 import { WorkedDayCollectionItem } from '../../shared/collections'
 import { UpdateWorkDayProcess } from './types'
 import { calculateGridPos } from './utils'
 import { WorkedDayForm } from './WorkedDayForm'
+import { CalendarDay } from '../../components/Calendar'
 
 export interface CalendarItemProps {
   workedDay: WorkedDayCollectionItem

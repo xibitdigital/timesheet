@@ -17,8 +17,7 @@ export function updateField<T>(
     fieldsHistory: fieldsHistoryCurrent = [],
   } = ctx
   const { id, value } = event
-  const kId = id as keyof T
-  const field = fieldsCurrent[kId]
+  const field = fieldsCurrent[id]
   // assign new value
   const newField: any = { ...field, value } // TODO fix type here
   // running validations
@@ -97,14 +96,14 @@ export function validateField<T>(
   const { fields } = ctx
   const { validators = [] } = field
   let res: ValidatorReturn = { error: false, errorMessage: '' }
+  let found = false
 
-  validators.some((validator) => {
+  validators.forEach((validator) => {
     const { error, errorMessage } = validator(field, fields)
-    if (error) {
+    if (error && !found) {
       res = { error, errorMessage }
-      return true
+      found = true
     }
-    return false
   })
 
   return res

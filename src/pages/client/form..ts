@@ -1,5 +1,5 @@
-import { FieldType, FormConfig } from '../../components/form/FormTypes'
-import { requiredValidator } from '../../components/form/Validators'
+import { FieldType, FormConfig } from '../../components/Form/FormTypes'
+import { requiredValidator } from '../../components/Form/Validators'
 import { Client } from '../../shared/collections'
 
 export const ClientFormConfig: FormConfig<Client> = [

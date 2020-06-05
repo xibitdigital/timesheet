@@ -2,7 +2,6 @@ import { Box, Typography } from '@material-ui/core'
 import React, { Fragment, useMemo } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { CalendarContainer } from '../../components/calendar/CalendarContainer'
 import {
   COLLECTIONS,
   WorkedDay,
@@ -13,6 +12,7 @@ import { UpdateWorkDayProcess } from './types'
 import { updateWorkday } from './WorkedDayUtils'
 import { WorkedDayItem } from './WorkedDayItem'
 import { calculateWorkedHours } from './utils'
+import { CalendarContainer } from '../../components/Calendar'
 
 interface WorkedDayPageProps {
   timesheetId: string
@@ -44,7 +44,7 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
 
   return (
     <Fragment>
-      <Box>
+      <Box padding="large">
         <Typography variant="h4" component="h2">
           Total: {workedHours}h
         </Typography>

@@ -15,7 +15,7 @@ import {
   ValidatorReturn,
 } from '../FormTypes'
 import { requiredValidator } from '../Validators'
-import { FormConfig, FormContext } from './../FormTypes'
+import { FormConfig, FormContext } from '../FormTypes'
 describe('FormHelpers', () => {
   interface Test {
     name: string

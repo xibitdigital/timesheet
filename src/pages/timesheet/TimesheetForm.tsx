@@ -1,13 +1,15 @@
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import React from 'react'
-import { FieldFactory } from '../../components/form/FieldFactory'
-import { UseForm } from '../../components/form/FormHook'
-import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
 import { TimeSheet } from '../../shared/collections'
-import { TimesheetFormConfig } from './form'
 import { WorkedDayPage } from '../workedday'
-import Divider from '@material-ui/core/Divider'
+import { TimesheetFormConfig } from './form'
+import { FormBody, FormContainer, FormButtons } from '../../components/Layout'
+import {
+  FieldFactory,
+  FetchProcess,
+  SubmitProcess,
+  UseForm,
+} from '../../components/Form'
 interface TimesheetFormProps {
   documentId: string
   loadData: FetchProcess<TimeSheet>
@@ -30,26 +32,33 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
   } = state
 
   return (
-    <React.Fragment>
-      <FieldFactory id="name" fields={fields} onChange={updateField} />
-      <FieldFactory id="clientId" fields={fields} onChange={updateField} />
-      <FieldFactory id="projectId" fields={fields} onChange={updateField} />
-      <FieldFactory id="month" fields={fields} onChange={updateField} />
-      <FieldFactory id="year" fields={fields} onChange={updateField} />
-      <FieldFactory id="countryCode" fields={fields} onChange={updateField} />
-      <Box justifyItems="flex-end">
+    <FormContainer>
+      <FormBody>
+        <FieldFactory id="name" fields={fields} onChange={updateField} />
+        <FieldFactory id="clientId" fields={fields} onChange={updateField} />
+        <FieldFactory id="projectId" fields={fields} onChange={updateField} />
+        <FieldFactory id="month" fields={fields} onChange={updateField} />
+        <FieldFactory id="year" fields={fields} onChange={updateField} />
+        <FieldFactory id="countryCode" fields={fields} onChange={updateField} />
+      </FormBody>
+      <FormButtons>
         <Button type="reset" onClick={reset}>
           Reset
         </Button>
         <Button type="reset" onClick={undo}>
           Undo
         </Button>
-        <Button type="submit" color="primary" onClick={submit}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          onClick={submit}
+        >
           Submit
         </Button>
-      </Box>
-      <Divider light />
+      </FormButtons>
+
       <WorkedDayPage timesheetId={documentId}></WorkedDayPage>
-    </React.Fragment>
+    </FormContainer>
   )
 }
