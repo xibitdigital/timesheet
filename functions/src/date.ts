@@ -40,7 +40,7 @@ const formatPublicHolidays = R.compose<
   DayType[]
 >(R.map(formatPublicHoliday), R.flatten)
 
-const daysToDictionary = R.compose<DayType[], any, any>(
+export const daysToDictionary = R.compose<DayType[], any, any>(
   R.fromPairs,
   R.map(R.props(['date', 'type']))
 )
@@ -54,7 +54,6 @@ export const getDays = async (
   const days: DayType[] = rangeToDates(range).map((momentObj) =>
     formatDay(momentObj)
   )
-
   const years = R.uniq([startDate, endDate].map(getYear))
   const publicHolidayDays = await Promise.all(
     years.map((year) => getPublicHolidays(year, countryCode))
@@ -63,19 +62,17 @@ export const getDays = async (
     publicHolidayDays
   ).filter(({ date }) => range.contains(moment.utc(date))) // refactor this
 
-  const mergedDays = {
+  return {
     ...daysToDictionary(days),
     ...daysToDictionary(formattedPublicHolidays),
   }
-
-  return mergedDays
 }
 
 export const getLastDayOfTheMonth = (date: Moment.Moment): Moment.Moment =>
-  date.endOf('month')
+  moment.utc(dateToShortISO(date)).endOf('month')
 
 export const getFirstDayOfTheMonth = (year: string, month: string) =>
-  moment.utc(`${year}-${month}-01`)
+  moment(`${year}-${month}-01`)
 
 export const createWorkedDaysRecords = (
   clientId: string,

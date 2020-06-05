@@ -12,6 +12,7 @@ import {
   isValidDate,
   isWeekend,
   rangeToDates,
+  daysToDictionary,
 } from '../date'
 import * as moment from 'moment'
 
@@ -50,7 +51,7 @@ describe('isValidDate', () => {
     expect(actualResults).toBeTruthy()
   })
 
-  fit('should return false if an invalid date is given', () => {
+  it('should return false if an invalid date is given', () => {
     const actualResults = isValidDate(moment.utc('seeee'))
     expect(actualResults).toBeFalsy()
   })
@@ -182,6 +183,13 @@ describe('getDays', () => {
       '2020-12-31': 'Weekday',
     })
   })
+
+  it('should return a dictionary of days and type for a month range', async () => {
+    const startDate = moment.utc('2020-06-01')
+    const endDate = getLastDayOfTheMonth(startDate)
+    const actualResults = await getDays(startDate, endDate, 'GB') //?
+    expect(Object.keys(actualResults).length).toEqual(30)
+  })
 })
 
 describe('getLastDayOfTheMonth', () => {
@@ -195,6 +203,19 @@ describe('getFirstDayOfTheMonth', () => {
   it('should return next month date', () => {
     const actualResults = getFirstDayOfTheMonth('2012', '12')
     expect(dateToShortISO(actualResults)).toEqual('2012-12-01')
+  })
+})
+
+describe('daysToDictionary', () => {
+  it('should return new dictionary from days', () => {
+    const actualResults = daysToDictionary([
+      { date: '2020-06-01', type: 'Weekday' },
+      { date: '2020-06-02', type: 'Weekday' },
+    ])
+    expect(actualResults).toEqual({
+      '2020-06-01': 'Weekday',
+      '2020-06-02': 'Weekday',
+    })
   })
 })
 
