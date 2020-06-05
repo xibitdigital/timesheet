@@ -1,15 +1,15 @@
-import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
+import { FormButtons, MainContainer } from '../../components/Layout'
 import { COLLECTIONS, TimeSheetCollectionItem } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
-import { TimeSheetList } from './TimesheetList'
 import { Routes } from '../../shared/routes'
+import { TimeSheetList } from './TimesheetList'
 
 export const TimesheetPage: React.FC = () => {
   const [user] = useAuthState(FIREBASE.auth())
@@ -36,19 +36,15 @@ export const TimesheetPage: React.FC = () => {
   }
 
   return (
-    <Fragment>
+    <MainContainer>
       <Typography variant="h2">Timesheets</Typography>
-      <Box>
-        <Button onClick={handleNew}>New Timesheet</Button>
-      </Box>
-      <Box>
-        <TimeSheetList
-          loading={loading}
-          items={items}
-          onSelect={handleSelect}
-        />
-      </Box>
+      <FormButtons>
+        <Button onClick={handleNew} variant="contained" color="primary">
+          New Timesheet
+        </Button>
+      </FormButtons>
+      <TimeSheetList loading={loading} items={items} onSelect={handleSelect} />
       <BackButton />
-    </Fragment>
+    </MainContainer>
   )
 }

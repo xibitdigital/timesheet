@@ -1,9 +1,9 @@
-import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
-import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+import { FetchProcess, SubmitProcess } from '../../components/Form/FormTypes'
+import { MainContainer } from '../../components/Layout'
 import { COLLECTIONS, TimeSheet } from '../../shared/collections'
 import { fetchDoc, upsertDoc } from '../../shared/firebase.utils'
 import { Routes } from '../../shared/routes'
@@ -24,16 +24,14 @@ export const TimesheetEdit: React.FC = () => {
   }
 
   return (
-    <Fragment>
+    <MainContainer>
       <Typography variant="h2">Timesheet Edit</Typography>
-      <Box>
-        <TimesheetForm
-          saveData={saveData}
-          loadData={loadData}
-          documentId={documentId}
-        />
-      </Box>
+      <TimesheetForm
+        saveData={saveData}
+        loadData={loadData}
+        documentId={documentId}
+      />
       <BackButton />
-    </Fragment>
+    </MainContainer>
   )
 }

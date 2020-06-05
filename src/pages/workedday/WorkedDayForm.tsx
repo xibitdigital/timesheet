@@ -6,10 +6,10 @@ import {
   CalendarDayActions,
   CalendarDayForm,
   CalendarDayTitle,
-} from '../../components/calendar/CalendarDay'
-import { FieldFactory } from '../../components/form/FieldFactory'
-import { UseForm } from '../../components/form/FormHook'
-import { FetchProcess, SubmitProcess } from '../../components/form/FormTypes'
+} from '../../components/Calendar/CalendarDay'
+import { FieldFactory } from '../../components/Form/FieldFactory'
+import { UseForm } from '../../components/Form/FormHook'
+import { FetchProcess, SubmitProcess } from '../../components/Form/FormTypes'
 import { WorkedDay } from '../../shared/collections'
 import { WorkedDayFormConfig } from './form'
 import { UpdateWorkDayProcess } from './types'

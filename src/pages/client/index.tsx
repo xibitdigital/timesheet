@@ -1,9 +1,10 @@
-import { Box, Button, Typography } from '@material-ui/core'
-import React, { Fragment } from 'react'
+import { Button, Typography } from '@material-ui/core'
+import React from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { useHistory } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
+import { MainContainer, FormButtons } from '../../components/Layout'
 import { ClientCollectionItem, COLLECTIONS } from '../../shared/collections'
 import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { Routes } from '../../shared/routes'
@@ -34,15 +35,15 @@ export const ClientPage: React.FC = () => {
   }
 
   return (
-    <Fragment>
-      <Typography variant="h2">Client</Typography>
-      <Box>
-        <Button onClick={handleNew}>New Client</Button>
-      </Box>
-      <Box>
-        <ClientList loading={loading} items={items} onSelect={handleSelect} />
-      </Box>
+    <MainContainer>
+      <Typography variant="h2">Clients</Typography>
+      <FormButtons>
+        <Button onClick={handleNew} variant="contained" color="primary">
+          New Client
+        </Button>
+      </FormButtons>
+      <ClientList loading={loading} items={items} onSelect={handleSelect} />
       <BackButton />
-    </Fragment>
+    </MainContainer>
   )
 }
