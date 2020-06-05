@@ -50,7 +50,7 @@ describe('isValidDate', () => {
     expect(actualResults).toBeTruthy()
   })
 
-  it('should return false if an invalid date is given', () => {
+  fit('should return false if an invalid date is given', () => {
     const actualResults = isValidDate(moment.utc('seeee'))
     expect(actualResults).toBeFalsy()
   })
