@@ -1,7 +1,7 @@
 // import { firebase } from 'firebase/app';
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import { insertWorkDays } from './database'
+import { insertWorkDays, deleteWorkedDays } from './database'
 import {
   createWorkedDaysRecords,
   getDays,
@@ -44,6 +44,7 @@ exports.updateWorkedDays = functions.firestore
         timeSheetId,
         owner
       )(days)
+      await deleteWorkedDays(db, timeSheetId)
       await insertWorkDays(db, workDays)
     }
   })
