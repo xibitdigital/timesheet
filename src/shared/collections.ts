@@ -7,6 +7,7 @@ export interface FirebaseCollectionItem {
 
 export interface Client {
   name: string
+  identity: string
   fullAddress: string
   postcode: string
 }

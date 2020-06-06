@@ -35,6 +35,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({
         <FieldFactory id="name" fields={fields} onChange={updateField} />
         <FieldFactory id="fullAddress" fields={fields} onChange={updateField} />
         <FieldFactory id="postcode" fields={fields} onChange={updateField} />
+        <FieldFactory id="identity" fields={fields} onChange={updateField} />
       </FormBody>
       <FormButtons>
         <Button

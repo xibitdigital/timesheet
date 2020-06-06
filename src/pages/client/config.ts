@@ -11,6 +11,13 @@ export const ClientFormConfig: FormConfig<Client> = [
     value: '',
   },
   {
+    id: 'identity',
+    fieldType: FieldType.TEXT,
+    label: 'Identity (hash)',
+    validators: [requiredValidator],
+    value: '',
+  },
+  {
     id: 'fullAddress',
     fieldType: FieldType.TEXT,
     label: 'Address',

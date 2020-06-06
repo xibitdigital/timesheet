@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useHistory } from 'react-router-dom'
 import { Box, AppBar, Toolbar, Typography, FormGroup } from '@material-ui/core'
@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button'
 import { DEFAULT_PROVIDER, FIREBASE } from '../../shared/firebase.config'
 import NavBarMenu from './NavBarMenu'
 import { Routes } from '../../shared/routes'
+import { ModalPanel } from '../ModalPanel'
+import { UserPage } from '../../pages/user'
 
 interface NavbarProps {
   title: string
@@ -19,6 +21,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }: NavbarProps): JSX.Element => {
   const history = useHistory()
   const [user, initialising, error] = useAuthState(FIREBASE.auth())
+  const [userInfoVisible, setUserInfoVisible] = useState(false)
 
   const login = () => {
     history.push(Routes.HOME)
@@ -37,9 +40,17 @@ export const Navbar: React.FC<NavbarProps> = ({
     { title: 'Timesheets', action: goToPage(Routes.TIMESHEET) },
   ]
 
+  const showModal = () => {
+    setUserInfoVisible(true)
+  }
+
+  const hideModal = () => {
+    setUserInfoVisible(false)
+  }
+
   const userMenu = [
-    { title: 'Profile', action: () => {} },
-    { title: 'My account', action: () => {} },
+    { title: 'Profile', action: showModal },
+    // { title: 'My account', action: () => {} },
     { title: 'Logout', action: logout },
   ]
 
@@ -60,6 +71,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <Box flexGrow={1}>
       <AppBar position="static">
+        <ModalPanel
+          open={userInfoVisible}
+          title="User"
+          description=""
+          onClose={hideModal}
+        >
+          <UserPage user={user} />
+        </ModalPanel>
         <Toolbar>
           <NavBarMenu
             menuId="menu-app-navigation"
