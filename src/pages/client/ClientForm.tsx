@@ -2,7 +2,7 @@ import { Button } from '@material-ui/core'
 import React from 'react'
 import { FormBody, FormButtons, FormContainer } from '../../components/Layout'
 import { Client } from '../../shared/collections'
-import { ClientFormConfig } from './form.'
+import { ClientFormConfig } from './config'
 import {
   FetchProcess,
   SubmitProcess,

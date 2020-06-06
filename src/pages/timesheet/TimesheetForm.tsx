@@ -2,7 +2,7 @@ import Button from '@material-ui/core/Button'
 import React from 'react'
 import { TimeSheet } from '../../shared/collections'
 import { WorkedDayPage } from '../workedday'
-import { TimesheetFormConfig } from './form'
+import { TimesheetFormConfig } from './config'
 import { FormBody, FormContainer, FormButtons } from '../../components/Layout'
 import {
   FieldFactory,

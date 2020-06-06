@@ -7,6 +7,8 @@ import { Home } from './pages/home'
 import { TimesheetPage } from './pages/timesheet'
 import { ClientEdit } from './pages/client/ClientEdit'
 import { TimesheetEdit } from './pages/timesheet/TimesheetEdit'
+import { ProjectPage } from './pages/project'
+import { ProjectEdit } from './pages/project/ProjectEdit'
 // import {} from 'styled-components/cssprop'
 
 const App: React.FC = () => {
@@ -18,6 +20,8 @@ const App: React.FC = () => {
           <Route path="/" component={Home} exact />
           <Route path="/client/:documentId" component={ClientEdit} />
           <Route path="/client" component={ClientPage} exact />
+          <Route path="/project/:documentId" component={ProjectEdit} />
+          <Route path="/project" component={ProjectPage} exact />
           <Route
             path="/timesheet/:documentId"
             component={TimesheetEdit}

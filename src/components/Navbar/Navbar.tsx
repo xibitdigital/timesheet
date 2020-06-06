@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import Button from '@material-ui/core/Button'
 import { DEFAULT_PROVIDER, FIREBASE } from '../../shared/firebase.config'
 import NavBarMenu from './NavBarMenu'
+import { Routes } from '../../shared/routes'
 
 interface NavbarProps {
   title: string
@@ -20,21 +21,20 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [user, initialising, error] = useAuthState(FIREBASE.auth())
 
   const login = () => {
-    history.push('/')
+    history.push(Routes.HOME)
     FIREBASE.auth().signInWithPopup(DEFAULT_PROVIDER)
   }
   const logout = () => {
     FIREBASE.auth().signOut()
   }
 
-  const goToHomePage = () => history.push('/')
-  const goToClientPage = () => history.push('/client')
-  const goToTimesheetPage = () => history.push('/timesheet')
+  const goToPage = (page: Routes) => () => history.push(page)
 
   const navigationMenu = [
-    { title: 'Home', action: goToHomePage },
-    { title: 'Clients', action: goToClientPage },
-    { title: 'Timesheets', action: goToTimesheetPage },
+    { title: 'Home', action: goToPage(Routes.HOME) },
+    { title: 'Clients', action: goToPage(Routes.CLIENT) },
+    { title: 'Projects', action: goToPage(Routes.PROJECT) },
+    { title: 'Timesheets', action: goToPage(Routes.TIMESHEET) },
   ]
 
   const userMenu = [
