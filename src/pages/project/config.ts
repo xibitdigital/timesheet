@@ -1,8 +1,8 @@
+import { Project } from '../../shared/collections'
 import { FieldType, FormConfig } from '../../components/Form/FormTypes'
 import { requiredValidator } from '../../components/Form/Validators'
-import { Client } from '../../shared/collections'
 
-export const ClientFormConfig: FormConfig<Client> = [
+export const ProjectFormConfig: FormConfig<Project> = [
   {
     id: 'name',
     fieldType: FieldType.TEXT,
@@ -11,16 +11,9 @@ export const ClientFormConfig: FormConfig<Client> = [
     value: '',
   },
   {
-    id: 'fullAddress',
+    id: 'description',
     fieldType: FieldType.TEXT,
-    label: 'Address',
-    validators: [requiredValidator],
-    value: '',
-  },
-  {
-    id: 'postcode',
-    fieldType: FieldType.TEXT,
-    label: 'Post Code',
+    label: 'Description',
     validators: [requiredValidator],
     value: '',
   },

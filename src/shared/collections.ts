@@ -7,6 +7,7 @@ export interface FirebaseCollectionItem {
 
 export interface Client {
   name: string
+  identity: string
   fullAddress: string
   postcode: string
 }
@@ -14,7 +15,7 @@ export type ClientCollectionItem = Client & FirebaseCollectionItem
 
 export interface Project {
   name: string
-  clientId: string
+  description: string
 }
 export type ProjectCollectionItem = Project & FirebaseCollectionItem
 

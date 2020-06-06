@@ -1,8 +1,8 @@
 import { Button } from '@material-ui/core'
 import React from 'react'
 import { FormBody, FormButtons, FormContainer } from '../../components/Layout'
-import { Client } from '../../shared/collections'
-import { ClientFormConfig } from './config'
+import { Project } from '../../shared/collections'
+import { ProjectFormConfig } from './config'
 import {
   FetchProcess,
   SubmitProcess,
@@ -10,17 +10,17 @@ import {
   FieldFactory,
 } from '../../components/Form'
 
-interface ClientFormProps {
-  saveData: SubmitProcess<Client>
-  loadData: FetchProcess<Client>
+interface ProjectFormProps {
+  saveData: SubmitProcess<Project>
+  loadData: FetchProcess<Project>
 }
 
-export const ClientForm: React.FC<ClientFormProps> = ({
+export const ProjectForm: React.FC<ProjectFormProps> = ({
   saveData,
   loadData,
-}: ClientFormProps): JSX.Element => {
-  const { state, submit, reset, updateField } = UseForm<Client>(
-    ClientFormConfig,
+}: ProjectFormProps): JSX.Element => {
+  const { state, submit, reset, updateField } = UseForm<Project>(
+    ProjectFormConfig,
     saveData,
     loadData
   )
@@ -33,9 +33,7 @@ export const ClientForm: React.FC<ClientFormProps> = ({
     <FormContainer>
       <FormBody>
         <FieldFactory id="name" fields={fields} onChange={updateField} />
-        <FieldFactory id="fullAddress" fields={fields} onChange={updateField} />
-        <FieldFactory id="postcode" fields={fields} onChange={updateField} />
-        <FieldFactory id="identity" fields={fields} onChange={updateField} />
+        <FieldFactory id="description" fields={fields} onChange={updateField} />
       </FormBody>
       <FormButtons>
         <Button

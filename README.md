@@ -3,6 +3,8 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 ![yarn downloads](https://img.shields.io/npm/dm/cra-template-typescript-redux)
 
+# !PROJECT under development
+
 # A quick start Redux + TypeScript Create React App template
 
 An opinionated quick start [Create React App](https://github.com/facebook/create-react-app) (CRA) _template_ with configured **Redux**, **TypeScript**, **React Router**, **Enzyme** and custom **ESlint** configuration.
