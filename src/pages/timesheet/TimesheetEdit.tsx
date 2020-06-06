@@ -15,7 +15,7 @@ export const TimesheetEdit: React.FC = () => {
 
   const saveData: SubmitProcess<TimeSheet> = async (data) => {
     const res = await upsertDoc(documentId, COLLECTIONS.TIMESHEET, data)
-    history.push(Routes.TIMESHEET)
+    // history.push(Routes.TIMESHEET)
     return res
   }
 
