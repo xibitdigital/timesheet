@@ -19,10 +19,15 @@ export interface Project {
 }
 export type ProjectCollectionItem = Project & FirebaseCollectionItem
 
+export enum DayFlag {
+  PUBLIC = 'Public',
+  WEEKEND = 'Weekend',
+  WEEKDAY = 'Weekday',
+}
 export interface WorkedDay {
   clientId: string
   date: string
-  dayType: string
+  dayType: DayFlag
   workedHours: string
   timeSheetId: string
 }
