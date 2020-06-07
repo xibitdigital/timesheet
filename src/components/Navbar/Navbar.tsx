@@ -2,15 +2,23 @@ import React, { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useHistory } from 'react-router-dom'
 import { Box, AppBar, Toolbar, Typography, FormGroup } from '@material-ui/core'
-import { AccountCircle } from '@material-ui/icons'
-import MenuIcon from '@material-ui/icons/Menu'
-
+import {
+  AccountCircle,
+  Timeline,
+  Person,
+  Work,
+  Home,
+  ExitToApp,
+  Menu,
+} from '@material-ui/icons'
 import Button from '@material-ui/core/Button'
 import { DEFAULT_PROVIDER, FIREBASE } from '../../shared/firebase.config'
 import NavBarMenu from './NavBarMenu'
 import { Routes } from '../../shared/routes'
 import { ModalPanel } from '../ModalPanel'
 import { UserPage } from '../../pages/user'
+import { NavBarMenuItem } from './types'
+import DrawerMenu from './DrawerMenu'
 
 interface NavbarProps {
   title: string
@@ -33,13 +41,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const goToPage = (page: Routes) => () => history.push(page)
 
-  const navigationMenu = [
-    { title: 'Home', action: goToPage(Routes.HOME) },
-    { title: 'Clients', action: goToPage(Routes.CLIENT) },
-    { title: 'Projects', action: goToPage(Routes.PROJECT) },
-    { title: 'Timesheets', action: goToPage(Routes.TIMESHEET) },
-  ]
-
   const showModal = () => {
     setUserInfoVisible(true)
   }
@@ -48,10 +49,20 @@ export const Navbar: React.FC<NavbarProps> = ({
     setUserInfoVisible(false)
   }
 
-  const userMenu = [
-    { title: 'Profile', action: showModal },
-    // { title: 'My account', action: () => {} },
-    { title: 'Logout', action: logout },
+  const navigationMenu: NavBarMenuItem[] = [
+    { title: 'Home', action: goToPage(Routes.HOME), icon: <Home /> },
+    { title: 'Clients', action: goToPage(Routes.CLIENT), icon: <Person /> },
+    { title: 'Projects', action: goToPage(Routes.PROJECT), icon: <Work /> },
+    {
+      title: 'Timesheets',
+      action: goToPage(Routes.TIMESHEET),
+      icon: <Timeline />,
+    },
+  ]
+
+  const userMenu: NavBarMenuItem[] = [
+    { title: 'Profile', action: showModal, icon: <Person /> },
+    { title: 'Logout', action: logout, icon: <ExitToApp /> },
   ]
 
   if (initialising) {
@@ -80,10 +91,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           <UserPage user={user} />
         </ModalPanel>
         <Toolbar>
-          <NavBarMenu
+          <DrawerMenu
             menuId="menu-app-navigation"
             menus={navigationMenu}
-            icon={<MenuIcon />}
+            icon={<Menu />}
           />
           <Box flexGrow={1}>
             <Typography variant="h6">{title}</Typography>
