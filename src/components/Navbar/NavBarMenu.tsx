@@ -1,14 +1,12 @@
-import React, { Fragment } from 'react'
-import { compose } from 'ramda'
 import { IconButton, Menu, MenuItem } from '@material-ui/core'
+import { compose } from 'ramda'
+import React, { Fragment } from 'react'
+import { NavBarMenuItem } from './types'
 
 interface NavBarMenuProps {
   menuId: string
   icon: React.ReactNode
-  menus: {
-    title: string
-    action: () => void
-  }[]
+  menus: NavBarMenuItem[]
 }
 
 const NavBarMenu: React.FC<NavBarMenuProps> = ({

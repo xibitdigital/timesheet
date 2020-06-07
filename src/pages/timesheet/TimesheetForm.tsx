@@ -1,15 +1,14 @@
 import Button from '@material-ui/core/Button'
 import React from 'react'
-import { TimeSheet } from '../../shared/collections'
-import { WorkedDayPage } from '../workedday'
-import { TimesheetFormConfig } from './config'
-import { FormBody, FormContainer, FormButtons } from '../../components/Layout'
 import {
-  FieldFactory,
   FetchProcess,
+  FieldFactory,
   SubmitProcess,
   UseForm,
 } from '../../components/Form'
+import { FormBody, FormButtons, FormContainer } from '../../components/Layout'
+import { TimeSheet } from '../../shared/collections'
+import { TimesheetFormConfig } from './config'
 interface TimesheetFormProps {
   documentId: string
   loadData: FetchProcess<TimeSheet>
@@ -57,8 +56,6 @@ export const TimesheetForm: React.FC<TimesheetFormProps> = ({
           Submit
         </Button>
       </FormButtons>
-
-      <WorkedDayPage timesheetId={documentId}></WorkedDayPage>
     </FormContainer>
   )
 }

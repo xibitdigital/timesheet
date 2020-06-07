@@ -11,7 +11,7 @@ import { FIREBASE, FIRESTORE } from '../../shared/firebase.config'
 import { UpdateWorkDayProcess } from './types'
 import { updateWorkday } from './WorkedDayUtils'
 import { WorkedDayItem } from './WorkedDayItem'
-import { calculateWorkedHours } from './utils'
+import { calculateWorkedHours, sortWorkedDays } from './utils'
 import { CalendarContainer } from '../../components/Calendar'
 
 interface WorkedDayPageProps {
@@ -42,6 +42,8 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
     return updateWorkday(documentId, data)
   }
 
+  const sorted = sortWorkedDays(items)
+
   return (
     <Fragment>
       <Box padding="large">
@@ -52,8 +54,7 @@ export const WorkedDayPage: React.FC<WorkedDayPageProps> = ({
       <Box>
         <CalendarContainer>
           {!loading &&
-            items &&
-            items.map((workedDay) => (
+            sorted.map((workedDay) => (
               <WorkedDayItem
                 key={workedDay.id}
                 workedDay={workedDay}
