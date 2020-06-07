@@ -1,16 +1,17 @@
 import Typography from '@material-ui/core/Typography'
 import React from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { BackButton } from '../../components/BackButton'
 import { FetchProcess, SubmitProcess } from '../../components/Form/FormTypes'
 import { MainContainer } from '../../components/Layout'
 import { COLLECTIONS, TimeSheet } from '../../shared/collections'
 import { fetchDoc, upsertDoc } from '../../shared/firebase.utils'
+import { WorkedDayPage } from '../workedday'
 import { TimesheetForm } from './TimesheetForm'
 
 export const TimesheetEdit: React.FC = () => {
   const { documentId = '' } = useParams()
-  // const history = useHistory()
+  const history = useHistory()
 
   const saveData: SubmitProcess<TimeSheet> = async (data) => {
     const res = await upsertDoc(documentId, COLLECTIONS.TIMESHEET, data)
@@ -30,6 +31,7 @@ export const TimesheetEdit: React.FC = () => {
         loadData={loadData}
         documentId={documentId}
       />
+      <WorkedDayPage timesheetId={documentId}></WorkedDayPage>
       <BackButton />
     </MainContainer>
   )
