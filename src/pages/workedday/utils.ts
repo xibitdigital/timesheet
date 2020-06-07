@@ -31,3 +31,13 @@ export function calculateWorkedHours(
     0
   )
 }
+
+export function sortWorkedDays(
+  days: WorkedDayCollectionItem[] = []
+): WorkedDayCollectionItem[] {
+  return days
+    .slice()
+    .sort((a: WorkedDayCollectionItem, b: WorkedDayCollectionItem) =>
+      a.date > b.date ? 1 : -1
+    )
+}

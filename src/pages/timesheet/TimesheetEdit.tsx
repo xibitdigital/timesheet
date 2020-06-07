@@ -8,6 +8,7 @@ import { COLLECTIONS, TimeSheet } from '../../shared/collections'
 import { fetchDoc, upsertDoc } from '../../shared/firebase.utils'
 import { WorkedDayPage } from '../workedday'
 import { TimesheetForm } from './TimesheetForm'
+import { Routes } from '../../shared/routes'
 
 export const TimesheetEdit: React.FC = () => {
   const { documentId = '' } = useParams()
@@ -15,7 +16,7 @@ export const TimesheetEdit: React.FC = () => {
 
   const saveData: SubmitProcess<TimeSheet> = async (data) => {
     const res = await upsertDoc(documentId, COLLECTIONS.TIMESHEET, data)
-    // history.push(Routes.TIMESHEET)
+    history.push(Routes.TIMESHEET)
     return res
   }
 
