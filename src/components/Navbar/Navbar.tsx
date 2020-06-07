@@ -1,24 +1,24 @@
+import { AppBar, Box, FormGroup, Toolbar, Typography } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import {
+  AccountCircle,
+  DateRange,
+  ExitToApp,
+  Home,
+  Menu,
+  Person,
+  Style,
+} from '@material-ui/icons'
 import React, { useState } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useHistory } from 'react-router-dom'
-import { Box, AppBar, Toolbar, Typography, FormGroup } from '@material-ui/core'
-import {
-  AccountCircle,
-  Timeline,
-  Person,
-  Work,
-  Home,
-  ExitToApp,
-  Menu,
-} from '@material-ui/icons'
-import Button from '@material-ui/core/Button'
+import { UserPage } from '../../pages/user'
 import { DEFAULT_PROVIDER, FIREBASE } from '../../shared/firebase.config'
-import NavBarMenu from './NavBarMenu'
 import { Routes } from '../../shared/routes'
 import { ModalPanel } from '../ModalPanel'
-import { UserPage } from '../../pages/user'
-import { NavBarMenuItem } from './types'
 import DrawerMenu from './DrawerMenu'
+import NavBarMenu from './NavBarMenu'
+import { NavBarMenuItem } from './types'
 
 interface NavbarProps {
   title: string
@@ -52,11 +52,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navigationMenu: NavBarMenuItem[] = [
     { title: 'Home', action: goToPage(Routes.HOME), icon: <Home /> },
     { title: 'Clients', action: goToPage(Routes.CLIENT), icon: <Person /> },
-    { title: 'Projects', action: goToPage(Routes.PROJECT), icon: <Work /> },
+    { title: 'Projects', action: goToPage(Routes.PROJECT), icon: <Style /> },
     {
       title: 'Timesheets',
       action: goToPage(Routes.TIMESHEET),
-      icon: <Timeline />,
+      icon: <DateRange />,
     },
   ]
 
