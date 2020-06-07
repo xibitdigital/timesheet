@@ -1,5 +1,3 @@
-import { Routes } from '../../shared/routes'
-
 export type RouteAction = () => void
 
 export interface NavBarMenuItem {
