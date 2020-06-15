@@ -37,8 +37,9 @@ const updateWorkedDays = async (
   }
 }
 
-exports.createWorkedDaays = functions.firestore
-  .document('timesheets/{timeSheetId}')
+exports.createWorkedDaays = functions
+  .region('europe-west1')
+  .firestore.document('timesheets/{timeSheetId}')
   .onCreate(async (snapshoot, context) => {
     console.log('Create')
 
@@ -48,8 +49,9 @@ exports.createWorkedDaays = functions.firestore
     await updateWorkedDays(timeSheetId, timesheet as TimeSheet)
   })
 
-exports.updateWorkedDays = functions.firestore
-  .document('timesheets/{timeSheetId}')
+exports.updateWorkedDays = functions
+  .region('europe-west1')
+  .firestore.document('timesheets/{timeSheetId}')
   .onUpdate(async (change, context) => {
     console.log('Update')
 
