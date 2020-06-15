@@ -16,11 +16,9 @@ export const TimesheetPage: React.FC = () => {
   const history = useHistory()
 
   const [items, loading] = useCollectionData<TimeSheetCollectionItem>(
-    FIRESTORE.collection(COLLECTIONS.TIMESHEET).where(
-      'owner',
-      '==',
-      user ? user.uid : ''
-    ),
+    FIRESTORE.collection(COLLECTIONS.TIMESHEET)
+      .where('owner', '==', user ? user.uid : '')
+      .orderBy('name'),
     {
       idField: 'id',
       snapshotListenOptions: { includeMetadataChanges: true },
